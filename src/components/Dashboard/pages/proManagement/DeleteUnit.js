@@ -38,7 +38,7 @@ const DeleteUnit = (props) => {
       closeDialog()
 
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       console.log(response);
       dispatch(setAlert({ open: true,
         severity: "error",

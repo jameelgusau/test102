@@ -40,7 +40,7 @@ function Header() {
     if (response.meta && response.meta.status === 200) {
       dispatch(setProfileImage(response.data));
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       dispatch(setProfileImage(null));
     }
   };

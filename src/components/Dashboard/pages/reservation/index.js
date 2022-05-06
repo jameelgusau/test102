@@ -43,7 +43,7 @@ const Reservations = () => {
     if (response.meta && response.meta.status === 200) {
       dispatch(setAllReserved(response.data));
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       dispatch(setAllReserved(response.data));
 
     }

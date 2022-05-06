@@ -73,7 +73,7 @@ function Signup() {
         console.log(response);
         if (response.meta && response.meta.status === 200) {
           navigate("/checkmail");
-        }if(response.meta && response.meta.status === 400){
+        }if(response.meta && response.meta.status >= 400){
             setErrMessage(response.meta.message)
             setErr(true)
             setLoading(false);

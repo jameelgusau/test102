@@ -30,7 +30,7 @@ const Payments = () => {
     if (response.meta && response.meta.status === 200) {
       dispatch(setUsers(response.data));
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       dispatch(setUsers({}));
     }
   };

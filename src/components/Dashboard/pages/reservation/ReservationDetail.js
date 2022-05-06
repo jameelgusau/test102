@@ -83,7 +83,7 @@ const ReservationDetail = (props) => {
           })
         );
          closeDialog();
-      } else if (response.meta && response.meta.status === 400) {
+      } else if (response.meta && response.meta.status >= 400) {
         setLoadingReject(false);
         setErrMessage(response.meta.message);
         dispatch(setAlert({ open: true,

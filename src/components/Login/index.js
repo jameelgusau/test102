@@ -66,7 +66,7 @@ function Login() {
           message: "Welcome!"
       }))
       
-      }if(response.meta && response.meta.status === 400){
+      }if(response.meta && response.meta.status >= 400){
           setErrMessage(response.meta.message)
           dispatch(setAlert({ open: true,
             severity: "error",

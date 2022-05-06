@@ -37,7 +37,7 @@ const DeleteEmailList = (props) => {
       await closeDialog()
 
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       dispatch(setAlert({ open: true,
         severity: "error",
         color: "error",

@@ -31,7 +31,7 @@ const PaymentDetail = () => {
       dispatch(setPayment(response.data));
       // console.log(response.data)
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       setErrMessage(response.meta.message);
       dispatch(setPayment({}));
       setErr(true);

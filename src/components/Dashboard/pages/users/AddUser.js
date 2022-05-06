@@ -49,7 +49,7 @@ const AddUser = (props) => {
         );
         closeDialog();
       }
-      if (response.meta && response.meta.status === 400) {
+      if (response.meta && response.meta.status >= 400) {
         setLoading(false);
         setErrMessage(response.meta.message);
         dispatch(setAlert({ open: true,

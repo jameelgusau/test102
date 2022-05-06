@@ -49,7 +49,7 @@ const EditProspect = (props) => {
             await getUser(user.jwtToken);
             await closeDialog()
           }
-          if (response.meta && response.meta.status === 400) {
+          if (response.meta && response.meta.status >= 400) {
             setLoading(false);
             setErrMessage(response.meta.message);
             setErr(true);

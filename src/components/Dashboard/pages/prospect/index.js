@@ -47,7 +47,7 @@ const Prospects = () => {
     if (response.meta && response.meta.status === 200) {
       dispatch(setProspect(response.data));
     }
-    if (response.meta && response.meta.status === 400) {
+    if (response.meta && response.meta.status >= 400) {
       dispatch(setProspect(response.data));
     }
   };
