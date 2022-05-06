@@ -1,0 +1,82 @@
+.prospect {
+  margin: 20px;
+}
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.add-prospect {
+  min-height: 30px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: 2px solid transparent;
+  // cursor: pointer;
+  // border-radius: 10px;
+  // box-shadow: 0px 3px 20px #0000001A;
+  // padding: 10px 20px;
+  &:hover {
+    transform: scale(1.05, 1.05);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+    z-index: -1;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+// .overflow{
+
+//   @include responsive(tab-port) {
+//     width: 800px;
+//     overflow-x: scroll;
+//   }
+// }
+
+.tableContainer{
+    background-color: #fff;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+    padding: 1rem 2rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+}
+.tableRow{
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: minmax(3rem,1fr ) minmax(3rem, 4fr) minmax(2rem, 3fr) minmax(2rem,3fr ) minmax(2rem,1fr );
+ 
+    border-top: 1px solid #EFEFEF;
+    align-items: center;
+    padding: 1rem;
+    &__title{
+        font-size: 1.5rem;
+        border-top: none;
+        @include responsive(phone) {
+          font-weight: 600;
+          font-size: 1rem;
+        }
+    }
+}
+
+.tableColumn{
+    padding: 1rem;
+    &__link{
+        cursor: pointer;
+    }
+}
+.tableColumn:not(:last-child){
+    border-right: 1px solid #EFEFEF;
+}
+

@@ -1,0 +1,100 @@
+@import "./../base";
+@import "main";
+@import "aside";
+@import "header";
+@import "footer";
+@import "setting";
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 5rem 1fr 5rem;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  height: 100vh;
+  overflow-x: hidden; /* Sidenav is out of view; we slide it back in */
+}
+
+.grid-container.grid-container--noscroll {
+  overflow-y: hidden;
+}
+/* Non-mobile styles, 750px breakpoint */
+@media only screen and (min-width: 75rem) {
+  /* Show the sidenav */
+  .grid-container {
+    grid-template-columns: 24rem 1fr;
+    grid-template-areas:
+      "sidenav header"
+      "sidenav main"
+      "sidenav footer";
+  }
+
+  .header__search {
+    margin-left: 0;
+  }
+
+  .sidenav {
+    // position: fixed;
+
+    transform: translateX(0);
+  }
+
+  .sidenav__close-icon {
+    visibility: hidden;
+  }
+}
+
+.avatar-wrapper{
+	height: 200px;
+	width: 200px;
+	margin: 0px auto;
+	border-radius: 50%;
+	overflow: hidden;
+	// box-shadow: 1px 1px 15px -5px black;
+	transition: all .3s ease;
+	&:hover{
+		transform: scale(1.05);
+		cursor: pointer;
+	}
+	&:hover .profile-pic{
+		opacity: .5;
+	}
+	.profile-pic {
+    height: 100%;
+		width: 100%;
+		transition: all .3s ease;
+		&:after{
+			font-family: FontAwesome;
+			content: "\f007";
+			top: 0; left: 0;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			font-size: 190px;
+			background: #ecf0f1;
+			color: #34495e;
+			text-align: center;
+		}
+	}
+	.upload-button {
+		position: absolute;
+		top: 0; left: 0;
+		height: 100%;
+		width: 100%;
+		.fa-arrow-circle-up{
+			position: absolute;
+			font-size: 24px;
+			top: 17px;
+			left: 10px;
+			text-align: center;
+			// opacity: 0;
+			transition: all .3s ease;
+			color: #34495e;
+		}
+		&:hover .fa-arrow-circle-up{
+			opacity: 1;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+.container {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  // box-sizing: border-box;
+  justify-content: center;
+  align-content: center;
+}
+
+.notfound {
+  justify-self: center;
+  margin-top: 20px;
+  background: #0b2d40;
+  color: #ffff;
+  padding: 6px 20px;
+  border-radius: 3px;
+  text-decoration: none;
+}

@@ -1,0 +1,257 @@
+import React, { useEffect, useState } from "react";
+import icon from "../../../../assets/img/image.jpeg";
+import { BsHouse } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  displayAddUnit,
+  displayAddImage,
+  displayReserve,
+} from "../../../../redux/display";
+import { useParams } from "react-router-dom";
+import { APIS, requestJwt } from "../../../../_services";
+import { IconContext } from "react-icons";
+import { IoAddOutline } from "react-icons/io5";
+import { FaUpload } from "react-icons/fa";
+import { BsFillCircleFill } from "react-icons/bs";
+import { TextField, MenuItem } from "@mui/material";
+import { setUnits } from "../../../../redux/Units";
+import EditUnit from "./EditUnit";
+import AddUnit from "./AddUnit";
+import ReserveUnit from "./ReserveUnit";
+import DeleteUnit from "./DeleteUnit";
+import AddImage from "./AddImage";
+
+const ProManagement = () => {
+  const [select, setSelect] = useState("Ground floor");
+  let params = useParams();
+  const [unit, setUnit] = useState({});
+  const [property, setSetProperty] = useState({});
+  const [image, setImage] = useState({});
+  const user = useSelector((state) => state.userProfile.value);
+  const properties = useSelector((state) => state.properties.value);
+  const units = useSelector((state) => state.units.value);
+
+  const dispatch = useDispatch();
+
+  const openAddUnitDialog = () => {
+    dispatch(displayAddUnit("block"));
+  };
+
+  const AddImageDialog = () => {
+    dispatch(displayAddImage("block"));
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      const selected = await properties.find((e) => e.id === params.id);
+      setSetProperty(selected);
+      console.log(selected, "sele")
+      await getUnits(selected.id);
+      await getPropertyImage(params.id);
+    }
+    fetchData();
+    // eslint-disable-next-line 
+  }, [select]);
+
+  const getUnits = async (id) => {
+    const {
+      baseUrl,
+      getUnits: { method, path },
+    } = APIS;
+    const url = `${baseUrl}${path({ id, floor: select })}`;
+    console.log(url, "url");
+    const response = await requestJwt(method, url, {}, user.jwtToken);
+    console.log(response);
+    if (response.meta && response.meta.status === 200) {
+      dispatch(setUnits(response.data));
+    } else if (response.meta && response.meta.status >= 400) {
+      dispatch(setUnits([]));
+    }
+  };
+
+  const getPropertyImage = async (id) => {
+    const {
+      baseUrl,
+      getPropertyImage: { method, path },
+    } = APIS;
+    const url = `${baseUrl}${path({ id, floor: select })}`;
+    console.log(url, "url");
+    const response = await requestJwt(method, url, {}, user.jwtToken);
+    console.log(response);
+    if (response.meta && response.meta.status === 200) {
+      // await dispatch(setUnits(response.data));
+      setImage(response.data);
+    } else if (response.meta && response.meta.status >= 400) {
+
+    }
+    console.log(image, "image");
+  };
+
+  // console.log(image.imageType, "image.imageType")
+  // console.log(image.imageData, "image.imageData")
+  // console.log(image.imageType, "image.imageType")
+  let floorsArr = [];
+  for (let i = 0; i < parseInt(property && property.num_of_floors); i++) {
+    floorsArr.push(i === 0 ? { name: "Ground floor" } : { name: `Floor ${i}` });
+    // console.log(i);
+  }
+  return (
+    <>
+      <div className="selectFloor">
+        <div className="search">
+          <TextField
+            select
+            placeholder="Select floor"
+            defaultValue={""}
+            variant="outlined"
+            value={select}
+            size="small"
+            onChange={({ target }) => setSelect(target.value)}
+          >
+            {floorsArr.map(({ name }) => (
+              <MenuItem value={name} key={name}>
+                {name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        {user.role && user.role === "Admin" && (
+          <div className="add-image" onClick={AddImageDialog}>
+            <IconContext.Provider
+              value={{ color: "#0C2D40", className: "global-class-name" }}
+            >
+              <div>
+                <FaUpload />
+              </div>
+            </IconContext.Provider>
+          </div>
+        )}
+      </div>
+      <div className="pro-header">
+        {image ? (
+          <img src={image.image} alt="Red dot" className="pro-header__image" />
+        ) : (
+          <img src={icon} alt="Logo" className="pro-header__image" />
+        )}
+      </div>
+
+      <div className="pro-address">
+        <div className="pro-address__icon">
+          <IconContext.Provider
+            value={{ className: "pro-address__icon--location" }}
+          >
+            <div>
+              <BsHouse />
+            </div>
+          </IconContext.Provider>
+        </div>
+        <div>
+          <p>{property && property.address}</p>
+        </div>
+      </div>
+      <div className="units">
+        <div className="units__keys">
+          <div className="units__keys">
+            <div className="units__keys--dots">
+              <IconContext.Provider
+                value={{ color: "green", className: "dot" }}
+              >
+                <div>
+                  <BsFillCircleFill />
+                </div>
+              </IconContext.Provider>
+              <p>Available</p>
+            </div>
+            <div className="units__keys--dots">
+              <IconContext.Provider value={{ color: "red", className: "dot" }}>
+                <div>
+                  <BsFillCircleFill />
+                </div>
+              </IconContext.Provider>
+              <p>Sold</p>
+            </div>
+            <div className="units__keys--dots">
+              <IconContext.Provider
+                value={{ color: "indigo", className: "dot" }}
+              >
+                <div>
+                  <BsFillCircleFill />
+                </div>
+              </IconContext.Provider>
+              <p>Occupied</p>
+            </div>
+            <div className="units__keys--dots">
+              <IconContext.Provider
+                value={{ color: "yellow", className: "dot" }}
+              >
+                <div>
+                  <BsFillCircleFill />
+                </div>
+              </IconContext.Provider>
+              <p>Reserved</p>
+            </div>
+          </div>
+          <div className="add-units" onClick={openAddUnitDialog}>
+            <IconContext.Provider
+              value={{ color: "#0C2D40", className: "global-class-name" }}
+            >
+              <div>
+                <IoAddOutline />
+              </div>
+            </IconContext.Provider>
+          </div>
+        </div>
+
+        <div className="units__text">
+          <p className="units__text--heading">Select a unit</p>
+        </div>
+        <div className="units__boxs">
+          {units.map((item) => (
+            <div
+              className="units__boxs--box"
+              style={{
+                color: `${
+                  item.status && item.status === "Available"
+                    ? "green"
+                    : item.status === "Sold"
+                    ? "red"
+                    : item.status === "Reserved"
+                    ? "yellow"
+                    : item.status === "Occupied"
+                    ? "indigo"
+                    : ""
+                }`,
+              }}
+              onClick={async () => {
+                await setUnit(item);
+                await dispatch(displayReserve("block"));
+              }}
+              key={item.id}
+            >
+              <h3 className="num">{item.name}</h3>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* dialog Reserve Unit */}
+      <ReserveUnit unit={unit} getUnits={(e) => getUnits(e)} />
+      {/* dialog Add Unit */}
+      <AddUnit floorsArr={floorsArr} getUnits={(e) => getUnits(e)} />
+      {/* dialog edit Unit */}
+      <EditUnit
+        floorsArr={floorsArr}
+        unit={unit}
+        getUnits={(e) => getUnits(e)}
+      />
+      {/* dialog edit Unit */}
+      <DeleteUnit unit={unit} getUnits={(e) => getUnits(e)} />
+
+      {/* Add Images */}
+
+      <AddImage getImage={(e) => getPropertyImage(e)} floor={select} />
+    </>
+  );
+};
+
+export default ProManagement;

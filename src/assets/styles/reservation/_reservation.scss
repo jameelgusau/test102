@@ -1,0 +1,45 @@
+.reservation {
+  margin: 20px;
+}
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.reservationTableContainer {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.reservationTableRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: minmax(1rem, 1fr) minmax(3rem, 4fr) minmax(2rem, 3fr) minmax(
+      2rem,
+      3fr
+    ) minmax(2rem, 3fr) minmax(2rem, 3fr) minmax(2rem, 1fr);
+
+  border-top: 1px solid #efefef;
+  align-items: center;
+  padding: 1rem;
+  &__title {
+    font-size: 1.5rem;
+    border-top: none;
+    @include responsive(phone) {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  }
+}
+
+.reservationTableColumn {
+  padding: 1rem;
+  &__link {
+    cursor: pointer;
+  }
+}
+.reservationTableColumn:not(:last-child) {
+  border-right: 1px solid #efefef;
+}
+

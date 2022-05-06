@@ -1,0 +1,51 @@
+.sidenav {
+    grid-area: sidenav;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 24rem;
+    position: fixed;
+    overflow-y: auto;
+    transform: translateX(-24.5rem);
+    transition: all .6s ease-in-out;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    z-index: 2; /* Needs to sit above the hamburger menu icon */
+    background-color: #0C2D40;
+  }
+
+  .sidenav.active {
+    transform: translateX(0);
+  }
+
+  .sidenav__close-icon {
+    position: absolute;
+    visibility: visible;
+    top: .8rem;
+    right: 1.2rem;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #fff;
+    background: transparent;
+    border: none;
+  }
+
+  .sidenav__list {
+    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+   
+  }
+
+  .sidenav__list-item {
+    padding: 2rem 2rem 2rem 2rem;
+    display: flex;
+    gap: 1rem;
+    font-size: 1.5rem;
+    color: #ddd;
+    text-decoration: none;
+    &:hover, &:active{
+      background-color: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+    }
+  }
+ 

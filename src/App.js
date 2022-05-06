@@ -1,58 +1,79 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { lazy, Suspense } from "react";
+import Loading from "./components/Loading";
+import { ThemeProvider } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import CustomizedSnackbars from "./Snackbar";
+import { useSelector } from "react-redux";
 
-function App() {
+const theme = createTheme({
+  palette: {
+    primary: { main: "#0b2d40" },
+    secondary: { main: "#CC0000" },
+  },
+  typography: {
+    fontFamily: ["Poppins", "Roboto"],
+  },
+});
+
+const Signup = lazy(() => import("./components/Signup"));
+const Login = lazy(() => import("./components/Login"));
+const CheckMail = lazy(() => import("./components/CheckMail"));
+const ResetMail = lazy(() => import("./components/ResetEmail"));
+const InitPassword = lazy(() => import("./components/InitReset"));
+const ResetPassword = lazy(() => import("./components/PasswordReset"));
+const Dashboard = lazy(() => import("./components/Dashboard/Dashboard"));
+const NotFound = lazy(() => import("./components/notfound"));
+const ConfirmEmail = lazy(() => import("./components/ConfirmEmail"));
+
+const App = () => {
+  console.log("hahah");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <CustomizedSnackbars />
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="checkmail" element={<CheckMail />} />
+            <Route path="resetmail" element={<ResetMail />} />
+            <Route path="initpassword" element={<InitPassword />} />
+            <Route path="confirm-email/:id" element={<ConfirmEmail />} />
+            <Route path="resetpassword/:id" element={<ResetPassword />} />
+            <Route
+              path="dashboard/*"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </Suspense>
+      </Router>
+    </ThemeProvider>
   );
-}
-
+};
 export default App;
+function RequireAuth({ children }) {
+  let user = useSelector((state) => state.userProfile.value);
+  let location = useLocation();
+  console.log(user, "User");
+  if (!user) {
+    // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+
+  return children;
+}

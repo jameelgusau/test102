@@ -1,0 +1,44 @@
+
+.setting-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: .5rem;
+
+}
+
+.setting-avatar{
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
+.avatar_input{
+    display: none;
+}
+.avatar_container{
+    position: relative;
+    top: -50px;
+    left: 20%;
+}
+.abc{
+    font-size: 20px;
+    box-shadow: 1px 1px 15px -5px black;
+    border-radius: 50%;
+    padding: 0.5rem;
+    cursor: pointer;
+    background: #fff;
+}
+.profile_details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    &__text{
+        font-size: 2.3rem;
+    }
+    &__text2{
+        font-size: 15px;
+    }
+}

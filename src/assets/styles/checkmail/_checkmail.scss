@@ -1,0 +1,71 @@
+.container {
+    background-color: #fff;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    // box-sizing: border-box;
+    justify-content: center;
+    align-content: center;
+  }
+  
+  .checkmail{
+    box-shadow: 0px 3px 20px #0000001A;
+    width: 350px;
+    display: flex;
+    padding: 30px;
+    flex-direction: column;
+    // align-items: center;
+    @include responsive(phone) {
+        min-width: 350px; // 1rem = 9px ; 9px/16px = 52.25%
+    }
+    &__email{
+        // display: flex;
+        // flex-direction: row;
+        // justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 30px 30px;
+        column-gap: 10px;
+        margin: 15px 0;
+        align-items: center;
+        &--text{
+            font-size: 14px;
+            font-weight: 700;
+        }
+        &--icons{
+            .icon{
+                margin-right: 20px;
+            }
+        }
+
+    }
+    &__title{
+        width: 100%;
+        margin: 10px 0;
+        &--heading{
+            font-size: 30px;
+            font-weight: bold;
+            color: #CCCCCC;
+            text-align: center;
+        }
+    }
+    &__paragraph{
+        text-align: center;
+        font-size: 11px;
+    }
+    &__input{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+       
+        &--item-a{
+            margin: 10px 0 !important;
+        }
+            
+        @include responsive(phone) {
+            grid-template-columns: repeat(1, 1fr);
+            &--item-b{
+                grid-column: 1/3
+            }
+        }
+    }
+  }

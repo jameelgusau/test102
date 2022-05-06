@@ -1,0 +1,45 @@
+.myreservation{
+    margin: 20px;
+    &__header{
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 3px;
+    }
+    &__cardContainer{
+        display: grid;
+        grid-template-columns:repeat(3, 1fr);
+        grid-auto-rows: 220px;
+        grid-gap: 20px;
+        align-items: center;
+        margin-top: 20px;
+    
+        @include responsive(tab-port) {
+          grid-template-columns:repeat(2, 1fr);
+       
+      }
+            @include responsive(phone) {
+            grid-template-columns:repeat(1, 1fr);
+    
+        }
+
+    }
+
+}
+
+.reservationCard{
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    justify-content: center;
+    row-gap: 10px;
+    column-gap: 15px;
+    padding: 20px;
+    border-radius: 3px;
+    background-color: #fff;
+
+}
+.end{
+    justify-self:  flex-end;
+}
+.myreservedbutton{
+    grid-column: 2 / -1;   
+}
