@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 export const APIS = {
-  baseUrl: "http://localhost:4000/api",
+  // baseUrl: "http://localhost:4000/api",
+  baseUrl: "https://hommesestate.herokuapp.com",
 
   initSignup: {
     method: "POST",
