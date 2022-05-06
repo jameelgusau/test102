@@ -52,8 +52,8 @@ const App = () => {
             <Route path="checkmail" element={<CheckMail />} />
             <Route path="resetmail" element={<ResetMail />} />
             <Route path="initpassword" element={<InitPassword />} />
-            <Route path="confirm-email/:id" element={<ConfirmEmail />} />
-            <Route path="resetpassword/:id" element={<ResetPassword />} />
+            <Route path="/confirm-email/:id" element={<ConfirmEmail />} />
+            <Route path="/resetpassword/:id" element={<ResetPassword />} />
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </Suspense>
