@@ -19,7 +19,7 @@ const NotificationSetting = () => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState("Prospect is added");
   const [account, setAccount] = useState({});
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
   const emailList = useSelector((state) => state.emailList.value);
 
@@ -41,11 +41,11 @@ const NotificationSetting = () => {
       dispatch(setEmailList(response.data));
     }
     if (response.meta && response.meta.status >= 400) {
-      setLoading(false);
+      // setLoading(false);
       dispatch(setEmailList([]));
       
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   const group = [

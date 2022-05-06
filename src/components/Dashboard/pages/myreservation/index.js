@@ -14,7 +14,7 @@ import UploadPayment from "../reservation/UploadPayment";
 // Units
 const MyReservation = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [ unit, setUnit ] = useState({})
   const user = useSelector((state) => state.userProfile.value);
   const reserved = useSelector((state) => state.reservedUnits.value);
@@ -37,7 +37,7 @@ const MyReservation = () => {
       await dispatch(setReservedUnits([]));
 
     }
-    setLoading(false);
+    // setLoading(false);
   };
   console.log(reserved, "reserved");
   return (

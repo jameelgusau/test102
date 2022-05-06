@@ -33,21 +33,13 @@ const NotFound = lazy(() => import("./components/notfound"));
 const ConfirmEmail = lazy(() => import("./components/ConfirmEmail"));
 
 const App = () => {
-  console.log("hahah");
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <CustomizedSnackbars />
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="checkmail" element={<CheckMail />} />
-            <Route path="resetmail" element={<ResetMail />} />
-            <Route path="initpassword" element={<InitPassword />} />
-            <Route path="confirm-email/:id" element={<ConfirmEmail />} />
-            <Route path="resetpassword/:id" element={<ResetPassword />} />
-            <Route
+          <Route
               path="dashboard/*"
               element={
                 <RequireAuth>
@@ -55,6 +47,14 @@ const App = () => {
                 </RequireAuth>
               }
             />
+            <Route path="/" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="checkmail" element={<CheckMail />} />
+            <Route path="resetmail" element={<ResetMail />} />
+            <Route path="initpassword" element={<InitPassword />} />
+            <Route path="confirm-email/:id" element={<ConfirmEmail />} />
+            <Route path="resetpassword/:id" element={<ResetPassword />} />
+
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </Suspense>
@@ -63,6 +63,7 @@ const App = () => {
   );
 };
 export default App;
+
 function RequireAuth({ children }) {
   let user = useSelector((state) => state.userProfile.value);
   let location = useLocation();
