@@ -54,7 +54,8 @@ const App = () => {
             <Route path="initpassword" element={<InitPassword />} />
             <Route path="/confirm-email/:id" element={<ConfirmEmail />} />
             <Route path="/resetpassword/:id" element={<ResetPassword />} />
-            <Route path="*" element={<NotFound />}></Route>
+            <Route path="notfound" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/notfound" replace />} />
           </Routes>
         </Suspense>
       </Router>
@@ -73,7 +74,7 @@ function RequireAuth({ children }) {
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
     return <Navigate to="/" state={{ from: location }} replace />;
+  }else{
+    return children;
   }
-
-  return children;
 }
