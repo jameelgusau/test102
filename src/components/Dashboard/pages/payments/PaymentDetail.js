@@ -9,8 +9,6 @@ const PaymentDetail = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingReject, setLoadingReject] = useState(false);
-  const [err, setErr] = useState(false);
-  const [errMessage, setErrMessage] = useState("");
   let params = useParams();
   const user = useSelector((state) => state.userProfile.value);
   const payment = useSelector((state) => state.payment.value);
@@ -29,21 +27,14 @@ const PaymentDetail = () => {
     const response = await requestJwt(method, url, {}, jwt);
     if (response.meta && response.meta.status === 200) {
       dispatch(setPayment(response.data));
-      // console.log(response.data)
     }
     if (response.meta && response.meta.status >= 400) {
-      setErrMessage(response.meta.message);
       dispatch(setPayment({}));
-      setErr(true);
-      setLoading(false);
-      setTimeout(() => {
-        setErr(false);
-      }, 2000);
     }
     setLoading(false);
   };
 
-  setLoadingReject("")
+  // setLoadingReject("")
   return (
     <div className="paymentDetails">
       <div className="paymentDetails__card">
@@ -171,16 +162,7 @@ const PaymentDetail = () => {
               "Accept Payment"
             )}
           </Button>
-          <p
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              color: "red",
-              marginBottom: "10px",
-            }}
-          >
-            {err ? errMessage : ""}
-          </p>
+ 
         </div>
       </div>
     </div>

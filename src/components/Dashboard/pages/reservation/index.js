@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { setAllReserved } from "../../../../redux/allReserved";
-import StyledEngineProvider from "@mui/material/StyledEngineProvider";
+// import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoEllipsisVerticalOutline } from "react-icons/io5";
 import { APIS, requestJwt } from "../../../../_services";
 import {
@@ -16,11 +16,23 @@ import {
 } from "../../../../redux/display";
 import ReservationDetail from "./ReservationDetail";
 import UploadPayment from "./UploadPayment";
+import Table from "../../../Tables/Table";
+
+const columns = [
+  { columnName: "#", keyName: "sn" },
+  { columnName: "Name", keyName: "name" },
+  { columnName: "Email", keyName: "email" },
+  { columnName: "Property", keyName: "property" },
+  { columnName: "Unit", keyName: "unit" },
+  { columnName: "Payment Type", keyName: "paymentType" },
+  { columnName: "Actions", keyName: "actions" },
+];
 
 const Reservations = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [account, setAccount] = useState({});
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
   const allReserved = useSelector((state) => state.allReserved.value);
   const [groupAnchorArr, setGroupAnchorArr] = useState(
@@ -28,12 +40,66 @@ const Reservations = () => {
   );
   useEffect(() => {
     getReservation(user.jwtToken);
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
-  console.log(allReserved, "allReserved");
+  const List = allReserved.map((item, idx) => ({
+    ...item,
+    sn: idx + 1,
+    actions: (
+      <>
+        <IconButton
+          size="small"
+          onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
+        >
+          {" "}
+          <IoEllipsisVerticalOutline />
+        </IconButton>
+        <Menu
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          // anchorEl={anchorEl}
+          // open={open}
+          // elevation={2}
+          open={Boolean(groupAnchorArr[idx])}
+          anchorEl={groupAnchorArr[idx]}
+          // onClose={handleClose}
+          onClose={() => setStudentItem(idx, null)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayReserveDetail("block"));
+              // setAnchorEl(null);
+            }}
+          >
+            Reservation Details
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayUploadPayment("block"));
+            }}
+          >
+            Upload payment
+          </MenuItem>
+        </Menu>
+      </>
+    ),
+  }));
 
   const getReservation = async (data) => {
+    setLoading(true)
     const {
       baseUrl,
       getAllReserved: { method, path },
@@ -42,16 +108,18 @@ const Reservations = () => {
     const response = await requestJwt(method, url, {}, data);
     if (response.meta && response.meta.status === 200) {
       dispatch(setAllReserved(response.data));
+      setLoading(false)
     }
     if (response.meta && response.meta.status >= 400) {
-      dispatch(setAllReserved(response.data));
-
+      dispatch(setAllReserved([]));
+      setLoading(false)
     }
+    setLoading(false)
   };
 
   useEffect(() => {
     setGroupAnchorArr(new Array(allReserved.length).fill(null));
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [allReserved]);
 
   const setStudentItem = (i, value) => {
@@ -69,7 +137,7 @@ const Reservations = () => {
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
-  console.log(account)
+  console.log(account);
 
   return (
     <div className="reservation">
@@ -114,7 +182,7 @@ const Reservations = () => {
           </IconContext.Provider>
         </div> */}
       </div>
-      <div className="overflow">
+      {/* <div className="overflow">
         <div className="reservationTableContainer">
           {
             <div className="reservationTableRow reservationTableRow__title">
@@ -150,7 +218,9 @@ const Reservations = () => {
                 <h3 className="reservationTableColumn">{item.account.email}</h3>
                 <h3 className="reservationTableColumn">{item.property.name}</h3>
                 <h3 className="reservationTableColumn">{item.unit.name}</h3>
-                <h3 className="reservationTableColumn">{item.unit.paymentType}</h3>
+                <h3 className="reservationTableColumn">
+                  {item.unit.paymentType}
+                </h3>
                 <>
                   <div
                     className="reservationTableColumn"
@@ -205,12 +275,16 @@ const Reservations = () => {
               </div>
             ))}
         </div>
-      </div>
+      </div> */}
+      <Table loading={loading} columns={columns} tableData={List}/>
       <ReservationDetail
         data={account}
         getReservation={(e) => getReservation(e)}
       />
-      <UploadPayment reservedUnitId={account.id} getReservation={(e) => getReservation(e)} />
+      <UploadPayment
+        reservedUnitId={account.id}
+        getReservation={(e) => getReservation(e)}
+      />
     </div>
   );
 };

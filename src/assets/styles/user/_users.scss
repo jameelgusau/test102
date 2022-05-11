@@ -2,6 +2,7 @@
   background-color: #fff;
   border-radius: 0.5rem;
   margin: 2rem 0;
+  overflow: scroll;
   padding: 1rem 2rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
@@ -34,4 +35,8 @@
 }
 .userTableColumn:not(:last-child) {
   border-right: 1px solid #efefef;
+}
+.respon{
+  // min-width: 500px;
+  overflow: scroll;
 }

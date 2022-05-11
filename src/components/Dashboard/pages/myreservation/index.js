@@ -42,7 +42,7 @@ const MyReservation = () => {
   console.log(reserved, "reserved");
   return (
     <div className="myreservation">
-      <div className="myreservation__header">My Reservation</div>
+      <div className="myreservation__header">My Reservations</div>
       <div className="myreservation__cardContainer">
         {reserved &&
           reserved.map((item) => (

@@ -1,0 +1,56 @@
+.table-container {
+  background-color: #fff;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+@include responsive(tab-port) {
+    .table-container {
+        width: 90vw;
+    }
+}
+  .overflow {
+    overflow-x: auto;
+
+  }
+.table {
+  width: 100%;
+  margin-top: 2rem;
+}
+.tableHead,
+.tablebody {
+  border-bottom: 1px solid #eeeeee;
+
+  &__cell {
+    padding: 20px;
+    text-align: left;
+    white-space: nowrap;
+  }
+}
+.tableHead {
+  font-weight: 700;
+}
+.pagination-container{
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+}
+.pagination{
+    display: flex;
+    align-items: center;
+}
+
+.emptyData{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+}
+
+.emptyD{
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  height: 80vh;
+
+}

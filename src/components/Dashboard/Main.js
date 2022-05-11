@@ -45,7 +45,7 @@ function Main() {
     {
       path: "payments/*",
       main: <PaymentRoutes />
-    },
+    }
   ];
   return (
     <main className="main">

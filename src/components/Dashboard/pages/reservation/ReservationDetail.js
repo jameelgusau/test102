@@ -8,7 +8,7 @@ import { setAlert } from "../../../../redux/snackbar";
 const ReservationDetail = (props) => {
   const { getReservation, data } = props;
   console.log(data);
-  const { unit, account, id } = data;
+  const { name ,unit, floor, id, status, dimention, email, phone, paymentType, price } = data;
 
   const myRef = useRef();
   const dispatch = useDispatch();
@@ -124,26 +124,26 @@ const ReservationDetail = (props) => {
             <>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Unit Number:</h4>
-                <h4 className="model-body__row--text">{unit.name}</h4>
+                <h4 className="model-body__row--text">{unit}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Floor Number:</h4>
-                <h4 className="model-body__row--text">{unit.floorNumber}</h4>
+                <h4 className="model-body__row--text">{floor}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Status:</h4>
-                <h4 className="model-body__row--text">{unit.status}</h4>
+                <h4 className="model-body__row--text">{status}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Dimention:</h4>
-                <h4 className="model-body__row--text">{unit.dimension} sq m</h4>
+                <h4 className="model-body__row--text">{dimention} sq m</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Price:</h4>
                 <h4 className="model-body__row--text">
                   &#8358;{" "}
-                  {unit.price
-                    ? unit.price
+                  {price
+                    ? price
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     : ""}
@@ -151,7 +151,7 @@ const ReservationDetail = (props) => {
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Payment Type:</h4>
-                <h4 className="model-body__row--text">{unit.paymentType}</h4>
+                <h4 className="model-body__row--text">{paymentType}</h4>
               </div>
             </>
           )}
@@ -160,19 +160,19 @@ const ReservationDetail = (props) => {
             <h2>Prospect Detail</h2>
           </div>
         <div className="model-body">
-          {account && (
+          {data && (
             <>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Name:</h4>
-                <h4 className="model-body__row--text">{account.name}</h4>
+                <h4 className="model-body__row--text">{name}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Email:</h4>
-                <h4 className="model-body__row--text">{account.email}</h4>
+                <h4 className="model-body__row--text">{email}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Phone:</h4>
-                <h4 className="model-body__row--text">{account.phone}</h4>
+                <h4 className="model-body__row--text">{phone}</h4>
               </div>
             </>
           )}

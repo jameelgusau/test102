@@ -4,23 +4,54 @@ import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineSearch } from "react-icons/ai";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import { NavLink } from "react-router-dom";
-import { setUsers } from "../../../../redux/users";
+import { Link } from "react-router-dom";
+import { setPayments } from "../../../../redux/payments";
 import { APIS, requestJwt } from "../../../../_services";
 import { HiChevronRight } from "react-icons/hi";
+import Table from "../../../Tables/Table";
+
+const columns = [
+  { columnName: "#", keyName: "sn" },
+  { columnName: "Name", keyName: "name" },
+  { columnName: "Amount", keyName: "amount" },
+  { columnName: "Date", keyName: "date" },
+  { columnName: "Status", keyName: "status" },
+  { columnName: "Actions", keyName: "actions" },
+];
 
 const Payments = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userProfile.value);
-  const usersArr = useSelector((state) => state.users.value);
+  const payments = useSelector((state) => state.payments.value);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getPayment(user.jwtToken);
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
+  const List = payments.map((item, idx) => ({
+    ...item,
+    sn: idx + 1,
+    amount: new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(item.amount),
+    date: new Date(item.date).toISOString().split("T")[0],
+    actions: (
+      <>
+        <Link to={item.id}>
+          <HiChevronRight className="tableColumn__link" />
+        </Link>
+      </>
+    ),
+  }));
+
+  console.log(List, "list");
+
   const getPayment = async (data) => {
+    setLoading(true);
     const {
       baseUrl,
       getPayments: { method, path },
@@ -28,11 +59,14 @@ const Payments = () => {
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, {}, data);
     if (response.meta && response.meta.status === 200) {
-      dispatch(setUsers(response.data));
+      dispatch(setPayments(response.data));
+      setLoading(false);
     }
     if (response.meta && response.meta.status >= 400) {
-      dispatch(setUsers({}));
+      dispatch(setPayments([]));
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleSearch = () => {
@@ -41,7 +75,6 @@ const Payments = () => {
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
-
 
   return (
     <div className="prospect">
@@ -71,7 +104,7 @@ const Payments = () => {
           />
         </div>
       </div>
-      <div className="userTableContainer">
+      {/* <div className="userTableContainer">
         {
           <div className="userTableRow userTableRow__title">
             <h3 className="userTableColumn userTableColumn__title">S/N</h3>
@@ -101,10 +134,11 @@ const Payments = () => {
               </>
             </div>
           ))}
-      </div>
+      </div> */}
       {/* <AddUser getUser={(e)=>getUser(e) } />
       <EditUser  getUser={(e)=>getUser(e) }  account={account}/>
       <DeleteUser  getUser={(e)=>getUser(e) }  account={account}/> */}
+      <Table loading={loading} columns={columns} tableData={List} />
     </div>
   );
 };

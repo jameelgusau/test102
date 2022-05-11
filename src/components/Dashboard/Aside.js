@@ -61,7 +61,7 @@ const Aside = () => {
       to: "payments",
       icon: <BsCurrencyDollar />,
       id: 8
-    },
+    }
   ]
   const list = lists.map(x =><NavLink key={x.id} className="sidenav__list-item" onClick={() => setShowLinks(!showLinks)} to={x.to}  style={({ isActive }) => ({  background: isActive ? 'rgba(255, 255, 255, 0.2)' : '' })}>
     <span>{x.icon}</span>

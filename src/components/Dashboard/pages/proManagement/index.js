@@ -25,6 +25,8 @@ const ProManagement = () => {
   const [select, setSelect] = useState("Ground floor");
   let params = useParams();
   const [unit, setUnit] = useState({});
+  const [ loading, setLoading] = useState(false)
+  const [ loadingImage, setLoadingImage] = useState(false)
   const [property, setSetProperty] = useState({});
   const [image, setImage] = useState({});
   const user = useSelector((state) => state.userProfile.value);
@@ -46,7 +48,7 @@ const ProManagement = () => {
       const selected = await properties.find((e) => e.id === params.id);
       setSetProperty(selected);
       console.log(selected, "sele")
-      await getUnits(selected.id);
+      await getUnits(selected && selected.id);
       await getPropertyImage(params.id);
     }
     fetchData();
@@ -54,22 +56,27 @@ const ProManagement = () => {
   }, [select]);
 
   const getUnits = async (id) => {
+    setLoading(true)
     const {
       baseUrl,
       getUnits: { method, path },
     } = APIS;
     const url = `${baseUrl}${path({ id, floor: select })}`;
-    console.log(url, "url");
+    console.log(url, "url", user.jwtToken, "user.jwtToken");
     const response = await requestJwt(method, url, {}, user.jwtToken);
     console.log(response);
     if (response.meta && response.meta.status === 200) {
       dispatch(setUnits(response.data));
+      setLoading(false)
     } else if (response.meta && response.meta.status >= 400) {
       dispatch(setUnits([]));
+      setLoading(false)
     }
+    setLoading(false)
   };
-
+console.log(loading)
   const getPropertyImage = async (id) => {
+    setLoadingImage(true)
     const {
       baseUrl,
       getPropertyImage: { method, path },
@@ -81,15 +88,13 @@ const ProManagement = () => {
     if (response.meta && response.meta.status === 200) {
       // await dispatch(setUnits(response.data));
       setImage(response.data);
+      setLoadingImage(false)
     } else if (response.meta && response.meta.status >= 400) {
-
+      setLoadingImage(false)
     }
-    console.log(image, "image");
+    setLoadingImage(false)
   };
 
-  // console.log(image.imageType, "image.imageType")
-  // console.log(image.imageData, "image.imageData")
-  // console.log(image.imageType, "image.imageType")
   let floorsArr = [];
   for (let i = 0; i < parseInt(property && property.num_of_floors); i++) {
     floorsArr.push(i === 0 ? { name: "Ground floor" } : { name: `Floor ${i}` });
@@ -104,7 +109,7 @@ const ProManagement = () => {
             placeholder="Select floor"
             defaultValue={""}
             variant="outlined"
-            value={select}
+            value={select || "Ground floor"}
             size="small"
             onChange={({ target }) => setSelect(target.value)}
           >
@@ -205,7 +210,9 @@ const ProManagement = () => {
         <div className="units__text">
           <p className="units__text--heading">Select a unit</p>
         </div>
-        <div className="units__boxs">
+        {
+          !loading && units.length > 0 && (
+            <div className="units__boxs">
           {units.map((item) => (
             <div
               className="units__boxs--box"
@@ -222,9 +229,9 @@ const ProManagement = () => {
                     : ""
                 }`,
               }}
-              onClick={async () => {
-                await setUnit(item);
-                await dispatch(displayReserve("block"));
+              onClick={() => {
+                setUnit(item);
+                dispatch(displayReserve("block"));
               }}
               key={item.id}
             >
@@ -232,6 +239,8 @@ const ProManagement = () => {
             </div>
           ))}
         </div>
+          )
+        }
       </div>
 
       {/* dialog Reserve Unit */}

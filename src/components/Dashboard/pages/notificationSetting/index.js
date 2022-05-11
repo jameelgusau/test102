@@ -9,17 +9,29 @@ import {
   displayDeleteEmailList,
   displayAddEmailList,
 } from "../../../../redux/display";
+import IconButton from "@mui/material/IconButton";
+
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoAddOutline } from "react-icons/io5";
 import { APIS, requestJwt } from "../../../../_services";
 import AddEmailList from "./AddEmailList";
 import DeleteEmailList from "./DeleteEmailList";
+import Table from "../../../Tables/Table";
+
+const columns = [
+  { columnName: "#", keyName: "sn" },
+  { columnName: "Name", keyName: "name" },
+  { columnName: "Email", keyName: "email" },
+  { columnName: "Phone", keyName: "phone" },
+  { columnName: "Role", keyName: "role" },
+  { columnName: 'Actions', keyName: 'actions' },
+];
 
 const NotificationSetting = () => {
   const dispatch = useDispatch();
   const [select, setSelect] = useState("Prospect is added");
   const [account, setAccount] = useState({});
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
   const emailList = useSelector((state) => state.emailList.value);
 
@@ -28,9 +40,25 @@ const NotificationSetting = () => {
    // eslint-disable-next-line 
   }, [select]);
 
+  const List = emailList.map(({account, id}, idx) => ({
+    ...account,
+    sn: idx + 1,
+    actions: (
+      <>
+        <IconButton size="small"                  
+         onClick={async () => {
+                    setAccount({account, id});
+                    dispatch(displayDeleteEmailList("block"));
+                  }}><MdOutlineDeleteForever /></IconButton>
+      </>
+    )
+  }));
+
+
 
   console.log(emailList, "emailList")
   const getEmailList = async (data) => {
+    setLoading(true)
     const {
       baseUrl,
       getEmailList: { method, path },
@@ -39,13 +67,15 @@ const NotificationSetting = () => {
     const response = await requestJwt(method, url, {}, data);
     if (response.meta && response.meta.status === 200) {
       dispatch(setEmailList(response.data));
+      setLoading(false)
     }
     if (response.meta && response.meta.status >= 400) {
       // setLoading(false);
       dispatch(setEmailList([]));
+      setLoading(false)
       
     }
-    // setLoading(false);
+    setLoading(false);
   };
 
   const group = [
@@ -100,7 +130,7 @@ const NotificationSetting = () => {
           </IconContext.Provider>
         </div>
       </div>
-      <div className="overflow">
+      {/* <div className="overflow">
         <div className="notificationTableContainer">
           {
             <div className="notificationTableRow notificationTableRow__title">
@@ -146,7 +176,10 @@ const NotificationSetting = () => {
               </div>
             ))}
         </div>
-      </div>
+      </div> */}
+
+      <Table loading={loading} columns={columns} tableData={List}/>
+
       <AddEmailList group={select} getEmailList={(e) => getEmailList(e)} />
       <DeleteEmailList
         account={account}

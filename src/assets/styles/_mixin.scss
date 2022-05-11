@@ -1,10 +1,16 @@
-
-
-
-
 @mixin responsive($breakpoint) {
+    @if $breakpoint == mobile-s{
+        @media (max-width: 20em) {
+            @content
+       };  
+    }
     @if $breakpoint == phone{
         @media (max-width: 37.5em) {
+            @content
+       };  
+    }//600px
+    @if $breakpoint == mobile-l{
+        @media (max-width: 40.5em) {
             @content
        };  
     }//600px

@@ -45,7 +45,7 @@ const DataTable = (props) => {
   useEffect(() => {
     setPageValue(currentPage);
   }, [currentPage]);
-  const dataKeyNames = columns.map(column => column.keyName);
+  const dataKeyNames = columns && columns.map(column => column.keyName);
   // const columnCount = dataKeyNames.length;
   const tableHead = tableData.length && (columns.map(column => (
     <TableCell align="left" key={column.columnName} className={classes.tableHead}>{column.columnName}</TableCell>

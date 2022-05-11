@@ -9,24 +9,71 @@ import {Menu, MenuItem} from "@mui/material";
 import { displayAddUser, displayDeleteUser, displayEditUser } from '../../../../redux/display';
 import { setUsers } from '../../../../redux/users';
 import { APIS, requestJwt } from "../../../../_services";
-import StyledEngineProvider from "@mui/material/StyledEngineProvider";
+// import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoAddOutline, IoEllipsisVerticalOutline } from "react-icons/io5";
 import AddUser from "./AddUser";
 import EditUser from "./EditUser";
 import DeleteUser from "./DeleteUser";
+import Table from "../../../Tables/Table";
+
+const columns = [
+  { columnName: "#", keyName: "sn" },
+  { columnName: "Name", keyName: "name" },
+  { columnName: "Email", keyName: "email" },
+  { columnName: "Phone", keyName: "phone" },
+  { columnName: "Role", keyName: "role" },
+  { columnName: 'Actions', keyName: 'actions' },
+];
 
 const Users = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userProfile.value);
   const usersArr = useSelector((state) => state.users.value);
   const [account, setAccount] = useState({});
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [groupAnchorArr, setGroupAnchorArr] = useState(new Array(usersArr.length).fill(null));
+  
+  const List = usersArr.map((item, idx) => ({
+    ...item,
+    sn: idx + 1,
+    actions: (
+      <>
+        <IconButton size="small" onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}> <IoEllipsisVerticalOutline /></IconButton>
+        <Menu
+                    id="demo-positioned-menu"
+                    aria-labelledby="demo-positioned-button"
+                    anchorEl={groupAnchorArr[idx]}
+                    open={Boolean(groupAnchorArr[idx])}
+                    onClose={() => setStudentItem(idx, null)}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                  >
+                    <MenuItem onClick={()=>{
+                      setAccount(item)
+                      setStudentItem(idx, null);
+                      dispatch(displayDeleteUser("block"))
+                    }}>delete</MenuItem>
+                    <MenuItem onClick={()=>{
+                        setAccount(item)
+                        setStudentItem(idx, null);
+                        dispatch(displayEditUser("block"))
+                      }}>Edit</MenuItem>
+                  </Menu>
+      </>
+    )
+  }));
 
   useEffect(() => {
     getUser(user.jwtToken);
-    // eslint-disable-next-line 
-  },[]);
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     setGroupAnchorArr(new Array(usersArr.length).fill(null));
@@ -39,6 +86,7 @@ const Users = () => {
   };
 
   const getUser = async (data) => {
+    setLoading(true)
     const {
       baseUrl,
       getUsers: { method, path },
@@ -47,11 +95,13 @@ const Users = () => {
     const response = await requestJwt(method, url, {}, data);
     if (response.meta && response.meta.status === 200) {
       dispatch(setUsers(response.data));
+      setLoading(false)
     }
-    if (response.meta && response.meta.status >= 400) {
+    if (response.meta && response.meta.status === 400) {
       dispatch(setUsers([]));
+      setLoading(false)
     }
-
+    setLoading(false)
   };
 
   const handleSearch = () => {
@@ -101,7 +151,7 @@ const Users = () => {
           </IconContext.Provider>
         </div>
       </div>
-      <div className="userTableContainer">
+      {/* <div className="userTableContainer">
         {
            <div className="userTableRow userTableRow__title">
             <h3 className="userTableColumn userTableColumn__title">S/N</h3>
@@ -158,7 +208,8 @@ const Users = () => {
               </>
             </div>
           ))}
-      </div>
+      </div> */}
+      <Table loading={loading} columns={columns} tableData={List}/>
       <AddUser getUser={(e)=>getUser(e) } />
       <EditUser  getUser={(e)=>getUser(e) }  account={account}/>
       <DeleteUser  getUser={(e)=>getUser(e) }  account={account}/>

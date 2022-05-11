@@ -12,6 +12,7 @@ import emailList from './redux/emailList'
 import allReserved from './redux/allReserved'
 import Alert from './redux/snackbar'
 import payment from './redux/payment'
+import payments from './redux/payments'
 import profileImage from './redux/profileImage'
 
 export const rootReducer = combineReducers({
@@ -26,6 +27,7 @@ export const rootReducer = combineReducers({
       emailList: emailList,
       allReserved: allReserved,
       payment: payment,
-      profileImage: profileImage
+      profileImage: profileImage,
+      payments: payments
 
 })

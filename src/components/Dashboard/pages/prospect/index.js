@@ -7,8 +7,9 @@ import IconButton from "@mui/material/IconButton";
 import { IconContext } from "react-icons";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { setProspect } from '../../../../redux/prospects';
-import StyledEngineProvider from "@mui/material/StyledEngineProvider";
+import { setProspect } from "../../../../redux/prospects";
+// import StyledEngineProvider from "@mui/material/StyledEngineProvider";
+import Table from "../../../Tables/Table";
 import { IoAddOutline, IoEllipsisVerticalOutline } from "react-icons/io5";
 import { APIS, requestJwt } from "../../../../_services";
 import {
@@ -22,10 +23,19 @@ import EditProspect from "./EditProspect";
 import DeleteProspect from "./DeleteProspect";
 import InviteToLogin from "./InviteToLogin";
 
+const columns = [
+  { columnName: "#", keyName: "sn" },
+  { columnName: "Name", keyName: "name" },
+  { columnName: "Email", keyName: "email" },
+  { columnName: "Phone", keyName: "phone" },
+  { columnName: "Actions", keyName: "actions" },
+];
+
 const Prospects = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [account, setAccount] = useState({});
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
   const prospect = useSelector((state) => state.prospects.value);
   const [groupAnchorArr, setGroupAnchorArr] = useState(
@@ -33,11 +43,82 @@ const Prospects = () => {
   );
   useEffect(() => {
     getProspect(user.jwtToken);
-    // eslint-disable-next-line 
-  },[]);
+    // eslint-disable-next-line
+  }, []);
 
+  const List = prospect.map((item, idx) => ({
+    ...item,
+    sn: idx + 1,
+    actions: (
+      <>
+        <IconButton
+          size="small"
+          onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
+        >
+          {" "}
+          <IoEllipsisVerticalOutline />
+        </IconButton>
+        <Menu
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          // anchorEl={anchorEl}
+          // open={open}
+          // elevation={2}
+          open={Boolean(groupAnchorArr[idx])}
+          anchorEl={groupAnchorArr[idx]}
+          // onClose={handleClose}
+          onClose={() => setStudentItem(idx, null)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayLoginInvite("block"));
+            }}
+          >
+            Invite to Login
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayEditProspect("block"));
+              // setAnchorEl(null);
+            }}
+          >
+            Edit
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayDeleteProspect("block"));
+            }}
+          >
+            delete
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setStudentItem(idx, null);
+            }}
+          >
+            Upload payment
+          </MenuItem>
+        </Menu>
+      </>
+    ),
+  }));
 
   const getProspect = async (data) => {
+    setLoading(true)
     const {
       baseUrl,
       getProspect: { method, path },
@@ -46,14 +127,14 @@ const Prospects = () => {
     const response = await requestJwt(method, url, {}, data);
     if (response.meta && response.meta.status === 200) {
       dispatch(setProspect(response.data));
+      setLoading(false)
     }
     if (response.meta && response.meta.status >= 400) {
-      dispatch(setProspect(response.data));
+      dispatch(setProspect([]));
+      setLoading(false)
     }
+    setLoading(false)
   };
-
-
-
 
   useEffect(() => {
     setGroupAnchorArr(new Array(prospect.length).fill(null));
@@ -66,8 +147,6 @@ const Prospects = () => {
     );
     setGroupAnchorArr(newArr);
   };
-
-
 
   const handleSearch = () => {
     console.log("hahhaa");
@@ -120,7 +199,7 @@ const Prospects = () => {
           </IconContext.Provider>
         </div>
       </div>
-      <div className="overflow">
+      {/* <div className="overflow">
         <div className="tableContainer">
           {
             <div className="tableRow tableRow__title">
@@ -204,11 +283,12 @@ const Prospects = () => {
               </div>
             ))}
         </div>
-      </div>
-      <AddProspect account={account} getProspect={(e)=>getProspect(e) }/>
-      <EditProspect account={account}  getProspect={(e)=>getProspect(e)}/>
-      <DeleteProspect account={account}  getProspect={(e)=>getProspect(e)}/>
-      <InviteToLogin account={account}  getProspect={(e)=>getProspect(e)} />
+      </div> */}
+      <Table loading={loading} columns={columns} tableData={List}/>
+      <AddProspect account={account} getProspect={(e) => getProspect(e)} />
+      <EditProspect account={account} getProspect={(e) => getProspect(e)} />
+      <DeleteProspect account={account} getProspect={(e) => getProspect(e)} />
+      <InviteToLogin account={account} getProspect={(e) => getProspect(e)} />
     </div>
   );
 };
