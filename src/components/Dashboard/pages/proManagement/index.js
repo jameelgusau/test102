@@ -26,6 +26,7 @@ const ProManagement = () => {
   let params = useParams();
   const [unit, setUnit] = useState({});
   const [ loading, setLoading] = useState(false)
+  // eslint-disable-next-line
   const [ loadingImage, setLoadingImage] = useState(false)
   const [property, setSetProperty] = useState({});
   const [image, setImage] = useState({});

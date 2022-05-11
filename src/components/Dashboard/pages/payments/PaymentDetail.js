@@ -8,6 +8,7 @@ import { setPayment } from "../../../../redux/payment";
 const PaymentDetail = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line
   const [loadingReject, setLoadingReject] = useState(false);
   let params = useParams();
   const user = useSelector((state) => state.userProfile.value);
