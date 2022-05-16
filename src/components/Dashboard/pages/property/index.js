@@ -43,9 +43,14 @@ const Property = () => {
     } = APIS;
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, {}, data);
+    console.log(response, "hahah")
+    if(!response){
+      setLoading(false)
+    } else
     if (response.meta && response.meta.status === 200) {
       dispatch(setProperties(response.data));
       setLoading(false)
+      console.log(response)
     }
     if (response.meta && response.meta.status >= 400) {
       dispatch(setProperties([]));

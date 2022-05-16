@@ -38,7 +38,7 @@ export const requestDelete = async (method, url, jwt, FP) => {
     console.log(response, "response");
     return response;
   } catch (error) {
-    console.log(error);
+    console.log(error, "error");
     return error;
   }
 };
@@ -70,7 +70,7 @@ export const requestJwt = (method, url, data, jwt) => {
       return response;
     })
     .catch(error => {
-      console.log(error);
+      console.log(error, "error");
     });
 };
 

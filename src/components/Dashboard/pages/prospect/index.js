@@ -28,6 +28,7 @@ const columns = [
   { columnName: "Name", keyName: "name" },
   { columnName: "Email", keyName: "email" },
   { columnName: "Phone", keyName: "phone" },
+  { columnName: "Status", keyName: "status" },
   { columnName: "Actions", keyName: "actions" },
 ];
 

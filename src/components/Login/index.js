@@ -54,11 +54,11 @@ function Login() {
       }
       const url = `${baseUrl}${path}`;
       setLoading(true);
-  
       const response = await request(method, url, data);
       console.log(response);
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
+        // startRefreshTokenTimer();
         navigate("dashboard");
         dispatch( setAlert({ open: true,
           severity: "success",

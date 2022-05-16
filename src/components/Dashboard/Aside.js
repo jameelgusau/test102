@@ -33,7 +33,7 @@ const Aside = () => {
 
   const lists2 = [
     {
-      name: "Prospects",
+      name: "Clients",
       to: "prospects",
       icon: <BsPeople />,
       id: 4

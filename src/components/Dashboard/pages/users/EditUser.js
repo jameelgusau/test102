@@ -166,9 +166,9 @@ const EditUser = (props) => {
                 select
                 id="select"
                 variant="outlined"
-                value={role}
+                value={role || "User"}
                 label="Select role"
-                defaultValue={"User"}
+                defaultValue="User"
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
