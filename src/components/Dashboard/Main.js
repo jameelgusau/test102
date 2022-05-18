@@ -15,7 +15,7 @@ import Reservations from "./pages/reservation";
 function Main() {
   const routes = [
     {
-      path: "/",
+      path: index,
       main: <Home />,
     },
     {

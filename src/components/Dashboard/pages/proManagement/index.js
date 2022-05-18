@@ -49,7 +49,7 @@ const ProManagement = () => {
       const selected = await properties.find((e) => e.id === params.id);
       setSetProperty(selected);
       console.log(selected, "sele")
-      await getUnits(selected && selected.id);
+      await getUnits(params.id);
       await getPropertyImage(params.id);
     }
     fetchData();
@@ -197,6 +197,7 @@ console.log(loading)
               <p>Reserved</p>
             </div>
           </div>
+          {user.role && user.role === "Admin" && (
           <div className="add-units" onClick={openAddUnitDialog}>
             <IconContext.Provider
               value={{ color: "#0C2D40", className: "global-class-name" }}
@@ -206,6 +207,7 @@ console.log(loading)
               </div>
             </IconContext.Provider>
           </div>
+          )}
         </div>
 
         <div className="units__text">

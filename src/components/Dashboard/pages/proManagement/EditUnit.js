@@ -218,14 +218,12 @@ const EditUnit = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label= "Select floor"
-                value={floorNumber}
+                value={floorNumber || "Ground floor" || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
                   setFloorNumber(e.target.value);
                 }}
-                // ref={myRef}
-                //onBlur={props.handleBlur('name')}
               >
                 {floorsArr.map(({ name}) => (
                   <MenuItem value={name} key={name}>
@@ -240,7 +238,7 @@ const EditUnit = (props) => {
                 // ref={myRef}
                 // className="password__input--item-a"
                 variant="outlined"
-                value={status}
+                value={status || "Available"}
                 defaultValue={""}
                 label= "Select status"
                 size="small"
@@ -264,7 +262,7 @@ const EditUnit = (props) => {
                 // ref={myRef}
                 // className="password__input--item-a"
                 variant="outlined"
-                value={paymentType}
+                value={paymentType || "One-off"}
                 label="Select payment type"
                 defaultValue={""}
                 size="small"

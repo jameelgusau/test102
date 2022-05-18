@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setProfileImage } from "../../redux/profileImage";
 import { displaySettings } from "../../redux/display";
 import { APIS, requestJwt } from "../../_services";
-import { useNavigate } from "react-router-dom";
 import { Menu, MenuItem } from "@mui/material";
 import { FiLogOut, FiUser } from "react-icons/fi";
 import Settings from "./Settings";
@@ -12,7 +11,6 @@ import { userProfile } from '../../redux/userProfile'
 
 
 function Header() {
-  let navigate = useNavigate();
   const user = useSelector((state) => state.userProfile.value);
   const proImage = useSelector((state) => state.profileImage.value);
   const dispatch = useDispatch();
@@ -47,7 +45,7 @@ function Header() {
 
 const logout = async ()=>{
   dispatch(userProfile({}))
-  navigate("/");
+  // navigate("/");
   // const {
   //   baseUrl,
   //   logout: { method, path },

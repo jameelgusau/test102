@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import IconButton from "@mui/material/IconButton";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import {TextField, CircularProgress,Button} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
@@ -13,6 +13,8 @@ import { userProfile } from '../../redux/userProfile'
 
 function Login() {
   let navigate = useNavigate();
+  const location = useLocation()
+  const from = location.state?.from?.pathname || "/ "
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
@@ -59,7 +61,8 @@ function Login() {
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
         // startRefreshTokenTimer();
-        navigate("dashboard");
+        console.log(from)
+        navigate(from, {replace: true});
         dispatch( setAlert({ open: true,
           severity: "success",
           color: "primary",
@@ -86,7 +89,7 @@ function Login() {
     <div className="container">
       <div className="login">
       <div className="login__already">
-          <p className="login__already--paragraph">Don’t Have An Account? <Link to="signup">Register</Link>
+          <p className="login__already--paragraph">Don’t Have An Account? <Link to="/signup">Register</Link>
             </p>
         </div>
         <div className="login__title">
@@ -105,7 +108,7 @@ function Login() {
             {...(errors.email && { error: true, helperText: errors.email })}
           />
                 <div className="login__already">
-          <p className="login__already--paragraph"><Link to="initpassword">Forgot Password?</Link>
+          <p className="login__already--paragraph"><Link to="/initpassword">Forgot Password?</Link>
             </p>
         </div>
           <TextField

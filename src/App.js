@@ -6,12 +6,20 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
   Navigate,
 } from "react-router-dom";
 import CustomizedSnackbars from "./Snackbar";
-import { useSelector } from "react-redux";
-
+import Reservations  from "./components/Dashboard/pages/reservation";
+import NotificationSetting from "./components/Dashboard/pages/notificationSetting";
+import Users from "./components/Dashboard/pages/users";
+import Prospect from "./components/Dashboard/pages/prospect";
+import MyReservation from "./components/Dashboard/pages/myreservation";
+import PaymentRoutes from "./components/Dashboard/pages/payments/PaymentRoutes";
+import PropRoutes from "./components/Dashboard/pages/property/proRoutes";
+import Home from "./components/Dashboard/pages/home";
+import Unauthorized from "./components/Dashboard/pages/unauthorized";
+// import { useSelector } from "react-redux";
+import RequireAuth from "./RequiredAuth";
 const theme = createTheme({
   palette: {
     primary: { main: "#0b2d40" },
@@ -39,15 +47,29 @@ const App = () => {
         <CustomizedSnackbars />
         <Suspense fallback={<Loading />}>
           <Routes>
-          <Route
-              path="dashboard/*"
-              element={
-                <RequireAuth>
+              <Route
+                path="/"
+                element={
                   <Dashboard />
-                </RequireAuth>
-              }
-            />
-            <Route path="/" element={<Login />} />
+                }
+              >
+                <Route element={<RequireAuth  allowRoles={["Admin", "User", "Prospect"]}/>}>
+                <Route path="" element={<Home />} />
+                <Route path="property/*" element={<PropRoutes />} />
+                <Route path="myreservation/*" element={<MyReservation />} />
+                </Route>
+                <Route element={<RequireAuth  allowRoles={["Admin"]}/>}>
+                <Route path="prospects" element={<Prospect />} />
+                <Route path="users" element={<Users />} />
+                <Route
+                  path="notificationsetting"
+                  element={<NotificationSetting />}
+                />
+                <Route path="reservations" element={<Reservations />} />
+                <Route path="payments/*" element={<PaymentRoutes />} />
+              </Route>
+            </Route>
+           
             <Route path="signup" element={<Signup />} />
             <Route path="checkmail" element={<CheckMail />} />
             <Route path="resetmail" element={<ResetMail />} />
@@ -55,6 +77,8 @@ const App = () => {
             <Route path="/confirm-email/:id" element={<ConfirmEmail />} />
             <Route path="/resetpassword/:id" element={<ResetPassword />} />
             <Route path="notfound" element={<NotFound />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
+            <Route path="login" element={<Login />} />
             <Route path="*" element={<Navigate to="/notfound" replace />} />
           </Routes>
         </Suspense>
@@ -63,21 +87,3 @@ const App = () => {
   );
 };
 export default App;
-
-function RequireAuth({ children }) {
-  let user = useSelector((state) => state.userProfile.value);
-  const { jwtToken } = user
-  let location = useLocation();
-  console.log(user, "User");
-  if (!jwtToken) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/" state={{ from: location }} replace />;
-   
-  }else{
-    return children;
-    
-  }
-}

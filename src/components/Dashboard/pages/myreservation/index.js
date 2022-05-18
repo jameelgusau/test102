@@ -79,22 +79,26 @@ const MyReservation = () => {
               <h4 className="model-body__row--text">Status:</h4>
               <h4 className="model-body__row--text end">{item.status}</h4>
               <div className="myreservedbutton end">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  // className=""
-                  onClick={ async()=> {
-                    setUnit({id:item.id, name: item.unit.name})
-                    await dispatch(displayUploadPayment("block"))
-                  }}
-                >
-                  {false ? (
-                    <CircularProgress style={{ color: "#ffffff" }} size={24} />
-                  ) : (
-                    "Upload Payment Reciept"
-                  )}
-                </Button>
+                  {
+                    item?.status !== "Reserved" &&(
+                      <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      // className=""
+                      onClick={ async()=> {
+                        setUnit({id:item.id, name: item.unit.name})
+                        await dispatch(displayUploadPayment("block"))
+                      }}
+                    >
+                      {false ? (
+                        <CircularProgress style={{ color: "#ffffff" }} size={24} />
+                      ) : (
+                        "Upload Payment Reciept"
+                      )}
+                    </Button>
+                    )
+                  }
               </div>
             </div>
           ))}

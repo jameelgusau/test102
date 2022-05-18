@@ -44,8 +44,6 @@ const EditProspect = (props) => {
           const url = `${baseUrl}${path}`;
           const response = await requestJwt(method, url, data, user.jwtToken);
           if (response.meta && response.meta.status === 200) {
-            // dispatch(userProfile(response.data))
-            // navigate("dashboard");
             await getUser(user.jwtToken);
             await closeDialog()
           }
