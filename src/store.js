@@ -14,6 +14,8 @@ import Alert from './redux/snackbar'
 import payment from './redux/payment'
 import payments from './redux/payments'
 import profileImage from './redux/profileImage'
+import Agents from './redux/Agents'
+import Agentslist from './redux/Agentslist'
 
 export const rootReducer = combineReducers({
       alert: Alert,
@@ -21,6 +23,8 @@ export const rootReducer = combineReducers({
       properties: properties,
       units: units,
       users: users,
+      agents: Agents,
+      agentsList: Agentslist,
       reservedUnits: reservedUnits,
       display: displays,
       prospects: prospects,

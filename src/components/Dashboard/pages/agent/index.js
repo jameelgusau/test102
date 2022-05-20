@@ -6,14 +6,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { IconContext } from "react-icons";
 import {Menu, MenuItem} from "@mui/material";
-import { displayAddUser, displayDeleteUser, displayEditUser } from '../../../../redux/display';
-import { setUsers } from '../../../../redux/users';
+import { displayAddAgent, displayDeleteAgent, displayEditAgent } from '../../../../redux/display';
+import { setAgents } from '../../../../redux/Agents';
 import { APIS, requestJwt } from "../../../../_services";
-// import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoAddOutline, IoEllipsisVerticalOutline } from "react-icons/io5";
-import AddUser from "./AddUser";
-import EditUser from "./EditUser";
-import DeleteUser from "./DeleteUser";
+import AddAgent from "./AddAgent";
+import EditAgent from "./EditAgent";
+import DeleteAgent from "./DeleteAgent";
 import Table from "../../../Tables/Table";
 
 const columns = [
@@ -21,14 +20,15 @@ const columns = [
   { columnName: "Name", keyName: "name" },
   { columnName: "Email", keyName: "email" },
   { columnName: "Phone", keyName: "phone" },
-  { columnName: "Role", keyName: "role" },
+  { columnName: "Bank", keyName: "bank" },
+  { columnName: "Account Number", keyName: "accountNumber" },
   { columnName: 'Actions', keyName: 'actions' },
 ];
 
-const Users = () => {
+const Agent = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userProfile.value);
-  const usersArr = useSelector((state) => state.users.value);
+  const usersArr = useSelector((state) => state.agents.value);
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -58,12 +58,12 @@ const Users = () => {
                     <MenuItem onClick={()=>{
                       setAccount(item)
                       setStudentItem(idx, null);
-                      dispatch(displayDeleteUser("block"))
+                      dispatch(displayDeleteAgent("block"))
                     }}>delete</MenuItem>
                     <MenuItem onClick={()=>{
                         setAccount(item)
                         setStudentItem(idx, null);
-                        dispatch(displayEditUser("block"))
+                        dispatch(displayEditAgent("block"))
                       }}>Edit</MenuItem>
                   </Menu>
       </>
@@ -89,16 +89,16 @@ const Users = () => {
     setLoading(true)
     const {
       baseUrl,
-      getUsers: { method, path },
+      getAgents: { method, path },
     } = APIS;
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, {}, data);
     if (response.meta && response.meta.status === 200) {
-      dispatch(setUsers(response.data));
+      dispatch(setAgents(response.data));
       setLoading(false)
     }
     if (response.meta && response.meta.status === 400) {
-      dispatch(setUsers([]));
+      dispatch(setAgents([]));
       setLoading(false)
     }
     setLoading(false)
@@ -113,7 +113,7 @@ const Users = () => {
   };
 
   const openDialog = async() => {
-    await  dispatch(displayAddUser("block"));
+    await  dispatch(displayAddAgent("block"));
   };
 
   return (
@@ -152,11 +152,11 @@ const Users = () => {
         </div>
       </div>
       <Table loading={loading} columns={columns} tableData={List}/>
-      <AddUser getUser={(e)=>getUser(e) } />
-      <EditUser  getUser={(e)=>getUser(e) }  account={account}/>
-      <DeleteUser  getUser={(e)=>getUser(e) }  account={account}/>
+      <AddAgent getUser={(e)=>getUser(e) } />
+      <EditAgent  getUser={(e)=>getUser(e) }  account={account}/>
+      <DeleteAgent  getUser={(e)=>getUser(e) }  account={account}/>
     </div>
   );
 };
 
-export default Users;
+export default Agent;

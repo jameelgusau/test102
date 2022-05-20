@@ -1,26 +1,34 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TextField, Button, CircularProgress } from "@mui/material";
 import MuiPhoneNumber from "material-ui-phone-number";
 import { APIS, requestJwt } from "../../../../_services";
-import { displayAddProspect } from "../../../../redux/display";
+import { displayEditAgent } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
 
-const AddProspect = (props) => {
-  const { getProspect, account } = props;
-  console.log(account, "addprospect");
+const EditAgent = (props) => {
+  const { getUser, account  } = props;
   const myRef = useRef();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [ address, setAddress ] = useState("")
+  const [ bank, setBank ] = useState("");
+  const [ accountNumber, setAccountNumber ] = useState("");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddProspect);
+  const display = useSelector((state) => state.display.openEditAgent);
+
+  useEffect(()=>{
+      setName(account.name);
+      setEmail(account.email);
+      setPhone(account.phone);
+      setBank(account.bank);
+      setAccountNumber(account.accountNumber);
+  }, [account])
 
   const submit = async (e) => {
     e.preventDefault();
@@ -28,18 +36,20 @@ const AddProspect = (props) => {
     if (validate()) {
       const {
         baseUrl,
-        addProspect: { method, path },
+        editAgent: { method, path },
       } = APIS;
       const data = {
+        id: account.id,
         name,
         phone,
         email,
-        address,
+        bank,
+        accountNumber
       };
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
-        await getProspect(user.jwtToken);
+        await getUser(user.jwtToken);
         dispatch(
           setAlert({
             open: true,
@@ -48,19 +58,16 @@ const AddProspect = (props) => {
             message: response.meta.message,
           })
         );
-        closeDialog();
+       closeDialog();
       }
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
         setErrMessage(response.meta.message);
-        dispatch(
-          setAlert({
-            open: true,
-            severity: "error",
-            color: "error",
-            message: response.meta.message,
-          })
-        );
+        dispatch(setAlert({ open: true,
+          severity: "error",
+          color: "error",
+          message: response.meta.message
+      }))
         setErr(true);
         setTimeout(() => {
           setErr(false);
@@ -86,15 +93,28 @@ const AddProspect = (props) => {
       )
         ? ""
         : "Phone is not valid";
-        temp.address = address.length > 2 && address.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
+        // temp.bank = bank.length > 2 ? "" : "Minimum 3 characters required";
+        // temp.accountNumber = accountNumber.length > 9 ? "" : "Valid account number required";
     setErrors({
       ...temp,
     });
     return Object.values(temp).every((x) => x === "");
   };
 
+//   const roles = [
+//     {
+//       id: 1,
+//       name: "Admin",
+//     },
+//     {
+//       id: 2,
+//       name: "User",
+//     },
+//   ];
+
+  
   const closeDialog = () => {
-    dispatch(displayAddProspect("none"));
+    dispatch(displayEditAgent("none"));
   };
 
   return (
@@ -107,7 +127,7 @@ const AddProspect = (props) => {
             </span>
           </div>
           <div className="model-title">
-            <h2 className="num model-title__header">Add Prospect</h2>
+            <h2 className="num model-title__header">Edit User</h2>
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
@@ -146,21 +166,53 @@ const AddProspect = (props) => {
                 placeholder="Phone Number"
                 variant="outlined"
               />
-              <TextField
-                placeholder="Address"
+              {/* <TextField
+                placeholder="Select role"
+                select
+                id="select"
+                variant="outlined"
+                value={role || "User"}
+                label="Select role"
+                defaultValue="User"
+                size="small"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setRole(e.target.value);
+                }}
+                {...(errors.role && {
+                  error: true,
+                  helperText: errors.role,
+                })}
+              >
+                {roles.map(({ name }) => (
+                  <MenuItem value={name} key={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField> */}
+            <TextField
+                placeholder="bank"
                 className="signup__input--item-a"
                 variant="outlined"
-                multiline
-                rows={4}
                 type="text"
+                // label="Name"
                 onChange={({ target }) => {
-                  setAddress(target.value);
+                  setBank(target.value);
                 }}
-                value={address || ""}
-                {...(errors.address && {
-                  error: true,
-                  helperText: errors.address,
-                })}
+                value={bank}
+                {...(errors.bank && { error: true, helperText: errors.bank })}
+              />
+            <TextField
+                placeholder="accountNumber"
+                className="signup__input--item-a"
+                variant="outlined"
+                type="text"
+                // label="Name"
+                onChange={({ target }) => {
+                  setAccountNumber(target.value);
+                }}
+                value={accountNumber}
+                {...(errors.accountNumber && { error: true, helperText: errors.accountNumber })}
               />
               <div className="property-input__btn">
                 <Button
@@ -172,7 +224,7 @@ const AddProspect = (props) => {
                   {loading ? (
                     <CircularProgress style={{ color: "#ffffff" }} size={24} />
                   ) : (
-                    "Add Prospect"
+                    "Edit User"
                   )}
                 </Button>
               </div>
@@ -194,4 +246,4 @@ const AddProspect = (props) => {
   );
 };
 
-export default AddProspect;
+export default EditAgent;

@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 export const APIS = {
-  // baseUrl: "http://localhost:4000/api",
-  baseUrl: "https://hommesestate.herokuapp.com/api",
+  baseUrl: "http://localhost:4000/api",
+  // baseUrl: "https://hommesestate.herokuapp.com/api",
 
   initSignup: {
     method: "POST",
@@ -19,7 +19,6 @@ export const APIS = {
     method: "POST",
     path: "/forgot-password"
   },
-
   passwordReset: {
     method: "POST",
     path: "/reset-password"
@@ -28,29 +27,22 @@ export const APIS = {
     method: "GET",
     path: "/get-property"
   },
-
   addProperties: {
     method: "POST",
     path: "/add-property"
   },
-
   addUser: {
     method: "POST",
     path: "/add-user"
   },
-
   getUsers: {
     method: "GET",
     path: "/"
   },
-
   addUnit: {
     method: "POST",
     path: "/add-unit"
   },
- 
-
-  // prospects
   addProspect: {
     method: "POST",
     path: "/prospect"
@@ -67,29 +59,22 @@ export const APIS = {
     method: "DELETE",
     path: ({ id }) => `/prospect/${id}`
   },
-
   inviteLogin: {
     method: "POST",
     path: "/invite"
   },
-
-
-
   editUnit: {
     method: "PUT",
     path: "/edit-unit"
   },
-
   getProperty: {
     method: "GET",
     path: ({ id  }) => `/get-property/${id}`
   },
-
   deleteUnit: {
     method: "DELETE",
     path: ({ id }) => `/unit/${id}`
   },
-
   deleteProperty: {
     method: "DELETE",
     path: ({ id }) => `/property/${id}`
@@ -101,6 +86,10 @@ export const APIS = {
   editUser: {
     method: "PUT",
     path: "/edit-user"
+  },
+  editAgent: {
+    method: "PUT",
+    path: "/agent"
   },
   getUnits: {
     method: "GET",
@@ -114,7 +103,6 @@ export const APIS = {
     method: "GET",
     path: ({ id, floor }) => `/get-propertyimage/${id}/${floor}`
   },
-
   reserveUnit: {
     method: "POST",
     path:  "/reserve"
@@ -131,7 +119,6 @@ export const APIS = {
     method: "DELETE",
     path: ({ id }) => `/${id}`
   },
-
   addEmailList: {
     method: "POST",
     path: "/email-list"
@@ -143,6 +130,10 @@ export const APIS = {
   deleteEmailList: {
     method: "DELETE",
     path: ({ id }) => `/email-list/${id}`
+  },
+  deleteAgent: {
+    method: "DELETE",
+    path: ({ id }) => `/agent/${id}`
   },
   getAllReserved: {
     method: "GET",
@@ -160,9 +151,21 @@ export const APIS = {
     method: "POST",
     path: "/add-payment"
   },
+  addAgent: {
+    method: "POST",
+    path: "/agent"
+  },
   getPayments: {
     method: "GET",
     path: "/get-payments"
+  },
+  getAgents: {
+    method: "GET",
+    path: "/agent"
+  },
+  getAgentsList: {
+    method: "GET",
+    path: "/agentList"
   },
   getPayment: {
     method: "GET",

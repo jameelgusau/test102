@@ -8,7 +8,7 @@ import { setAlert } from "../../../../redux/snackbar";
 const ReservationDetail = (props) => {
   const { getReservation, data } = props;
   console.log(data);
-  const { name ,unit, floor, id, status, dimention, email, phone, paymentType, price } = data;
+  const { name , address,unit, floor, id, status, dimention, email, phone, paymentType, price } = data;
 
   const myRef = useRef();
   const dispatch = useDispatch();
@@ -167,6 +167,10 @@ const ReservationDetail = (props) => {
                 <h4 className="model-body__row--text">{name}</h4>
               </div>
               <div className="model-body__row">
+                <h4 className="model-body__row--text">Address:</h4>
+                <h4 className="model-body__row--text">{address}</h4>
+              </div>
+              <div className="model-body__row">
                 <h4 className="model-body__row--text">Email:</h4>
                 <h4 className="model-body__row--text">{email}</h4>
               </div>
@@ -174,6 +178,7 @@ const ReservationDetail = (props) => {
                 <h4 className="model-body__row--text">Phone:</h4>
                 <h4 className="model-body__row--text">{phone}</h4>
               </div>
+              
             </>
           )}
         </div>

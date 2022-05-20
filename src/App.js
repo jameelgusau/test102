@@ -17,8 +17,8 @@ import MyReservation from "./components/Dashboard/pages/myreservation";
 import PaymentRoutes from "./components/Dashboard/pages/payments/PaymentRoutes";
 import PropRoutes from "./components/Dashboard/pages/property/proRoutes";
 import Home from "./components/Dashboard/pages/home";
+import Agent from "./components/Dashboard/pages/agent";
 import Unauthorized from "./components/Dashboard/pages/unauthorized";
-// import { useSelector } from "react-redux";
 import RequireAuth from "./RequiredAuth";
 const theme = createTheme({
   palette: {
@@ -67,6 +67,7 @@ const App = () => {
                 />
                 <Route path="reservations" element={<Reservations />} />
                 <Route path="payments/*" element={<PaymentRoutes />} />
+                <Route path="agents" element={<Agent />} />
               </Route>
             </Route>
            

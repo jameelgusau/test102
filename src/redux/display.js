@@ -24,7 +24,10 @@ const initialState = {
   openDeleteReserve: "none",
   openDeleteEmailList: "none",
   openEmailList: "none",
-  openSettings: "none"
+  openSettings: "none",
+  openAddAgent: "none",
+  openEditAgent: "none",
+  openDeleteAgent: "none"
 };
 
 
@@ -96,6 +99,15 @@ export const displays = createSlice({
     displaySettings: (state, action) => {
       state.openSettings = action.payload;
     },
+    displayDeleteAgent: (state, action) => {
+      state.openDeleteAgent = action.payload;
+    },
+    displayAddAgent: (state, action) => {
+      state.openAddAgent = action.payload;
+    },
+    displayEditAgent: (state, action) => {
+      state.openEditAgent = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, (state)=>{
@@ -106,6 +118,9 @@ export const displays = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  displayEditAgent,
+  displayAddAgent,
+  displayDeleteAgent,
   displayDeleteReserve,
   displayAddImage,
   displayReserve,

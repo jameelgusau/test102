@@ -1,16 +1,16 @@
 import React, { useRef, useState } from "react";
 import {  Button, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { displayDeleteUser } from "../../../../redux/display";
+import { displayDeleteAgent } from "../../../../redux/display";
 import { APIS, requestJwt } from "../../../../_services";
 import { setAlert } from "../../../../redux/snackbar";
 
-const DeleteUser = (props) => {
+const DeleteAgent = (props) => {
   const { account, getUser} = props
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteUser);
+  const display = useSelector((state) => state.display.openDeleteAgent);
   const dispatch = useDispatch();
 
   const deleteUser = async (e) => {
@@ -18,7 +18,7 @@ const DeleteUser = (props) => {
     setLoading(true)
     const {
       baseUrl,
-      deleteUser: { method, path },
+      deleteAgent: { method, path },
     } = APIS;
     const url = `${baseUrl}${path({id:account.id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
@@ -48,7 +48,7 @@ const DeleteUser = (props) => {
   };
 
   const closeDialog = async() =>{
-    dispatch(displayDeleteUser("none"))
+    dispatch(displayDeleteAgent("none"))
 
   }
   return (
@@ -64,7 +64,7 @@ const DeleteUser = (props) => {
             </span>
           </div>
           <div className="model-title">
-            <h2 className="num model-title__header">Delete User</h2>
+            <h2 className="num model-title__header">Delete Agent</h2>
           </div>
           <form onSubmit={ deleteUser }>
             <div className="property-input">
@@ -90,4 +90,4 @@ const DeleteUser = (props) => {
     </>
   );
 };
-export default DeleteUser;
+export default DeleteAgent;

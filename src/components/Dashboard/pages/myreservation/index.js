@@ -34,7 +34,7 @@ const MyReservation = () => {
     if (response.meta && response.meta.status === 200) {
        dispatch(setReservedUnits(response.data));
     } else if (response.meta && response.meta.status >= 400) {
-      await dispatch(setReservedUnits([]));
+      dispatch(setReservedUnits([]));
 
     }
     // setLoading(false);
@@ -88,7 +88,7 @@ const MyReservation = () => {
                       // className=""
                       onClick={ async()=> {
                         setUnit({id:item.id, name: item.unit.name})
-                        await dispatch(displayUploadPayment("block"))
+                        dispatch(displayUploadPayment("block"))
                       }}
                     >
                       {false ? (

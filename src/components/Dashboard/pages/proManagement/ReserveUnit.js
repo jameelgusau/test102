@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, TextField, MenuItem } from "@mui/material";
 import { IconContext } from "react-icons";
 import { APIS, requestJwt } from "../../../../_services";
 import {
@@ -16,17 +16,20 @@ import {
 import { setAlert } from "../../../../redux/snackbar";
 
 const ReserveUnit = (props) => {
-  const { unit, getUnits } = props;
+  const { unit, getUnits, agents } = props;
+  console.log(agents, "agents");
   const params = useParams();
   const myRef = useRef();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
+  const [agentId, setAgentId] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const display = useSelector((state) => state.display.openReserve);
   const user = useSelector((state) => state.userProfile.value);
 
-  const resevedUnit = async () => {
+  const resevedUnit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     const {
       baseUrl,
@@ -36,6 +39,7 @@ const ReserveUnit = (props) => {
       propertyId: params.id,
       unitId: unit.id,
       paymentPlanId: "",
+      agentId
     };
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, data, user.jwtToken);
@@ -152,23 +156,51 @@ const ReserveUnit = (props) => {
           )}
         </div>
         <div className="model-button">
-          {
-            unit.status !== "Reserved" &&(
+          {unit.status !== "Reserved" && (
+            <>
+              {/* <div> */}
+              <p style={{ marginBottom: "10px" }}>Select Agent if any</p>
+              <TextField
+                placeholder="Select agent"
+                select
+                id="agent"
+                style={{ marginBottom: "10px", width: "100%" }}
+                variant="outlined"
+                value={agentId || ""}
+                label="Select agent"
+                defaultValue=""
+                size="small"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setAgentId(e.target.value);
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {agents.map(({ name, id }) => (
+                  <MenuItem value={id} key={id}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {/* </div> */}
+
               <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              // className=""
-              onClick={resevedUnit}
-            >
-              {loading ? (
-                <CircularProgress style={{ color: "#ffffff" }} size={24} />
-              ) : (
-                "Request for offer"
-              )}
-            </Button>
-            )
-          }
+                variant="contained"
+                color="primary"
+                type="submit"
+                // className=""
+                onClick={resevedUnit}
+              >
+                {loading ? (
+                  <CircularProgress style={{ color: "#ffffff" }} size={24} />
+                ) : (
+                  "Request for offer"
+                )}
+              </Button>
+            </>
+          )}
           <p
             style={{
               display: "flex",

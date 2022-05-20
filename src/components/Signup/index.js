@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { APIS, request } from "../../_services";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import {TextField, CircularProgress,Button} from "@mui/material";
+import { TextField, CircularProgress, Button } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -19,8 +19,9 @@ function Signup() {
   const [errors, setErrors] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [ address, setAddress ] = useState("")
   const [phone, setPhone] = useState("");
-  const [loading, setLoading] =  useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => {
     setshowPassword(!showPassword);
@@ -36,7 +37,8 @@ function Signup() {
     let temp = {};
     temp.name = name.length > 2 ? "" : "Minimum 3 characters required";
     temp.password = password.length > 5 ? "" : "Minimum 6 characters required";
-    temp.confirmPassword = password === confirmPassword ? "" : "Password mismatch!";
+    temp.confirmPassword =
+      password === confirmPassword ? "" : "Password mismatch!";
     temp.email =
       /[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?/.test(
         email
@@ -49,6 +51,7 @@ function Signup() {
       )
         ? ""
         : "Phone is not valid";
+        temp.address = address.length > 2 && address.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
     setErrors({
       ...temp,
     });
@@ -57,40 +60,45 @@ function Signup() {
 
   const submit = async (e) => {
     e.preventDefault();
-    console.log(validate(),'login')
-    if(validate()){
-        const { baseUrl, initSignup: { method, path } } = APIS;
-        const data ={
-            email,
-            phone,
-            name,
-            password,
-            confirmPassword,
-        }
-        const url = `${baseUrl}${path}`;
-        setLoading(true);
-        const response = await request(method, url, data);
-        console.log(response);
-        if (response.meta && response.meta.status === 200) {
-          navigate("/checkmail");
-        }if(response.meta && response.meta.status >= 400){
-            setErrMessage(response.meta.message)
-            setErr(true)
-            setLoading(false);
-            setTimeout(() => {
-                setErr(false) 
-            }, 2000);
-        }
+    console.log(validate(), "login");
+    if (validate()) {
+      const {
+        baseUrl,
+        initSignup: { method, path },
+      } = APIS;
+      const data = {
+        email,
+        phone,
+        name,
+        address,
+        password,
+        confirmPassword,
+      };
+      const url = `${baseUrl}${path}`;
+      setLoading(true);
+      const response = await request(method, url, data);
+      console.log(response);
+      if (response.meta && response.meta.status === 200) {
+        navigate("/checkmail");
+      }
+      if (response.meta && response.meta.status >= 400) {
+        setErrMessage(response.meta.message);
+        setErr(true);
         setLoading(false);
+        setTimeout(() => {
+          setErr(false);
+        }, 2000);
+      }
+      setLoading(false);
     }
-    
   };
   return (
     <div className="container">
       <div className="signup">
         <div className="signup__already">
-          <p className="signup__already--paragraph">Already Have An Account? <Link to="/">Login</Link>
-            </p>
+          <p className="signup__already--paragraph">
+            Already Have An Account? <Link to="/">Login</Link>
+          </p>
         </div>
         <div className="signup__title">
           <h2 className="signup__title--heading">Create Account</h2>
@@ -131,6 +139,22 @@ function Signup() {
             variant="outlined"
           />
           <TextField
+            placeholder="Address"
+            className="signup__input--item-a"
+            variant="outlined"
+            multiline
+            rows={4}
+            type="text"
+            onChange={({ target }) => {
+              setAddress(target.value);
+            }}
+            value={address || ""}
+            {...(errors.address && {
+              error: true,
+              helperText: errors.address,
+            })}
+          />
+          <TextField
             placeholder="Password"
             variant="outlined"
             className="signup__input--item-b"
@@ -166,9 +190,9 @@ function Signup() {
             autoComplete="new-password"
             value={confirmPassword}
             onChange={({ target }) => setConfirmPassword(target.value)}
-            {...(errors.confirmPassword  && {
+            {...(errors.confirmPassword && {
               error: true,
-              helperText: errors.confirmPassword ,
+              helperText: errors.confirmPassword,
             })}
             //onBlur={props.handleBlur('name')}
             InputProps={{
@@ -186,7 +210,12 @@ function Signup() {
               ),
             }}
           />
-          <Button variant="contained" color="primary" type="submit"  className="signup__input--item-a">
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            className="signup__input--item-a"
+          >
             {loading ? (
               <CircularProgress style={{ color: "#ffffff" }} size={24} />
             ) : (
@@ -194,11 +223,19 @@ function Signup() {
             )}
           </Button>
         </form>
-        <p style = {{display: "flex", justifyContent: "center", color: "red"}} 
-            >{ err ? errMessage: ""}</p>
-        <p className="signup__text">By creating an account, you have read, understood and agree to the <Link to="/">Terms & Conditions</Link> and <Link to="/">Privacy Policy</Link>.</p>
+        <p style={{ display: "flex", justifyContent: "center", color: "red" }}>
+          {err ? errMessage : ""}
+        </p>
+        <p className="signup__text">
+          By creating an account, you have read, understood and agree to the{" "}
+          <Link to="/">Terms & Conditions</Link> and{" "}
+          <Link to="/">Privacy Policy</Link>.
+        </p>
         <div className="copyright">
-              <p className="copyright__paragraph">&copy; {new Date().getFullYear()} STETiS Limited. All Rights Reserved.</p>
+          <p className="copyright__paragraph">
+            &copy; {new Date().getFullYear()} STETiS Limited. All Rights
+            Reserved.
+          </p>
         </div>
       </div>
     </div>
