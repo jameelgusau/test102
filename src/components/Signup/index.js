@@ -19,7 +19,7 @@ function Signup() {
   const [errors, setErrors] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [ address, setAddress ] = useState("")
+  const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +51,10 @@ function Signup() {
       )
         ? ""
         : "Phone is not valid";
-        temp.address = address.length > 2 && address.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
+    temp.address =
+      address.length > 2 && address.length < 250
+        ? ""
+        : "Minimum of 3 characters and less than 250 characters required";
     setErrors({
       ...temp,
     });

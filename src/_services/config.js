@@ -11,6 +11,10 @@ export const APIS = {
     method: "POST",
     path: "/verify-email"
   },
+  refreshtoken: {
+    method: "POST",
+    path: "/refresh-token"
+  },
   login: {
     method: "POST",
     path: "/authenticate"

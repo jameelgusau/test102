@@ -7,7 +7,9 @@ export const request = async (method, url, data) => {
   // console.log(method, url, data);
   const opts = {
     method,
+    credentials: 'include',
     headers: {
+      Accept: 'application/json',
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
@@ -28,8 +30,7 @@ export const requestDelete = async (method, url, jwt, FP) => {
     method,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt}`,
-      FP: FP
+      Authorization: `Bearer ${jwt}`
     }
   };
   try {

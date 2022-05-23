@@ -15,6 +15,7 @@ const AddUser = (props) => {
   const [name, setName] = useState("");
   const [ role, setRole ] = useState("User");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -32,6 +33,7 @@ const AddUser = (props) => {
       const data = {
         name,
         phone,
+        address,
         email,
         role
       };
@@ -83,6 +85,10 @@ const AddUser = (props) => {
         ? ""
         : "Phone is not valid";
     temp.role = role.length > 0 ? "" : "Role is required";
+    temp.address =
+    address.length > 2 && address.length < 250
+      ? ""
+      : "Minimum of 3 characters and less than 250 characters required";
     setErrors({
       ...temp,
     });
@@ -152,6 +158,23 @@ const AddUser = (props) => {
                 placeholder="Phone Number"
                 variant="outlined"
               />
+          <TextField
+            placeholder="Address"
+            className="signup__input--item-a"
+            variant="outlined"
+            multiline
+            rows={4}
+            type="text"
+            onChange={({ target }) => {
+              setAddress(target.value);
+            }}
+            value={address || ""}
+            {...(errors.address && {
+              error: true,
+              helperText: errors.address,
+            })}
+          />
+
               <TextField
                 placeholder="Select role"
                 select
