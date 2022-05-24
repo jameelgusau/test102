@@ -26,9 +26,9 @@ const ProManagement = () => {
   const [select, setSelect] = useState("Ground floor");
   let params = useParams();
   const [unit, setUnit] = useState({});
-  const [ loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
-  const [ loadingImage, setLoadingImage] = useState(false)
+  const [loadingImage, setLoadingImage] = useState(false);
   const [property, setSetProperty] = useState({});
   const [image, setImage] = useState({});
   const user = useSelector((state) => state.userProfile.value);
@@ -50,17 +50,17 @@ const ProManagement = () => {
     async function fetchData() {
       const selected = await properties.find((e) => e.id === params.id);
       setSetProperty(selected);
-      console.log(selected, "sele")
+      console.log(selected, "sele");
       await getUnits(params.id);
       await getPropertyImage(params.id);
-      await getAgentsList()
+      await getAgentsList();
     }
     fetchData();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [select]);
 
   const getUnits = async (id) => {
-    setLoading(true)
+    setLoading(true);
     const {
       baseUrl,
       getUnits: { method, path },
@@ -71,16 +71,16 @@ const ProManagement = () => {
     console.log(response);
     if (response.meta && response.meta.status === 200) {
       dispatch(setUnits(response.data));
-      setLoading(false)
+      setLoading(false);
     } else if (response.meta && response.meta.status >= 400) {
       dispatch(setUnits([]));
-      setLoading(false)
+      setLoading(false);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const getAgentsList = async (id) => {
-    setLoading(true)
+    setLoading(true);
     const {
       baseUrl,
       getAgentsList: { method, path },
@@ -91,16 +91,16 @@ const ProManagement = () => {
     console.log(response);
     if (response.meta && response.meta.status === 200) {
       dispatch(setAgentsList(response.data));
-      setLoading(false)
+      setLoading(false);
     } else if (response.meta && response.meta.status >= 400) {
       dispatch(setAgentsList([]));
-      setLoading(false)
+      setLoading(false);
     }
-    setLoading(false)
+    setLoading(false);
   };
-console.log(loading)
+  console.log(loading);
   const getPropertyImage = async (id) => {
-    setLoadingImage(true)
+    setLoadingImage(true);
     const {
       baseUrl,
       getPropertyImage: { method, path },
@@ -112,11 +112,11 @@ console.log(loading)
     if (response.meta && response.meta.status === 200) {
       // await dispatch(setUnits(response.data));
       setImage(response.data);
-      setLoadingImage(false)
+      setLoadingImage(false);
     } else if (response.meta && response.meta.status >= 400) {
-      setLoadingImage(false)
+      setLoadingImage(false);
     }
-    setLoadingImage(false)
+    setLoadingImage(false);
   };
 
   let floorsArr = [];
@@ -158,7 +158,19 @@ console.log(loading)
       </div>
       <div className="pro-header">
         {image ? (
+          // <iframe src={image.image} width="100%" height="300" style={{border:"none"}}></iframe>
           <img src={image.image} alt="Red dot" className="pro-header__image" />
+          
+          // <embed src={image.image} width="600px" height="600px" /> style="width: 100%;height: 100%;border: none;"
+          // <iframe src={image.image} style ={{ width: "100%", height: "600px", }}></iframe>
+          // <iframe
+          //   src={image.image}
+          //   frameBorder="0"
+          //   // scrolling="auto"
+          //   style ={{ width: "100%", height: "600px", }}
+          //   height="100%"
+          //   width="100%"
+          // ></iframe>
         ) : (
           <img src={icon} alt="Logo" className="pro-header__image" />
         )}
@@ -221,52 +233,50 @@ console.log(loading)
             </div>
           </div>
           {user.role && user.role === "Admin" && (
-          <div className="add-units" onClick={openAddUnitDialog}>
-            <IconContext.Provider
-              value={{ color: "#0C2D40", className: "global-class-name" }}
-            >
-              <div>
-                <IoAddOutline />
-              </div>
-            </IconContext.Provider>
-          </div>
+            <div className="add-units" onClick={openAddUnitDialog}>
+              <IconContext.Provider
+                value={{ color: "#0C2D40", className: "global-class-name" }}
+              >
+                <div>
+                  <IoAddOutline />
+                </div>
+              </IconContext.Provider>
+            </div>
           )}
         </div>
 
         <div className="units__text">
           <p className="units__text--heading">Select a unit</p>
         </div>
-        {
-          !loading && units.length > 0 && (
-            <div className="units__boxs">
-          {units.map((item) => (
-            <div
-              className="units__boxs--box"
-              style={{
-                color: `${
-                  item.status && item.status === "Available"
-                    ? "green"
-                    : item.status === "Sold"
-                    ? "red"
-                    : item.status === "Reserved"
-                    ? "yellow"
-                    : item.status === "Occupied"
-                    ? "indigo"
-                    : ""
-                }`,
-              }}
-              onClick={() => {
-                setUnit(item);
-                dispatch(displayReserve("block"));
-              }}
-              key={item.id}
-            >
-              <h3 className="num">{item.name}</h3>
-            </div>
-          ))}
-        </div>
-          )
-        }
+        {!loading && units.length > 0 && (
+          <div className="units__boxs">
+            {units.map((item) => (
+              <div
+                className="units__boxs--box"
+                style={{
+                  color: `${
+                    item.status && item.status === "Available"
+                      ? "green"
+                      : item.status === "Sold"
+                      ? "red"
+                      : item.status === "Reserved"
+                      ? "yellow"
+                      : item.status === "Occupied"
+                      ? "indigo"
+                      : ""
+                  }`,
+                }}
+                onClick={() => {
+                  setUnit(item);
+                  dispatch(displayReserve("block"));
+                }}
+                key={item.id}
+              >
+                <h3 className="num">{item.name}</h3>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* dialog Reserve Unit */}

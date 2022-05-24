@@ -5,10 +5,16 @@ import { AiOutlineSearch } from "react-icons/ai";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { IconContext } from "react-icons";
-import {Menu, MenuItem} from "@mui/material";
-import { displayAddAgent, displayDeleteAgent, displayEditAgent } from '../../../../redux/display';
-import { setAgents } from '../../../../redux/Agents';
-import { APIS, requestJwt } from "../../../../_services";
+import { Menu, MenuItem } from "@mui/material";
+import {
+  displayAddAgent,
+  displayDeleteAgent,
+  displayEditAgent,
+} from "../../../../redux/display";
+import useAxiosPrevate from "../../../../hooks/useAxiosPrevate";
+import { setAgents } from "../../../../redux/Agents";
+import { useNavigate, useLocation } from "react-router-dom";
+import { APIS } from "../../../../_services";
 import { IoAddOutline, IoEllipsisVerticalOutline } from "react-icons/io5";
 import AddAgent from "./AddAgent";
 import EditAgent from "./EditAgent";
@@ -22,98 +28,126 @@ const columns = [
   { columnName: "Phone", keyName: "phone" },
   { columnName: "Bank", keyName: "bank" },
   { columnName: "Account Number", keyName: "accountNumber" },
-  { columnName: 'Actions', keyName: 'actions' },
+  { columnName: "Actions", keyName: "actions" },
 ];
 
 const Agent = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userProfile.value);
+  const axiosPrivate = useAxiosPrevate();
+  const navigate = useNavigate();
+  const location = useLocation()
+
   const usersArr = useSelector((state) => state.agents.value);
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [groupAnchorArr, setGroupAnchorArr] = useState(new Array(usersArr.length).fill(null));
-  
+  const [groupAnchorArr, setGroupAnchorArr] = useState(
+    new Array(usersArr.length).fill(null)
+  );
+
+  useEffect(() => {
+    agents()
+    // eslint-disable-next-line
+  },[]);
+
   const List = usersArr.map((item, idx) => ({
     ...item,
     sn: idx + 1,
     actions: (
       <>
-        <IconButton size="small" onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}> <IoEllipsisVerticalOutline /></IconButton>
+        <IconButton
+          size="small"
+          onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
+        >
+          <IoEllipsisVerticalOutline />
+        </IconButton>
         <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={groupAnchorArr[idx]}
-                    open={Boolean(groupAnchorArr[idx])}
-                    onClose={() => setStudentItem(idx, null)}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                  >
-                    <MenuItem onClick={()=>{
-                      setAccount(item)
-                      setStudentItem(idx, null);
-                      dispatch(displayDeleteAgent("block"))
-                    }}>delete</MenuItem>
-                    <MenuItem onClick={()=>{
-                        setAccount(item)
-                        setStudentItem(idx, null);
-                        dispatch(displayEditAgent("block"))
-                      }}>Edit</MenuItem>
-                  </Menu>
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          anchorEl={groupAnchorArr[idx]}
+          open={Boolean(groupAnchorArr[idx])}
+          onClose={() => setStudentItem(idx, null)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayDeleteAgent("block"));
+            }}
+          >
+            delete
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayEditAgent("block"));
+            }}
+          >
+            Edit
+          </MenuItem>
+        </Menu>
       </>
-    )
+    ),
   }));
 
-  useEffect(() => {
-    getUser(user.jwtToken);
-    // eslint-disable-next-line
-  }, []);
-
+  const agents = ()=>{
+    let isMounted  = true;
+    const {
+         getAgents: { path },
+        } = APIS;
+    setLoading(true);
+    const controller =  new AbortController();
+    const getAgents =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`/api/${path}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setAgents(response?.data?.data));
+       
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
+    }
+    getAgents()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
+  }
   useEffect(() => {
     setGroupAnchorArr(new Array(usersArr.length).fill(null));
   }, [usersArr]);
 
   const setStudentItem = (i, value) => {
     console.log(i, value);
-    const newArr = groupAnchorArr.map((item, index) => (index === i ? value : item));
+    const newArr = groupAnchorArr.map((item, index) =>
+      index === i ? value : item
+    );
     setGroupAnchorArr(newArr);
-  };
-
-  const getUser = async (data) => {
-    setLoading(true)
-    const {
-      baseUrl,
-      getAgents: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, data);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setAgents(response.data));
-      setLoading(false)
-    }
-    if (response.meta && response.meta.status === 400) {
-      dispatch(setAgents([]));
-      setLoading(false)
-    }
-    setLoading(false)
   };
 
   const handleSearch = () => {
     console.log("hahhaa");
-  
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
 
-  const openDialog = async() => {
-    await  dispatch(displayAddAgent("block"));
+  const openDialog = () => {
+   dispatch(displayAddAgent("block"));
   };
 
   return (
@@ -151,10 +185,10 @@ const Agent = () => {
           </IconContext.Provider>
         </div>
       </div>
-      <Table loading={loading} columns={columns} tableData={List}/>
-      <AddAgent getUser={(e)=>getUser(e) } />
-      <EditAgent  getUser={(e)=>getUser(e) }  account={account}/>
-      <DeleteAgent  getUser={(e)=>getUser(e) }  account={account}/>
+      <Table loading={loading} columns={columns} tableData={List} />
+      <AddAgent getUser={() => agents()} />
+      <EditAgent getUser={() => agents()} account={account} />
+      <DeleteAgent getUser={() => agents()} account={account} />
     </div>
   );
 };

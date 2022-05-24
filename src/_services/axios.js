@@ -1,12 +1,13 @@
 import axios from "axios";
 
-
+// const baseURL= "http://localhost:4000"
+const baseURL= "https://hommesestate.herokuapp.com"
 export default axios.create({
-    baseURL: "http://localhost:4000"
+    baseURL
 })
 
 export const axiosPrivate =  axios.create({
-    baseURL: "http://localhost:4000",
+    baseURL,
     headers: { "Content-Type": "application/json" },
     withCredentials: true
 })
