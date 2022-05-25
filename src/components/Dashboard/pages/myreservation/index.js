@@ -3,18 +3,24 @@ import {
   MdOutlineDeleteForever,
 } from "react-icons/md";
 import { IconContext } from "react-icons";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import { Button, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { displayDeleteReserve, displayUploadPayment } from "../../../../redux/display";
 import { setReservedUnits } from "../../../../redux/reservedUnits";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS } from "../../../../_services";
 import DeleteReserved from './DeleteReserved'
 import UploadPayment from "../reservation/UploadPayment";
 
 // Units
 const MyReservation = () => {
   const dispatch = useDispatch();
-  // const [loading, setLoading] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
+    // eslint-disable-next-line
+  const [loading, setLoading] = useState(false);
   const [ unit, setUnit ] = useState({})
   const user = useSelector((state) => state.userProfile.value);
   const reserved = useSelector((state) => state.reservedUnits.value);
@@ -25,21 +31,49 @@ const MyReservation = () => {
   }, []);
 
   const getReservedUnit = async (jwt) => {
-    const {
-      baseUrl,
-      getReservedUnits: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, jwt);
-    if (response.meta && response.meta.status === 200) {
-       dispatch(setReservedUnits(response.data));
-    } else if (response.meta && response.meta.status >= 400) {
-      dispatch(setReservedUnits([]));
 
+    let isMounted  = true;
+    const {
+      getReservedUnits: { path },
+        } = APIS;
+    setLoading(true);
+    const url = `/api${path}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setReservedUnits(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
+
+
+    // const {
+    //   baseUrl,
+    //   getReservedUnits: { method, path },
+    // } = APIS;
+    // const url = `${baseUrl}${path}`;
+    // const response = await requestJwt(method, url, {}, jwt);
+    // if (response.meta && response.meta.status === 200) {
+    //    dispatch(setReservedUnits(response.data));
+    // } else if (response.meta && response.meta.status >= 400) {
+    //   dispatch(setReservedUnits([]));
+
+    // }
     // setLoading(false);
   };
-  console.log(reserved, "reserved");
   return (
     <div className="myreservation">
       <div className="myreservation__header">My Reservations</div>

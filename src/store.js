@@ -16,6 +16,7 @@ import payments from './redux/payments'
 import profileImage from './redux/profileImage'
 import Agents from './redux/Agents'
 import Agentslist from './redux/Agentslist'
+import property from './redux/property'
 
 export const rootReducer = combineReducers({
       alert: Alert,
@@ -32,6 +33,7 @@ export const rootReducer = combineReducers({
       allReserved: allReserved,
       payment: payment,
       profileImage: profileImage,
-      payments: payments
+      payments: payments,
+      property: property
 
 })

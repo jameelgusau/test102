@@ -7,9 +7,11 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { setAllReserved } from "../../../../redux/allReserved";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 // import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoEllipsisVerticalOutline } from "react-icons/io5";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS } from "../../../../_services";
 import {
   displayReserveDetail,
   displayUploadPayment,
@@ -30,16 +32,18 @@ const columns = [
 
 const Reservations = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [search, setSearch] = useState("");
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.userProfile.value);
   const allReserved = useSelector((state) => state.allReserved.value);
   const [groupAnchorArr, setGroupAnchorArr] = useState(
     new Array(allReserved.length).fill(null)
   );
   useEffect(() => {
-    getReservation(user.jwtToken);
+    getReservation();
     // eslint-disable-next-line
   }, []);
 
@@ -52,7 +56,6 @@ const Reservations = () => {
           size="small"
           onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
         >
-          {" "}
           <IoEllipsisVerticalOutline />
         </IconButton>
         <Menu
@@ -100,21 +103,46 @@ const Reservations = () => {
 
   const getReservation = async (data) => {
     setLoading(true)
+    let isMounted  = true;
     const {
-      baseUrl,
-      getAllReserved: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, data);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setAllReserved(response.data));
-      setLoading(false)
+      getAllReserved: { path },
+        } = APIS;
+    const url = `/api${path}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setAllReserved(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status >= 400) {
-      dispatch(setAllReserved([]));
-      setLoading(false)
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
-    setLoading(false)
+    // const {
+    //   baseUrl,
+    //   getAllReserved: { method, path },
+    // } = APIS;
+    // const url = `${baseUrl}${path}`;
+    // const response = await requestJwt(method, url, {}, data);
+    // if (response.meta && response.meta.status === 200) {
+    //   dispatch(setAllReserved(response.data));
+    //   setLoading(false)
+    // }
+    // if (response.meta && response.meta.status >= 400) {
+    //   dispatch(setAllReserved([]));
+    //   setLoading(false)
+    // }
+    // setLoading(false)
   };
 
   useEffect(() => {

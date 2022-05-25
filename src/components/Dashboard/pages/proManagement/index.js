@@ -7,14 +7,17 @@ import {
   displayAddImage,
   displayReserve,
 } from "../../../../redux/display";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import { useParams } from "react-router-dom";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS } from "../../../../_services";
 import { IconContext } from "react-icons";
 import { IoAddOutline } from "react-icons/io5";
 import { FaUpload } from "react-icons/fa";
 import { BsFillCircleFill } from "react-icons/bs";
 import { TextField, MenuItem } from "@mui/material";
 import { setUnits } from "../../../../redux/Units";
+import { setProperty } from "../../../../redux/property";
 import { setAgentsList } from "../../../../redux/Agentslist";
 import EditUnit from "./EditUnit";
 import AddUnit from "./AddUnit";
@@ -23,17 +26,20 @@ import DeleteUnit from "./DeleteUnit";
 import AddImage from "./AddImage";
 
 const ProManagement = () => {
-  const [select, setSelect] = useState("Ground floor");
   let params = useParams();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  const [select, setSelect] = useState("Ground floor");
   const [unit, setUnit] = useState({});
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const [loadingImage, setLoadingImage] = useState(false);
-  const [property, setSetProperty] = useState({});
   const [image, setImage] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const properties = useSelector((state) => state.properties.value);
   const units = useSelector((state) => state.units.value);
+  const property = useSelector((state) => state.property.value);
   const agents = useSelector((state) => state.agentsList.value);
 
   const dispatch = useDispatch();
@@ -48,82 +54,143 @@ const ProManagement = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const selected = await properties.find((e) => e.id === params.id);
-      setSetProperty(selected);
-      console.log(selected, "sele");
+      // const selected = await properties.find((e) => e.id === params.id);
+      // setSetProperty(selected);
+      await getProperty(params.id)
       await getUnits(params.id);
       await getPropertyImage(params.id);
       await getAgentsList();
     }
+  
     fetchData();
+
     // eslint-disable-next-line
   }, [select]);
 
-  const getUnits = async (id) => {
-    setLoading(true);
-    const {
-      baseUrl,
-      getUnits: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path({ id, floor: select })}`;
-    console.log(url, "url", user.jwtToken, "user.jwtToken");
-    const response = await requestJwt(method, url, {}, user.jwtToken);
-    console.log(response);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setUnits(response.data));
-      setLoading(false);
-    } else if (response.meta && response.meta.status >= 400) {
-      dispatch(setUnits([]));
-      setLoading(false);
+  let floorsArr = [];
+    for (let i = 0; i < parseInt(property && property?.num_of_floors); i++) {
+     floorsArr.push(i === 0 ? { name: "Ground floor" } : { name: `Floor ${i}` });
     }
-    setLoading(false);
+
+  const getUnits = async (id) => {
+    let isMounted  = true;
+    const {
+      getUnits: { path },
+        } = APIS;
+    setLoading(true);
+    const url = `/api${path({ id, floor: select })}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setUnits(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
+    }
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
   };
+
+  const getProperty = async (id) => {
+    setLoading(true);
+    let isMounted  = true;
+    const {
+      getProperty: { path },
+        } = APIS;
+    const controller =  new AbortController();
+    const url = `/api${path({ id })}`;
+    const getAgents =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setProperty(response?.data?.data));
+       
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
+    }
+    getAgents()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
+  };
+
+
 
   const getAgentsList = async (id) => {
     setLoading(true);
+    let isMounted  = true;
     const {
-      baseUrl,
-      getAgentsList: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    console.log(url, "url", user.jwtToken, "user.jwtToken");
-    const response = await requestJwt(method, url, {}, user.jwtToken);
-    console.log(response);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setAgentsList(response.data));
-      setLoading(false);
-    } else if (response.meta && response.meta.status >= 400) {
-      dispatch(setAgentsList([]));
-      setLoading(false);
+      getAgentsList: { path },
+        } = APIS;
+    const controller =  new AbortController();
+    const getAgents =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`/api/${path}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setAgentsList(response?.data?.data));
+       
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    setLoading(false);
+    getAgents()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
   };
-  console.log(loading);
   const getPropertyImage = async (id) => {
-    setLoadingImage(true);
+    console.log("Image")
+    let isMounted  = true;
     const {
-      baseUrl,
-      getPropertyImage: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path({ id, floor: select })}`;
-    console.log(url, "url");
-    const response = await requestJwt(method, url, {}, user.jwtToken);
-    console.log(response);
-    if (response.meta && response.meta.status === 200) {
-      // await dispatch(setUnits(response.data));
-      setImage(response.data);
-      setLoadingImage(false);
-    } else if (response.meta && response.meta.status >= 400) {
-      setLoadingImage(false);
+      getPropertyImage: { path },
+        } = APIS;
+        const url = `/api${path({ id, floor: select })}`;
+    const controller =  new AbortController();
+    const getAgents =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        // dispatch(setAgentsList(response?.data?.data));
+        setImage(response?.data?.data)
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    setLoadingImage(false);
+    getAgents()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
   };
 
-  let floorsArr = [];
-  for (let i = 0; i < parseInt(property && property.num_of_floors); i++) {
-    floorsArr.push(i === 0 ? { name: "Ground floor" } : { name: `Floor ${i}` });
-    // console.log(i);
-  }
   return (
     <>
       <div className="selectFloor">
@@ -133,7 +200,7 @@ const ProManagement = () => {
             placeholder="Select floor"
             defaultValue={""}
             variant="outlined"
-            value={select || "Ground floor"}
+            value={select || ""}
             size="small"
             onChange={({ target }) => setSelect(target.value)}
           >

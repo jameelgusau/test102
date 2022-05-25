@@ -8,11 +8,12 @@ import { BsHouse } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLocationOutline, IoAddOutline } from "react-icons/io5";
 import { BsFillCircleFill } from "react-icons/bs";
-import { NavLink } from "react-router-dom";
-import { APIS, requestJwt } from "../../../../_services";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { APIS } from "../../../../_services";
 import { setProperties } from "./../../../../redux/Properties";
 import AddProperty from "./AddProperty";
 import EditProperty from "./EditProperty";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import {
   displayEditProperty,
   displayAddProperty,
@@ -24,6 +25,9 @@ import { NotFound } from "../../../../assets/img/Icons";
 
 const Property = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation()
   const [property, setProperty] = useState({});
   const [loading, setLoading] =  useState(false);
   const user = useSelector((state) => state.userProfile.value);
@@ -31,32 +35,55 @@ const Property = () => {
 
 
   useEffect(() => {
-    getProperties(user.jwtToken);
+    getProperties();
     // eslint-disable-next-line 
   }, []);
 
-  const getProperties = async (data) => {
+  const getProperties = async () => {
+    let isMounted  = true;
     setLoading(true)
     const {
-      baseUrl,
-      getProperties: { method, path },
+      getProperties: { path },
     } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, data);
-    console.log(response, "hahah")
-    if(!response){
-      setLoading(false)
-    } else
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setProperties(response.data));
-      setLoading(false)
-      console.log(response)
+
+    setLoading(true);
+    const controller =  new AbortController();
+    const getProperties =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`/api/${path}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setProperties(response?.data?.data));
+       
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status >= 400) {
-      dispatch(setProperties([]));
-      setLoading(false)
+    getProperties()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
-    setLoading(false)
+    // const url = `${baseUrl}${path}`;
+    // const response = await requestJwt(method, url, {}, data);
+    // console.log(response, "hahah")
+    // if(!response){
+    //   setLoading(false)
+    // } else
+    // if (response.meta && response.meta.status === 200) {
+    //   dispatch(setProperties(response.data));
+    //   setLoading(false)
+    //   console.log(response)
+    // }
+    // if (response.meta && response.meta.status >= 400) {
+    //   dispatch(setProperties([]));
+    //   setLoading(false)
+    // }
+    // setLoading(false)
   };
 
   const openDialog = () => {
@@ -202,16 +229,16 @@ const Property = () => {
       }
 
       {/* Add property dialog */}
-      <AddProperty getProperties={(e) => getProperties(e)} />
+      <AddProperty getProperties={() => getProperties()} />
       {/* Edit Property */}
       <EditProperty
         property={property}
-        getProperties={(e) => getProperties(e)}
+        getProperties={() => getProperties()}
       />
       {/* Delete */}
       <DeleteProperty
         property={property}
-        getProperties={(e) => getProperties(e)}
+        getProperties={() => getProperties()}
       />
     </div>
   );

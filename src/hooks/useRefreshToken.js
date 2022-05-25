@@ -2,12 +2,11 @@
 import { userProfile } from "../redux/userProfile";
 import { APIS, request } from "../_services";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 const useRefreshToken = () => {
     
   
-  const user = useSelector((state) => state.userProfile.value);
-  console.log(user.jwtToken, "user");
+  // const user = useSelector((state) => state.userProfile.value);
   const dispatch = useDispatch();
   // const refresh = async()=>{
   //     const response =  await axios.post("/api/refresh-token", {
@@ -29,7 +28,7 @@ const useRefreshToken = () => {
     const data = {};
     const response = await request(method, url, data);
     dispatch(userProfile(response.data));
-    console.log(response.data.jwtToken);
+    // console.log(response.data.jwtToken);
     return response.data.jwtToken;
   };
 

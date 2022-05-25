@@ -215,11 +215,10 @@ const AddUnit = (props) => {
                 placeholder="Select status"
                 select
                 id="select"
-                // ref={myRef}
-                // className="password__input--item-a"
                 variant="outlined"
                 label="Select floor"
-                value={floorNumber}
+                defaultValue={""}
+                value={floorNumber || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -229,8 +228,6 @@ const AddUnit = (props) => {
                   error: true,
                   helperText: errors.floorNumber,
                 })}
-                // ref={myRef}
-                //onBlur={props.handleBlur('name')}
               >
                 {floorsArr && floorsArr.map(({ name }) => (
                   <MenuItem value={name} key={name}>

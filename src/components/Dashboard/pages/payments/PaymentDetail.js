@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS } from "../../../../_services";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import { Button, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { setPayment } from "../../../../redux/payment";
 
 const PaymentDetail = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const [loadingReject, setLoadingReject] = useState(false);
@@ -20,19 +25,32 @@ const PaymentDetail = () => {
 
   console.log(payment, "payment");
   const getPayment = async (id, jwt) => {
+    setLoading(true)
+    let isMounted  = true;
     const {
-      baseUrl,
-      getPayment: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path({ id })}`;
-    const response = await requestJwt(method, url, {}, jwt);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setPayment(response.data));
+      getPayment: { path },
+        } = APIS;
+    const url = `/api${path({ id })}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setPayment(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status >= 400) {
-      dispatch(setPayment({}));
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
-    setLoading(false);
   };
 
   // setLoadingReject("")

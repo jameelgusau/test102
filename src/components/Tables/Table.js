@@ -62,12 +62,14 @@ const Table = (props) => {
       {!loading && tableData.length > 0 && (
         <div className="overflow">
           <table className="table">
-            <tr className="tableHead">{tableHead}</tr>
+            <thead> <tr className="tableHead">{tableHead}</tr></thead>
+          <tbody> 
             {tableDataList.length
               ? tableDataList.map((item) => (
                   <tr className="tablebody">{item}</tr>
                 ))
               : ""}
+              </tbody> 
           </table>
         </div>
       )}

@@ -10,10 +10,11 @@ import {
   displayAddEmailList,
 } from "../../../../redux/display";
 import IconButton from "@mui/material/IconButton";
-
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoAddOutline } from "react-icons/io5";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS } from "../../../../_services";
 import AddEmailList from "./AddEmailList";
 import DeleteEmailList from "./DeleteEmailList";
 import Table from "../../../Tables/Table";
@@ -24,58 +25,70 @@ const columns = [
   { columnName: "Email", keyName: "email" },
   { columnName: "Phone", keyName: "phone" },
   { columnName: "Role", keyName: "role" },
-  { columnName: 'Actions', keyName: 'actions' },
+  { columnName: "Actions", keyName: "actions" },
 ];
 
 const NotificationSetting = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [select, setSelect] = useState("Prospect is added");
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.userProfile.value);
   const emailList = useSelector((state) => state.emailList.value);
 
   useEffect(() => {
-    getEmailList(user.jwtToken);
-   // eslint-disable-next-line 
+    getEmailList();
+    // eslint-disable-next-line
   }, [select]);
 
-  const List = emailList.map(({account, id}, idx) => ({
+  const List = emailList.map(({ account, id }, idx) => ({
     ...account,
     sn: idx + 1,
     actions: (
       <>
-        <IconButton size="small"                  
-         onClick={async () => {
-                    setAccount({account, id});
-                    dispatch(displayDeleteEmailList("block"));
-                  }}><MdOutlineDeleteForever /></IconButton>
+        <IconButton
+          size="small"
+          onClick={async () => {
+            setAccount({ account, id });
+            dispatch(displayDeleteEmailList("block"));
+          }}
+        >
+          <MdOutlineDeleteForever />
+        </IconButton>
       </>
-    )
+    ),
   }));
 
+  const getEmailList = async () => {
+    setLoading(true);
 
-
-  console.log(emailList, "emailList")
-  const getEmailList = async (data) => {
-    setLoading(true)
+    let isMounted  = true;
     const {
-      baseUrl,
-      getEmailList: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path({ group: select })}`;
-    const response = await requestJwt(method, url, {}, data);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setEmailList(response.data));
-      setLoading(false)
+      getEmailList: { path },
+        } = APIS;
+    const url = `/api${path({ group: select })}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setEmailList(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status >= 400) {
-      // setLoading(false);
-      dispatch(setEmailList([]));
-      setLoading(false)
-      
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
-    setLoading(false);
   };
 
   const group = [
@@ -130,60 +143,11 @@ const NotificationSetting = () => {
           </IconContext.Provider>
         </div>
       </div>
-      {/* <div className="overflow">
-        <div className="notificationTableContainer">
-          {
-            <div className="notificationTableRow notificationTableRow__title">
-              <h3 className="notificationTableColumn notificationTableColumn__title">
-                S/N
-              </h3>
-              <h3 className="notificationTableColumn notificationTableColumn__title">
-                Name
-              </h3>
-              <h3 className="notificationTableColumn notificationTableColumn__title">
-                Email
-              </h3>
-              <h3 className="notificationTableColumn notificationTableColumn__title">
-                Phone
-              </h3>
-              <h3 className="notificationTableColumn notificationTableColumn__title">
-                Actions
-              </h3>
-            </div>
-          }
-          {emailList &&
-            emailList.map(({account, id}, idx) => (
-              <div className="notificationTableRow" key={id}>
-                <h3 className="notificationTableColumn">{idx + 1}</h3>
-                <h3 className="notificationTableColumn">{account.name}</h3>
-                <h3 className="notificationTableColumn">{account.email}</h3>
-                <h3 className="notificationTableColumn">{account.phone}</h3>
-                <div
-                  //   className="add-units"
-                  onClick={async () => {
-                    setAccount({account, id});
-                    dispatch(displayDeleteEmailList("block"));
-                  }}
-                >
-                  <IconContext.Provider
-                    value={{ className: "global-class-name" }}
-                  >
-                    <div>
-                      <MdOutlineDeleteForever />
-                    </div>
-                  </IconContext.Provider>
-                </div>
-              </div>
-            ))}
-        </div>
-      </div> */}
-
-      <Table loading={loading} columns={columns} tableData={List}/>
-
-      <AddEmailList group={select} getEmailList={(e) => getEmailList(e)} />
+      <Table loading={loading} columns={columns} tableData={List} />
+      <AddEmailList group={select} getEmailList={() => getEmailList()} />
       <DeleteEmailList
         account={account}
-        getEmailList={(e) => getEmailList(e)}
+        getEmailList={() => getEmailList()}
       />
     </div>
   );

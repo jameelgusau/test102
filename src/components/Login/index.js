@@ -47,7 +47,6 @@ function Login() {
 
   const submit = async (e) => {
     e.preventDefault();
-    // console.log(validate(),'login')
     if(validate()){
       const { baseUrl, login: { method, path } } = APIS;
       const data ={
@@ -60,7 +59,6 @@ function Login() {
       console.log(response);
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
-        // startRefreshTokenTimer();
         console.log(from)
         navigate(from, {replace: true});
         dispatch( setAlert({ open: true,
@@ -68,7 +66,6 @@ function Login() {
           color: "primary",
           message: "Welcome!"
       }))
-      
       }if(response.meta && response.meta.status >= 400){
           setErrMessage(response.meta.message)
           dispatch(setAlert({ open: true,

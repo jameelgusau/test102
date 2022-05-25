@@ -5,10 +5,16 @@ import { AiOutlineSearch } from "react-icons/ai";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { IconContext } from "react-icons";
-import {Menu, MenuItem} from "@mui/material";
-import { displayAddUser, displayDeleteUser, displayEditUser } from '../../../../redux/display';
-import { setUsers } from '../../../../redux/users';
-import { APIS, requestJwt } from "../../../../_services";
+import { Menu, MenuItem } from "@mui/material";
+import {
+  displayAddUser,
+  displayDeleteUser,
+  displayEditUser,
+} from "../../../../redux/display";
+import { setUsers } from "../../../../redux/users";
+import { APIS } from "../../../../_services";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 // import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { IoAddOutline, IoEllipsisVerticalOutline } from "react-icons/io5";
 import AddUser from "./AddUser";
@@ -22,56 +28,74 @@ const columns = [
   { columnName: "Email", keyName: "email" },
   { columnName: "Phone", keyName: "phone" },
   { columnName: "Role", keyName: "role" },
-  { columnName: 'Actions', keyName: 'actions' },
+  { columnName: "Actions", keyName: "actions" },
 ];
 
 const Users = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userProfile.value);
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const usersArr = useSelector((state) => state.users.value);
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [groupAnchorArr, setGroupAnchorArr] = useState(new Array(usersArr.length).fill(null));
-  
+  const [groupAnchorArr, setGroupAnchorArr] = useState(
+    new Array(usersArr?.length).fill(null)
+  );
+
   const List = usersArr.map((item, idx) => ({
     ...item,
     sn: idx + 1,
     actions: (
       <>
-        <IconButton size="small" onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}> <IoEllipsisVerticalOutline /></IconButton>
+        <IconButton
+          size="small"
+          onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
+        >
+          {" "}
+          <IoEllipsisVerticalOutline />
+        </IconButton>
         <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={groupAnchorArr[idx]}
-                    open={Boolean(groupAnchorArr[idx])}
-                    onClose={() => setStudentItem(idx, null)}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                  >
-                    <MenuItem onClick={()=>{
-                      setAccount(item)
-                      setStudentItem(idx, null);
-                      dispatch(displayDeleteUser("block"))
-                    }}>delete</MenuItem>
-                    <MenuItem onClick={()=>{
-                        setAccount(item)
-                        setStudentItem(idx, null);
-                        dispatch(displayEditUser("block"))
-                      }}>Edit</MenuItem>
-                  </Menu>
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          anchorEl={groupAnchorArr[idx]}
+          open={Boolean(groupAnchorArr[idx])}
+          onClose={() => setStudentItem(idx, null)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayDeleteUser("block"));
+            }}
+          >
+            delete
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayEditUser("block"));
+            }}
+          >
+            Edit
+          </MenuItem>
+        </Menu>
       </>
-    )
+    ),
   }));
 
   useEffect(() => {
-    getUser(user.jwtToken);
+    getUser();
     // eslint-disable-next-line
   }, []);
 
@@ -81,39 +105,51 @@ const Users = () => {
 
   const setStudentItem = (i, value) => {
     console.log(i, value);
-    const newArr = groupAnchorArr.map((item, index) => (index === i ? value : item));
+    const newArr = groupAnchorArr.map((item, index) =>
+      index === i ? value : item
+    );
     setGroupAnchorArr(newArr);
   };
 
   const getUser = async (data) => {
-    setLoading(true)
+    setLoading(true);
+
+    let isMounted  = true;
     const {
-      baseUrl,
-      getUsers: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, data);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setUsers(response.data));
-      setLoading(false)
+      getUsers: { path },
+        } = APIS;
+    const url = `/api${path}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setUsers(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status === 400) {
-      dispatch(setUsers([]));
-      setLoading(false)
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
-    setLoading(false)
   };
 
   const handleSearch = () => {
     console.log("hahhaa");
-  
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
 
-  const openDialog = async() => {
-    await  dispatch(displayAddUser("block"));
+  const openDialog = () => {
+   dispatch(displayAddUser("block"));
   };
 
   return (
@@ -151,10 +187,10 @@ const Users = () => {
           </IconContext.Provider>
         </div>
       </div>
-      <Table loading={loading} columns={columns} tableData={List}/>
-      <AddUser getUser={(e)=>getUser(e) } />
-      <EditUser  getUser={(e)=>getUser(e) }  account={account}/>
-      <DeleteUser  getUser={(e)=>getUser(e) }  account={account}/>
+      <Table loading={loading} columns={columns} tableData={List} />
+      <AddUser getUser={(e) => getUser(e)} />
+      <EditUser getUser={(e) => getUser(e)} account={account} />
+      <DeleteUser getUser={(e) => getUser(e)} account={account} />
     </div>
   );
 };

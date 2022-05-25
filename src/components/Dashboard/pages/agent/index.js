@@ -11,7 +11,7 @@ import {
   displayDeleteAgent,
   displayEditAgent,
 } from "../../../../redux/display";
-import useAxiosPrevate from "../../../../hooks/useAxiosPrevate";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import { setAgents } from "../../../../redux/Agents";
 import { useNavigate, useLocation } from "react-router-dom";
 import { APIS } from "../../../../_services";
@@ -33,7 +33,7 @@ const columns = [
 
 const Agent = () => {
   const dispatch = useDispatch();
-  const axiosPrivate = useAxiosPrevate();
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation()
 

@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 const RequireAuth = ({ allowRoles }) =>{
     const user = useSelector((state) => state.userProfile.value);
     const location = useLocation()
-
-    console.log(user)
     return(
         // user?.role === allowRoles ? 
         allowRoles?.includes(user?.role) ?

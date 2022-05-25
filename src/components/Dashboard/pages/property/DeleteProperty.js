@@ -7,7 +7,6 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const DeleteProperty = (props) => {
   const { property, getProperties } = props
-  console.log(props, "delete unit")
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);

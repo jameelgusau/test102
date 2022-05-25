@@ -10,12 +10,10 @@ import { setAlert } from "../../../../redux/snackbar";
 const DeleteUnit = (props) => {
   let params = useParams();
   const { unit, getUnits } = props
-  console.log(props, "delete unit")
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.display.openDeleteUnit);
-  console.log(display)
   const dispatch = useDispatch();
 
   const deleteUnit = async (e) => {

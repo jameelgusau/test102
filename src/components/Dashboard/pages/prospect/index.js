@@ -10,8 +10,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { setProspect } from "../../../../redux/prospects";
 // import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import Table from "../../../Tables/Table";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 import { IoAddOutline, IoEllipsisVerticalOutline } from "react-icons/io5";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS } from "../../../../_services";
 import {
   displayAddProspect,
   displayEditProspect,
@@ -34,16 +36,18 @@ const columns = [
 
 const Prospects = () => {
   const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [search, setSearch] = useState("");
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.userProfile.value);
   const prospect = useSelector((state) => state.prospects.value);
   const [groupAnchorArr, setGroupAnchorArr] = useState(
     new Array(prospect.length).fill(null)
   );
   useEffect(() => {
-    getProspect(user.jwtToken);
+    getProspect();
     // eslint-disable-next-line
   }, []);
 
@@ -120,21 +124,31 @@ const Prospects = () => {
 
   const getProspect = async (data) => {
     setLoading(true)
+    let isMounted  = true;
     const {
-      baseUrl,
-      getProspect: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, data);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setProspect(response.data));
-      setLoading(false)
+      getProspect: { path },
+        } = APIS;
+    const url = `/api${path}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(setProspect(response?.data?.data));
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status >= 400) {
-      dispatch(setProspect([]));
-      setLoading(false)
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
-    setLoading(false)
   };
 
   useEffect(() => {
@@ -286,10 +300,10 @@ const Prospects = () => {
         </div>
       </div> */}
       <Table loading={loading} columns={columns} tableData={List}/>
-      <AddProspect account={account} getProspect={(e) => getProspect(e)} />
-      <EditProspect account={account} getProspect={(e) => getProspect(e)} />
-      <DeleteProspect account={account} getProspect={(e) => getProspect(e)} />
-      <InviteToLogin account={account} getProspect={(e) => getProspect(e)} />
+      <AddProspect account={account} getProspect={() => getProspect()} />
+      <EditProspect account={account} getProspect={() => getProspect()} />
+      <DeleteProspect account={account} getProspect={() => getProspect()} />
+      <InviteToLogin account={account} getProspect={() => getProspect()} />
     </div>
   );
 };

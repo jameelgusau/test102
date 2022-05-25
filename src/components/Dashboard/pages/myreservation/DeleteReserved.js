@@ -7,7 +7,6 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const DeleteReserved = (props) => {
   const { unit, getReservedUnit } = props
-  console.log(props, "delete unit")
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
@@ -46,7 +45,6 @@ const DeleteReserved = (props) => {
     }))
       setLoading(false);
     }
-    console.log(response);
     setLoading(false);
   };
 

@@ -1,23 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import imgs from "../../assets/img/avatar.jpeg";
 import { useSelector, useDispatch } from "react-redux";
 import { setProfileImage } from "../../redux/profileImage";
 import { displaySettings } from "../../redux/display";
-import { APIS, requestJwt } from "../../_services";
+import { APIS } from "../../_services";
 import { Menu, MenuItem } from "@mui/material";
 import { FiLogOut, FiUser } from "react-icons/fi";
 import Settings from "./Settings";
+import useAxiosPrivate from "../../hooks/useAxiosPrevate";
+import { useNavigate, useLocation } from "react-router-dom";
 import { userProfile } from '../../redux/userProfile'
 
 
 function Header() {
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation()
   const user = useSelector((state) => state.userProfile.value);
   const proImage = useSelector((state) => state.profileImage.value);
+   // eslint-disable-next-line 
+  const [ loading, setLoading ] =  useState(false)
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   useEffect(() => {
-    getProfileImage(user.jwtToken)
+    if(!proImage){
+      getProfileImage(user.jwtToken)
+    }
+
      // eslint-disable-next-line
   },[])
 
@@ -29,54 +39,74 @@ function Header() {
     setAnchorEl(null);
   };
   const getProfileImage = async (data) => {
+    setLoading(true);
+    let isMounted  = true;
     const {
-      baseUrl,
-      getProfileImage: { method, path },
-    } = APIS;
-    const url = `${baseUrl}${path}`;
-    const response = await requestJwt(method, url, {}, data);
-    if (response.meta && response.meta.status === 200) {
-      dispatch(setProfileImage(response.data));
+      getProfileImage: { path },
+        } = APIS;
+    const url = `/api${path}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.get(`${url}`,{
+          signal: controller.signal
+        });
+        console.log(response.data, "response")
+        dispatch(setProfileImage(response?.data?.data))
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
     }
-    if (response.meta && response.meta.status >= 400) {
-      dispatch(setProfileImage(null));
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
     }
+
+    // const {
+    //   baseUrl,
+    //   getProfileImage: { method, path },
+    // } = APIS;
+    // const url = `${baseUrl}${path}`;
+    // const response = await requestJwt(method, url, {}, data);
+    // if (response.meta && response.meta.status === 200) {
+    //   dispatch(setProfileImage(response.data));
+    // }
+    // if (response.meta && response.meta.status >= 400) {
+    //   dispatch(setProfileImage(null));
+    // }
   };
 
 const logout = async ()=>{
-  dispatch(userProfile({}))
-  // navigate("/");
-  // const {
-  //   baseUrl,
-  //   logout: { method, path },
-  // } = APIS;
-  // const data={
-  //   token: user.jwtToken
-  // }
-  // console.log(data)
-  // const url = `${baseUrl}${path}`;
-  // const response = await requestJwt(method, url, data, user.jwtToken);
-  // if (response.meta && response.meta.status === 200) {
-  //   navigate("/");
-  //   dispatch(
-  //     setAlert({
-  //       open: true,
-  //       severity: "success",
-  //       color: "primary",
-  //       message: response.meta.message,
-  //     })
-  //   );
-  //  closeDialog();
-  // }
-  // if (response.meta && response.meta.status >= 400) {
-  //   dispatch(setAlert({ open: true,
-  //     severity: "error",
-  //     color: "error",
-  //     message: response.meta.message
-  // }))
-  // }
-  // setLoading(false);
-
+    setLoading(true);
+    let isMounted  = true;
+    const {
+      revokeToken: { path },
+        } = APIS;
+    const url = `/api${path}`;
+    const controller =  new AbortController();
+    const getUs =  async () =>{
+      try{
+        const response = await axiosPrivate.post(`${url}`, {},{
+          signal: controller.signal
+        });
+        console.log(response.data, "response.data")
+        dispatch(userProfile(response?.data?.data))
+        console.log(isMounted)
+      }catch(err){
+        navigate('/login', { state: {from: location}, replace: true})
+      }finally{
+        setLoading(false);
+      }
+    }
+    getUs()
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
 }
 
   return (

@@ -140,7 +140,7 @@ const EditAgent = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ""}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <TextField
@@ -151,7 +151,7 @@ const EditAgent = (props) => {
                 onChange={({ target }) => {
                   setEmail(target.value);
                 }}
-                value={email}
+                value={email || ""}
                 {...(errors.email && { error: true, helperText: errors.email })}
               />
               <MuiPhoneNumber
@@ -160,36 +160,12 @@ const EditAgent = (props) => {
                 onChange={(e) => {
                   setPhone(e);
                 }}
-                value={phone}
+                value={phone || ""}
                 required
                 {...(errors.phone && { error: true, helperText: errors.phone })}
                 placeholder="Phone Number"
                 variant="outlined"
               />
-              {/* <TextField
-                placeholder="Select role"
-                select
-                id="select"
-                variant="outlined"
-                value={role || "User"}
-                label="Select role"
-                defaultValue="User"
-                size="small"
-                onChange={(e) => {
-                  e.preventDefault();
-                  setRole(e.target.value);
-                }}
-                {...(errors.role && {
-                  error: true,
-                  helperText: errors.role,
-                })}
-              >
-                {roles.map(({ name }) => (
-                  <MenuItem value={name} key={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </TextField> */}
             <TextField
                 placeholder="bank"
                 className="signup__input--item-a"
@@ -199,7 +175,7 @@ const EditAgent = (props) => {
                 onChange={({ target }) => {
                   setBank(target.value);
                 }}
-                value={bank}
+                value={bank || ""}
                 {...(errors.bank && { error: true, helperText: errors.bank })}
               />
             <TextField
@@ -211,7 +187,7 @@ const EditAgent = (props) => {
                 onChange={({ target }) => {
                   setAccountNumber(target.value);
                 }}
-                value={accountNumber}
+                value={accountNumber || ""}
                 {...(errors.accountNumber && { error: true, helperText: errors.accountNumber })}
               />
               <div className="property-input__btn">

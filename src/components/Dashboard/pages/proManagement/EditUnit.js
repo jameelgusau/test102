@@ -214,11 +214,9 @@ const EditUnit = (props) => {
                 placeholder="Select status"
                 select
                 id="select"
-                // ref={myRef}
-                // className="password__input--item-a"
                 variant="outlined"
                 label= "Select floor"
-                value={floorNumber || "Ground floor" || ""}
+                value={floorNumber || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();

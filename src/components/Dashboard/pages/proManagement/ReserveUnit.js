@@ -17,7 +17,6 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const ReserveUnit = (props) => {
   const { unit, getUnits, agents } = props;
-  console.log(agents, "agents");
   const params = useParams();
   const myRef = useRef();
   const dispatch = useDispatch();
