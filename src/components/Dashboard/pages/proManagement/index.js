@@ -161,6 +161,7 @@ const ProManagement = () => {
   };
   const getPropertyImage = async (id) => {
     console.log("Image")
+    setLoadingImage(true);
     let isMounted  = true;
     const {
       getPropertyImage: { path },
