@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import icon from "../../../../assets/img/image.jpeg";
+// import icon from "../../../../assets/img/image.jpeg";
 import { BsHouse } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -33,7 +33,6 @@ const ProManagement = () => {
   const [select, setSelect] = useState("Ground floor");
   const [unit, setUnit] = useState({});
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line
   const [loadingImage, setLoadingImage] = useState(false);
   const [image, setImage] = useState({});
   const user = useSelector((state) => state.userProfile.value);
@@ -180,7 +179,7 @@ const ProManagement = () => {
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
-        setLoading(false);
+        setLoadingImage(false);
       }
     }
     getAgents()
@@ -223,7 +222,14 @@ const ProManagement = () => {
         )}
       </div>
       <div className="pro-header">
-        {image ? (
+        {
+          loadingImage && (
+            <div>
+              Loading...
+            </div>
+          )
+        }
+        {!loadingImage && image &&(
           // <iframe src={image.image} width="100%" height="300" style={{border:"none"}}></iframe>
           <img src={image.image} alt="Red dot" className="pro-header__image" />
           
@@ -237,9 +243,16 @@ const ProManagement = () => {
           //   height="100%"
           //   width="100%"
           // ></iframe>
-        ) : (
-          <img src={icon} alt="Logo" className="pro-header__image" />
+        // ) : (
+        //   <img src={icon} alt="Logo" className="pro-header__image" />
         )}
+        {
+          !loadingImage && !image && (
+            <div>
+              No Image Uploaded
+            </div>
+          )
+        }
       </div>
 
       <div className="pro-address">

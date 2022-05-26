@@ -164,7 +164,7 @@ const AddUnit = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <TextField
@@ -175,7 +175,7 @@ const AddUnit = (props) => {
                 onChange={({ target }) => {
                   setPrice(target.value);
                 }}
-                value={price}
+                value={price || ""}
                 {...(errors.price && {
                   error: true,
                   helperText: errors.price,
@@ -189,7 +189,7 @@ const AddUnit = (props) => {
                 onChange={({ target }) => {
                   setDimension(target.value);
                 }}
-                value={dimension}
+                value={dimension || ""}
                 {...(errors.dimension && {
                   error: true,
                   helperText: errors.dimension,
@@ -205,7 +205,7 @@ const AddUnit = (props) => {
                 onChange={({ target }) => {
                   setDiscription(target.value);
                 }}
-                value={discription}
+                value={discription || ""}
                 {...(errors.discription && {
                   error: true,
                   helperText: errors.discription,
@@ -217,7 +217,7 @@ const AddUnit = (props) => {
                 id="select"
                 variant="outlined"
                 label="Select floor"
-                defaultValue={""}
+                // defaultValue={""}
                 value={floorNumber || ""}
                 size="small"
                 onChange={(e) => {
