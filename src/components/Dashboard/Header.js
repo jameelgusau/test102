@@ -25,7 +25,7 @@ function Header() {
   const open = Boolean(anchorEl);
   useEffect(() => {
     if(!proImage){
-      getProfileImage(user.jwtToken)
+      getProfileImage(user?.jwtToken)
     }
 
      // eslint-disable-next-line

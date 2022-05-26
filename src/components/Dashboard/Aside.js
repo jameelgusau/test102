@@ -92,7 +92,7 @@ const Aside = () => {
         </button>
         <div className="sidenav__list">
           {list}
-          {user.role && user.role ==="Admin" && (
+          {user?.role && user?.role ==="Admin" && (
             list2
           ) }
         </div>

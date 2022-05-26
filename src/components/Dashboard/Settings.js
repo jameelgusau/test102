@@ -22,7 +22,6 @@ const Settings = (props) => {
   const handleChange = async (e) => {
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
-    //  setFile(base64)
     setImage(base64);
     console.log(base64.length);
   };
@@ -65,12 +64,12 @@ const Settings = (props) => {
       console.log(data);
       const url = `${baseUrl}${path}`;
       // const response = await requestImg(method, url,formData.get("image"), user.jwtToken);
-      const response = await requestJwt(method, url, data, user.jwtToken);
+      const response = await requestJwt(method, url, data, user?.jwtToken);
       // console.log(response);
       if (response.meta && response.meta.status === 200) {
         console.log(response);
         // await getImage(params.id);
-        await getProfileImage(user.jwtToken)
+        await getProfileImage(user?.jwtToken)
         dispatch(
           setAlert({
             open: true,
@@ -174,9 +173,9 @@ const Settings = (props) => {
             </div>
           {/* </form> */}
           <div className="profile_details">
-           <h4 className="profile_details__text">{user.name}</h4>
-           <h4 className="profile_details__text2">{user.email}</h4>
-           <h4 className="profile_details__text2">{user.phone}</h4>
+           <h4 className="profile_details__text">{user?.name}</h4>
+           <h4 className="profile_details__text2">{user?.email}</h4>
+           <h4 className="profile_details__text2">{user?.phone}</h4>
           </div>
         
         </div>
