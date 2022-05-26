@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:4000";
-// const baseURL= "https://hommesestate.herokuapp.com"
+// const baseURL = "http://localhost:4000";
+const baseURL = "https://hommesestate.herokuapp.com";
 export default axios.create({
   baseURL,
 });

@@ -1,147 +1,147 @@
 /* eslint-disable import/prefer-default-export */
 export const APIS = {
-  baseUrl: "http://localhost:4000/api",
-  // baseUrl: "https://hommesestate.herokuapp.com/api",
+  // baseUrl: "http://localhost:4000/api",
+  baseUrl: "https://hommesestate.herokuapp.com/api",
 
   initSignup: {
     method: "POST",
-    path: "/register-admin"
+    path: "/register-admin",
   },
   verifytoken: {
     method: "POST",
-    path: "/verify-email"
+    path: "/verify-email",
   },
   refreshtoken: {
     method: "POST",
-    path: "/refresh-token"
+    path: "/refresh-token",
   },
   login: {
     method: "POST",
-    path: "/authenticate"
+    path: "/authenticate",
   },
   initreset: {
     method: "POST",
-    path: "/forgot-password"
+    path: "/forgot-password",
   },
   passwordReset: {
     method: "POST",
-    path: "/reset-password"
+    path: "/reset-password",
   },
   getProperties: {
     method: "GET",
-    path: "/get-property"
+    path: "/get-property",
   },
   addProperties: {
     method: "POST",
-    path: "/add-property"
+    path: "/add-property",
   },
   addUser: {
     method: "POST",
-    path: "/add-user"
+    path: "/add-user",
   },
   getUsers: {
     method: "GET",
-    path: "/"
+    path: "/",
   },
   addUnit: {
     method: "POST",
-    path: "/add-unit"
+    path: "/add-unit",
   },
   addProspect: {
     method: "POST",
-    path: "/prospect"
+    path: "/prospect",
   },
   getProspect: {
     method: "GET",
-    path: "/prospect"
+    path: "/prospect",
   },
   editProspect: {
     method: "PUT",
-    path: "/prospect"
+    path: "/prospect",
   },
   deleteProspect: {
     method: "DELETE",
-    path: ({ id }) => `/prospect/${id}`
+    path: ({ id }) => `/prospect/${id}`,
   },
   inviteLogin: {
     method: "POST",
-    path: "/invite"
+    path: "/invite",
   },
   editUnit: {
     method: "PUT",
-    path: "/edit-unit"
+    path: "/edit-unit",
   },
   getProperty: {
     method: "GET",
-    path: ({ id  }) => `/get-property/${id}`
+    path: ({ id }) => `/get-property/${id}`,
   },
   deleteUnit: {
     method: "DELETE",
-    path: ({ id }) => `/unit/${id}`
+    path: ({ id }) => `/unit/${id}`,
   },
   deleteProperty: {
     method: "DELETE",
-    path: ({ id }) => `/property/${id}`
+    path: ({ id }) => `/property/${id}`,
   },
   editProperty: {
     method: "PUT",
-    path: "/edit-property"
+    path: "/edit-property",
   },
   editUser: {
     method: "PUT",
-    path: "/edit-user"
+    path: "/edit-user",
   },
   editAgent: {
     method: "PUT",
-    path: "/agent"
+    path: "/agent",
   },
   getUnits: {
     method: "GET",
-    path: ({ id, floor }) => `/get-unitsbyfloor/${id}/${floor}`
+    path: ({ id, floor }) => `/get-unitsbyfloor/${id}/${floor}`,
   },
   setPropertyImage: {
     method: "POST",
-    path: "/image"
+    path: "/image",
   },
   getPropertyImage: {
     method: "GET",
-    path: ({ id, floor }) => `/get-propertyimage/${id}/${floor}`
+    path: ({ id, floor }) => `/get-propertyimage/${id}/${floor}`,
   },
   reserveUnit: {
     method: "POST",
-    path:  "/reserve"
+    path: "/reserve",
   },
   getReservedUnits: {
     method: "GET",
-    path: "/get-reserved"
+    path: "/get-reserved",
   },
   deleteReserveUnit: {
     method: "DELETE",
-    path: ({ id }) => `/reserve/${id}`
+    path: ({ id }) => `/reserve/${id}`,
   },
   deleteUser: {
     method: "DELETE",
-    path: ({ id }) => `/${id}`
+    path: ({ id }) => `/${id}`,
   },
   addEmailList: {
     method: "POST",
-    path: "/email-list"
+    path: "/email-list",
   },
   getEmailList: {
     method: "GET",
-    path: ({ group }) => `/email-list/${group}`
+    path: ({ group }) => `/email-list/${group}`,
   },
   deleteEmailList: {
     method: "DELETE",
-    path: ({ id }) => `/email-list/${id}`
+    path: ({ id }) => `/email-list/${id}`,
   },
   deleteAgent: {
     method: "DELETE",
-    path: ({ id }) => `/agent/${id}`
+    path: ({ id }) => `/agent/${id}`,
   },
   getAllReserved: {
     method: "GET",
-    path: "/get-allReserved"
+    path: "/get-allReserved",
   },
   sendRejectLetter: {
     method: "POST",
@@ -153,46 +153,46 @@ export const APIS = {
   },
   addPayment: {
     method: "POST",
-    path: "/add-payment"
+    path: "/add-payment",
   },
   addAgent: {
     method: "POST",
-    path: "/agent"
+    path: "/agent",
   },
   getPayments: {
     method: "GET",
-    path: "/get-payments"
+    path: "/get-payments",
   },
   getAgents: {
     method: "GET",
-    path: "/agent"
+    path: "/agent",
   },
   getAgentsList: {
     method: "GET",
-    path: "/agentList"
+    path: "/agentList",
   },
   getPayment: {
     method: "GET",
-    path: ({ id }) => `/get-payment/${id}`
+    path: ({ id }) => `/get-payment/${id}`,
   },
   addProfileImage: {
     method: "POST",
-    path: "/profileImage"
+    path: "/profileImage",
   },
   getProfileImage: {
     method: "GET",
-    path: "/profileImage"
+    path: "/profileImage",
   },
   logout: {
     method: "POST",
-    path: "/revoke-token"
+    path: "/revoke-token",
   },
   refreshToken: {
     method: "POST",
-    path: "/refresh-token"
+    path: "/refresh-token",
   },
   revokeToken: {
     method: "POST",
-    path: "/revoke-token"
+    path: "/revoke-token",
   },
 };
