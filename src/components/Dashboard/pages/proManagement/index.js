@@ -365,12 +365,13 @@ const ProManagement = () => {
       {/* dialog Reserve Unit */}
       <ReserveUnit unit={unit} getUnits={(e) => getUnits(e)} agents={agents} />
       {/* dialog Add Unit */}
-      <AddUnit floorsArr={floorsArr} getUnits={(e) => getUnits(e)} />
+      <AddUnit floorsArr={floorsArr} getUnits={(e) => getUnits(e)} floor={select} />
       {/* dialog edit Unit */}
       <EditUnit
         floorsArr={floorsArr}
         unit={unit}
         getUnits={(e) => getUnits(e)}
+        floor={select}
       />
       {/* dialog edit Unit */}
       <DeleteUnit unit={unit} getUnits={(e) => getUnits(e)} />

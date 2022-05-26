@@ -8,14 +8,13 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const AddUnit = (props) => {
     const myRef = useRef();
-    const { floorsArr, getUnits } = props
+    const {  getUnits, floor } = props
     const user = useSelector((state) => state.userProfile.value);
     const [errors, setErrors] = useState({});
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
     const [price, setPrice] = useState("");
     const [status, setStatus] = useState("Available");
-    const [floorNumber, setFloorNumber] = useState("Ground floor");
     const [paymentType, setPaymentType] = useState("One-off");
     const [dimension, setDimension] = useState("");
     const [discription, setDiscription] = useState("");
@@ -29,7 +28,6 @@ const AddUnit = (props) => {
       temp.name = name.length > 0  && name.length < 10? "" : "Minimum of 1 characters and less than 10 characters required";
       temp.dimension = dimension.length > 0 ? "" : "Dimension is required";
       temp.discription = discription.length > 2 && discription.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
-      temp.floorNumber = floorNumber.length >  0 ? "" : "Floor number is required";
       temp.price = !isNaN(price) && price.length >= 1 ? "" : "Price is required";
       temp.status = status.length >= 1 ? "" : "Status is required";
       temp.paymentType = paymentType.length >= 1 ? "" : "Payment type is required";
@@ -58,7 +56,7 @@ const AddUnit = (props) => {
             price,
             // releaseDate: date,
             paymentType,
-            floorNumber,
+            floorNumber: floor,
             discription,
             dimension,
             status,
@@ -97,7 +95,7 @@ const AddUnit = (props) => {
       setName("");
       setPaymentType("");
       setPrice("");
-      setFloorNumber("");
+      // setFloorNumber("");
       setDiscription("");
       setDimension("");
       setStatus("");
@@ -135,8 +133,8 @@ const AddUnit = (props) => {
     
       ]
 
-      const closeDialog = async() =>{
-        await dispatch(displayAddUnit("none"))
+      const closeDialog = () =>{
+       dispatch(displayAddUnit("none"))
       }
 
   return (
@@ -211,30 +209,6 @@ const AddUnit = (props) => {
                   helperText: errors.discription,
                 })}
               />
-              <TextField
-                placeholder="Select status"
-                select
-                id="select"
-                variant="outlined"
-                label="Select floor"
-                // defaultValue={""}
-                value={floorNumber || ""}
-                size="small"
-                onChange={(e) => {
-                  e.preventDefault();
-                  setFloorNumber(e.target.value);
-                }}
-                {...(errors.floorNumber && {
-                  error: true,
-                  helperText: errors.floorNumber,
-                })}
-              >
-                {floorsArr && floorsArr.map(({ name }) => (
-                  <MenuItem value={name} key={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </TextField>
               <TextField
                 placeholder="Select status"
                 select

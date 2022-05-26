@@ -8,14 +8,13 @@ import { setAlert } from "../../../../redux/snackbar";
 
 
 const EditUnit = (props) => {
-  const { unit, getUnits, floorsArr } = props
+  const { unit, getUnits, floor} = props
     const myRef = useRef();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [status, setStatus] = useState("Available");
-    const [floorNumber, setFloorNumber] = useState("Ground floor");
     const [paymentType, setPaymentType] = useState("One-off");
     const [dimension, setDimension] = useState("");
     const [discription, setDiscription] = useState("");
@@ -29,7 +28,6 @@ const EditUnit = (props) => {
       setName(unit.name);
       setPaymentType(unit.paymentType);
       setPrice(unit.price);
-      setFloorNumber(unit.floorNumber);
       setDiscription(unit.discription);
       setDimension(unit.dimension);
       setStatus(unit.status);
@@ -41,9 +39,7 @@ const EditUnit = (props) => {
       temp.name = name.length > 0  && name.length < 10? "" : "Minimum of 1 characters and less than 10 characters required";
       temp.dimension = dimension.length > 0 ? "" : "Dimension is required";
       temp.discription = discription.length > 2 && discription.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
-      temp.floorNumber = floorNumber.length >  0 ? "" : "Floor number is required";
       temp.price = !isNaN(price) && price.length >= 1 ? "" : "Price is required";
-      // temp.date = date.length >= 1 ? "" : "Date is required";
       temp.status = status.length >= 1 ? "" : "Status is required";
       temp.paymentType = paymentType.length >= 1 ? "" : "Payment type is required";
   
@@ -67,9 +63,8 @@ const EditUnit = (props) => {
           propertyId: params.id,
           id: unit.id,
           price,
-          // releaseDate: date,
           paymentType,
-          floorNumber,
+          floorNumber: floor,
           discription,
           dimension,
           status,
@@ -87,7 +82,7 @@ const EditUnit = (props) => {
             })
           );
           setEmpty()
-          await closeDialog()
+          closeDialog()
         }
         if (response.meta && response.meta.status >= 400) {
           setLoading(false);
@@ -138,15 +133,15 @@ const EditUnit = (props) => {
         setName("");
         setPaymentType("");
         setPrice("");
-        setFloorNumber("");
+        // setFloorNumber("");
         setDiscription("");
         setDimension("");
         setStatus("");
         
       }
-      const closeDialog = async() =>{
-        await dispatch(displayReserve("none"))
-        await dispatch(displayEditUnit("none"))
+      const closeDialog = () =>{
+       dispatch(displayReserve("none"))
+        dispatch(displayEditUnit("none"))
       }
 
 
@@ -210,25 +205,6 @@ const EditUnit = (props) => {
                 value={discription}
                 {...(errors.discription && { error: true, helperText: errors.discription })}
               />
-              <TextField
-                placeholder="Select status"
-                select
-                id="select"
-                variant="outlined"
-                label= "Select floor"
-                value={floorNumber || ""}
-                size="small"
-                onChange={(e) => {
-                  e.preventDefault();
-                  setFloorNumber(e.target.value);
-                }}
-              >
-                {floorsArr.map(({ name}) => (
-                  <MenuItem value={name} key={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </TextField>
               <TextField
                 placeholder="Select status"
                 select
