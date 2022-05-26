@@ -30,7 +30,6 @@ const ProManagement = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  
   const [select, setSelect] = useState("Ground floor");
   const [unit, setUnit] = useState({});
   const [loading, setLoading] = useState(false);
