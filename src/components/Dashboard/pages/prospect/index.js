@@ -135,10 +135,14 @@ const Prospects = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
-        dispatch(setProspect(response?.data?.data));
+        console.log(response?.data, "response.data")
+        if(response?.data){
+          dispatch(setProspect(response?.data?.data));
+        }
+        
         console.log(isMounted)
       }catch(err){
+        console.log(err, "error")
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
         setLoading(false);

@@ -112,7 +112,8 @@ const Agent = () => {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(setAgents(response?.data?.data));
+        if(response?.data){
+        dispatch(setAgents(response?.data?.data))};
        
         console.log(isMounted)
       }catch(err){

@@ -126,7 +126,8 @@ const Users = () => {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(setUsers(response?.data?.data));
+        if(response?.data){
+        dispatch(setUsers(response?.data?.data))};
         console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})

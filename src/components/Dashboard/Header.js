@@ -52,7 +52,8 @@ function Header() {
           signal: controller.signal
         });
         console.log(response.data, "response")
-        dispatch(setProfileImage(response?.data?.data))
+        if(response?.data){
+        dispatch(setProfileImage(response?.data?.data))}
         console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
@@ -94,7 +95,8 @@ const logout = async ()=>{
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(userProfile(response?.data?.data))
+        if(response?.data){
+        dispatch(userProfile(response?.data?.data))}
         console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})

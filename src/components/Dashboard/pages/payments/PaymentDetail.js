@@ -38,7 +38,8 @@ const PaymentDetail = () => {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(setPayment(response?.data?.data));
+        if(response?.data){
+        dispatch(setPayment(response?.data?.data))};
         console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})

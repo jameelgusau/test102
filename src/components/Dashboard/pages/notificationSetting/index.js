@@ -76,7 +76,8 @@ const NotificationSetting = () => {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(setEmailList(response?.data?.data));
+        if(response?.data){
+        dispatch(setEmailList(response?.data?.data))};
         console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})

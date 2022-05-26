@@ -83,8 +83,9 @@ const ProManagement = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
-        dispatch(setUnits(response?.data?.data));
+        console.log(response, "response.data")
+        if(response?.data){
+        dispatch(setUnits(response?.data?.data))};
         console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
@@ -113,7 +114,8 @@ const ProManagement = () => {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(setProperty(response?.data?.data));
+        if(response?.data){
+        dispatch(setProperty(response?.data?.data))};
        
         console.log(isMounted)
       }catch(err){
@@ -144,7 +146,8 @@ const ProManagement = () => {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
-        dispatch(setAgentsList(response?.data?.data));
+        if(response?.data){
+        dispatch(setAgentsList(response?.data?.data))};
        
         console.log(isMounted)
       }catch(err){
