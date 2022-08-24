@@ -133,7 +133,6 @@ const EditUnit = (props) => {
         setName("");
         setPaymentType("");
         setPrice("");
-        // setFloorNumber("");
         setDiscription("");
         setDimension("");
         setStatus("");

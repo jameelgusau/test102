@@ -1,14 +1,16 @@
-.container {
-    background-color: #fff;
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    // box-sizing: border-box;
-    justify-content: center;
-    align-content: center;
-  }
+// .container {
+//     background-color: #fff;
+//     width: 100vw;
+//     height: 100vh;
+//     display: grid;
+//     // box-sizing: border-box;
+//     justify-content: center;
+//     align-content: center;
+//   }
   
   .initpassword{
+    background-color: #fff;
+    border-radius: 5px;
     box-shadow: 0px 3px 20px #0000001A;
     min-width: 350px;
     display: flex;

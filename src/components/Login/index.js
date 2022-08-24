@@ -8,6 +8,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { setAlert } from "../../redux/snackbar";
 import { APIS, request } from "../../_services";
+import logo2 from '../../assets/img/whitelogo.svg'
 import { userProfile } from '../../redux/userProfile'
 
 
@@ -84,6 +85,8 @@ function Login() {
   };
   return (
     <div className="container">
+    <img src={logo2} alt="Logo" className="logowhite"/>
+    {/* <img src={logo2} alt="Logo" style={{ display: "flex", alignContent: "center"}}/> */}
       <div className="login">
       <div className="login__already">
           <p className="login__already--paragraph">Don’t Have An Account? <Link to="/signup">Register</Link>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {TextField, CircularProgress,Button} from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
 import { APIS, request } from "../../_services";
+import logo2 from '../../assets/img/whitelogo.svg'
 
 
 
@@ -54,6 +55,7 @@ function InitReset() {
   };
   return (
     <div className="container">
+      <img src={logo2} alt="Logo" className="logowhite"/>
       <div className="initpassword">
       <div className="login__already">
           <p className="login__already--paragraph"><Link to="/">back to Login</Link>

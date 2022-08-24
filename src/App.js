@@ -22,7 +22,7 @@ import Unauthorized from "./components/Dashboard/pages/unauthorized";
 import RequireAuth from "./RequiredAuth";
 const theme = createTheme({
   palette: {
-    primary: { main: "#0b2d40" },
+    primary: { main: "#CC5518" },
     secondary: { main: "#CC0000" },
   },
   typography: {

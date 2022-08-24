@@ -7,6 +7,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { TextField, CircularProgress, Button } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import logo2 from '../../assets/img/whitelogo.svg'
 
 function Signup() {
   let navigate = useNavigate();
@@ -97,6 +98,7 @@ function Signup() {
   };
   return (
     <div className="container">
+      <img src={logo2} alt="Logo" className="logowhite"/>
       <div className="signup">
         <div className="signup__already">
           <p className="signup__already--paragraph">

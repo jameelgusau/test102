@@ -5,6 +5,7 @@ import { IconContext } from "react-icons";
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
 import { RiMailCloseLine } from 'react-icons/ri';
 import { NavLink } from "react-router-dom";
+import logo2 from '../../assets/img/whitelogo.svg'
 import {
   useParams
 } from "react-router-dom";
@@ -52,6 +53,7 @@ function ConfirmEmail() {
        <Loading />
      ):(
       <div className="container">
+      <img src={logo2} alt="Logo" className="logowhite"/>
       <div className="confirm">
  
         <div className="confirm__email">
