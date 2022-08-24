@@ -382,5 +382,4 @@ const ProManagement = () => {
     </>
   );
 };
-
 export default ProManagement;

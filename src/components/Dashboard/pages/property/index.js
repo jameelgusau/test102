@@ -50,7 +50,7 @@ const Property = () => {
     const controller =  new AbortController();
     const getProperties =  async () =>{
       try{
-        const response = await axiosPrivate.get(`/api/${path}`, {
+        const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal
         });
         console.log(response.data, "response.data")
