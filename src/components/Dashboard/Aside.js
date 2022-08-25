@@ -6,6 +6,7 @@ import { MdOutlineDashboard, MdOutlineEditNotifications }  from "react-icons/md"
 import { BsHouse, BsPeople, BsCalendar2Check, BsCurrencyDollar } from "react-icons/bs";
 import { RiReservedLine } from "react-icons/ri";
 import { HiOutlineUserGroup } from "react-icons/hi";
+import logo2 from '../../assets/img/whitelogo.svg'
 
 const Aside = () => {
   const user = useSelector((state) => state.userProfile.value);
@@ -90,6 +91,9 @@ const Aside = () => {
         <button className="sidenav__close-icon"  onClick={() => setShowLinks(!showLinks)}>
           <AiOutlineClose />
         </button>
+        <div className="sidenav__logo">
+        <img src={logo2} alt="Logo" className="sidenav__logo-icon"/>
+        </div>
         <div className="sidenav__list">
           {list}
           {user?.role && user?.role ==="Admin" && (

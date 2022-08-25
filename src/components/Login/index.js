@@ -101,6 +101,8 @@ function Login() {
             variant="outlined"
             className="login__input--item-a"
             type="email"
+            
+            autoComplete="email"
             onChange={({ target }) => {
               setEmail(target.value);
             }}
@@ -116,7 +118,7 @@ function Login() {
             variant="outlined"
             className="login__input--item-a"
             type={showPassword ? "text" : "password"}
-            autoComplete="new-password"
+            autoComplete="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
             {...(errors.password && {

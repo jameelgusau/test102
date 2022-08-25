@@ -14,7 +14,6 @@ import Loading from "../Loading";
 function ConfirmEmail() {
   // const 
   let params = useParams();
-  console.log(params.id)
   const [ loading, setLoading ] = useState(false);
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");

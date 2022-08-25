@@ -63,9 +63,7 @@ const Settings = (props) => {
       };
       console.log(data);
       const url = `${baseUrl}${path}`;
-      // const response = await requestImg(method, url,formData.get("image"), user.jwtToken);
       const response = await requestJwt(method, url, data, user?.jwtToken);
-      // console.log(response);
       if (response.meta && response.meta.status === 200) {
         console.log(response);
         // await getImage(params.id);

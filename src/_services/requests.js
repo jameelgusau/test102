@@ -4,7 +4,6 @@
 let download = require("downloadjs");
 
 export const request = async (method, url, data) => {
-  // console.log(method, url, data);
   const opts = {
     method,
     credentials: 'include',
@@ -24,7 +23,7 @@ export const request = async (method, url, data) => {
   }
 };
 
-export const requestDelete = async (method, url, jwt, FP) => {
+export const requestDelete = async (method, url, jwt) => {
   console.log(method, url);
   const opts = {
     method,
@@ -77,37 +76,37 @@ export const requestJwt = (method, url, data, jwt) => {
 
 
 
-export const requestImg = (method, url, data, jwt) => {
-  console.log(data)
-  const opts =
-    method === "GET"
-      ? {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`
-          }
-        }
-      : {
-          method,
-          headers: {
-            // "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`
-          },
-          body: data
-        };
-  return fetch(url, opts)
-    .then(res =>
-      res.json().then(jsonData => ({ ...jsonData, status: res.status }))
-    )
-    .then(response => {
-      console.log(response, method, url);
-      return response;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-};
+// export const requestImg = (method, url, data, jwt) => {
+//   console.log(data)
+//   const opts =
+//     method === "GET"
+//       ? {
+//           method,
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${jwt}`
+//           }
+//         }
+//       : {
+//           method,
+//           headers: {
+//             // "Content-Type": "application/json",
+//             Authorization: `Bearer ${jwt}`
+//           },
+//           body: data
+//         };
+//   return fetch(url, opts)
+//     .then(res =>
+//       res.json().then(jsonData => ({ ...jsonData, status: res.status }))
+//     )
+//     .then(response => {
+//       console.log(response, method, url);
+//       return response;
+//     })
+//     .catch(error => {
+//       console.log(error);
+//     });
+// };
 export const downloadFile = (method, url, data, jwt, fileName) => {
   const opts =
     method === "GET"
