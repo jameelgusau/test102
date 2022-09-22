@@ -18,23 +18,36 @@
         margin: 10px;
     }
   }
-
+  .keys{
+    display: flex;
+    margin: 2rem;
+    &__item{
+      display: flex;
+      margin-right: 2rem;
+    }
+  }
   .propertycard {
     // display: flex;
     // // align-items: center;
     // justify-content: space-between;
+    box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
     display: grid;
     grid-template-columns: 5rem 1fr;
     justify-content: center;
+    align-items: center;
     row-gap: 10px;
     padding: 20px;
-    border-radius: 3px;
+    border-radius: 5px;
     background-color: #fff;
     &__icon{
       &--units{
         font-size: 14px;
         font-weight: 600;
       }
+    }
+    &__info{
+        font-size: 1.5rem;
+        font-weight: 900;
     }
     &__details{
       grid-column: 1 / -1;

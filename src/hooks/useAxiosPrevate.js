@@ -30,7 +30,7 @@ const useAxiosPrevate = () => {
                      prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
                      return axiosPrivate(prevRequest)
                  }
-                 return  (error) => Promise.reject(error)
+                return  (error) => Promise.reject(error)
             }
         );
         return () =>{

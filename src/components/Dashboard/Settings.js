@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Button, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { displaySettings } from "../../redux/display";
-import { APIS, requestJwt } from "../../_services";
+import { APIS, requestImg } from "../../_services";
 import { IoCameraOutline } from "react-icons/io5";
 import { setAlert } from "../../redux/snackbar";
 import { IconContext } from "react-icons";
@@ -11,9 +11,11 @@ import imgs from "../../assets/img/avatar.jpeg";
 const Settings = (props) => {
   const { getProfileImage } = props
   const myRef = useRef();
+     // eslint-disable-next-line 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
+  const [newImage, setNewImage] = useState([]);
   const user = useSelector((state) => state.userProfile.value);
   const proImage = useSelector((state) => state.profileImage.value);
   const display = useSelector((state) => state.display.openSettings);
@@ -21,6 +23,7 @@ const Settings = (props) => {
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
+    setNewImage(e.target.files)
     const base64 = await convertBase64(file);
     setImage(base64);
     console.log(base64.length);
@@ -39,31 +42,22 @@ const Settings = (props) => {
       };
     });
   };
-  const validate = () => {
-    let temp = {};
-    temp.image = image.length !== "" ? "" : "Image required";
-    setErrors({
-      ...temp,
-    });
-    return Object.values(temp).every((x) => x === "");
-  };
 
   const uploadFile = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (validate()) {
-      // console.log(file)
+    console.log(newImage)
+    const formData = new FormData();
+    Object.keys(newImage).forEach(key =>{
+      formData.append(newImage.item(key).name, newImage.item(key))});
       const {
         baseUrl,
         addProfileImage: { method, path },
       } = APIS;
-      const data = {
-        image,
-   
-      };
-      console.log(data);
       const url = `${baseUrl}${path}`;
-      const response = await requestJwt(method, url, data, user?.jwtToken);
+        const response = await requestImg(method, url, formData, user.jwtToken);
+          console.log(response)
+          // closeDialog();
       if (response.meta && response.meta.status === 200) {
         console.log(response);
         // await getImage(params.id);
@@ -78,21 +72,19 @@ const Settings = (props) => {
         );
        
         closeDialog();
-      }
-      if (response.meta && response.meta.status >= 400) {
+      }else{
         dispatch(
           setAlert({
             open: true,
             severity: "error",
             color: "error",
-            message: response.meta.message,
+            message: response.message,
           })
         );
         setLoading(false);
       }
-      // console.log(response);
+      console.log(response);
       setLoading(false);
-    }
   };
 
   const closeDialog = () => {
@@ -115,13 +107,17 @@ const Settings = (props) => {
             <div className="property-input">
               <div>
                 <div className="setting-container">
-                  {!image && ( proImage ?  <img src={proImage.image} height="200px" className="setting-avatar" alt=""/> :
+                  {!image && ( proImage ?  <img
+                    src={`http://localhost:4000/images/${proImage.image}`}
+                  // src={proImage.image}
+                   height="200px" className="setting-avatar" alt=""/> :
                     <img src={imgs} height="200px" className="setting-avatar" alt=""/>
                   )}
                   {image && (
                     <>
                     <img
                       src={image}
+                    
                       height="200px"
                       className="setting-avatar"
                       alt=""

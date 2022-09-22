@@ -107,7 +107,7 @@ const MyReservation = () => {
               <h4 className="model-body__row--text end">{item.unit.name}</h4>
               <h4 className="model-body__row--text">Floor Number:</h4>
               <h4 className="model-body__row--text end">{item.unit.floorNumber}</h4>
-              <h4 className="model-body__row--text">Dimention:</h4>
+              <h4 className="model-body__row--text">Dimension:</h4>
               <h4 className="model-body__row--text end">{item.unit.dimension} sq m</h4>
               <h4 className="model-body__row--text">Price:</h4>
               <h4 className="model-body__row--text end">&#8358; {item.unit.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h4>

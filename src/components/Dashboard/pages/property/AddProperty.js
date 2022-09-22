@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TextField, MenuItem, Button, CircularProgress } from "@mui/material";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS, requestImg,
+  //  requestJwt 
+  } from "../../../../_services";
 import { displayAddProperty } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
 
@@ -21,6 +23,26 @@ const AddProperty = (props) => {
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.display.openAddProperty);
+  const ref = useRef();
+
+  //   const handleSubmit= async(e)=>{
+  //   e.preventDefault();
+  //   // console.log(ref.current.files)
+  //   const files = ref.current.files
+  //   const formData = new FormData();
+  //   Object.keys(files).forEach(key =>{
+  //     formData.append(files.item(key).name, files.item(key))});
+  //   console.log(formData)
+  //   const response = await fetch('http://localhost:4000/api/upload', {
+  //     method: 'POST',
+  //     headers: {
+  //       Authorization: `Bearer ${user.jwtToken}`
+  //     },
+  //     body: formData
+  //   })
+  //   const data = await response.json();
+  //   console.log(data);
+  // }
 
   const submit = async (e) => {
     e.preventDefault();
@@ -30,16 +52,31 @@ const AddProperty = (props) => {
         baseUrl,
         addProperties: { method, path },
       } = APIS;
-      const data = {
-        name,
-        address,
-        num_of_floors: floors,
-        num_of_units: units,
-        completion_date: date,
-        status,
-      };
+      const files = ref.current.files;
+      const formData = new FormData();
+      Object.keys(files).forEach((key) => {
+        formData.append(files.item(key).name, files.item(key));
+      });
+      // formData.append("data",data)
+      formData.append("name", name);
+      formData.append("address", address);
+      formData.append("num_of_floors", floors);
+      formData.append("num_of_units", units);
+      formData.append("completion_date", date);
+      formData.append("status", status);
       const url = `${baseUrl}${path}`;
-      const response = await requestJwt(method, url, data, user.jwtToken);
+      console.log(url);
+      const response = await requestImg(method, url, formData, user.jwtToken);
+      console.log(response)
+    //   const response = await fetch( url, {
+    //   method,
+    //   headers: {
+    //     Authorization: `Bearer ${user.jwtToken}`
+    //   },
+    //   body: formData
+    // })
+    // console.log(response);
+      // const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
         await getProperties(user.jwtToken);
         dispatch(
@@ -51,15 +88,20 @@ const AddProperty = (props) => {
           })
         );
         closeDialog();
+        clearInput()
+        
       }
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
         setErrMessage(response.meta.message);
-        dispatch(setAlert({ open: true,
-          severity: "error",
-          color: "error",
-          message: response.meta.message
-      }))
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "error",
+            color: "error",
+            message: response.meta.message,
+          })
+        );
         setErr(true);
         setTimeout(() => {
           setErr(false);
@@ -69,6 +111,7 @@ const AddProperty = (props) => {
     }
     setLoading(false);
   };
+
 
   const validate = () => {
     let temp = {};
@@ -105,7 +148,17 @@ const AddProperty = (props) => {
   const closeDialog = () => {
     dispatch(displayAddProperty("none"));
   };
+  const clearInput = () => {
+    setLoading(false);
+    setName("")
+    setAddress("")
+    setStatus("")
+    setFloors("")
+    setUnits("")
+    setDate("")
+    ref.current.value = "";
 
+  }
   return (
     <>
       <div className="modal" style={{ display: `${display}` }}>
@@ -209,6 +262,13 @@ const AddProperty = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <input
+                type="file"
+                name="image"
+                ref={ref}
+                multiple
+                accept="image/*"
+              />
               <div className="property-input__btn">
                 <Button
                   variant="contained"

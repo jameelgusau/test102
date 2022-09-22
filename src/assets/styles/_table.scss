@@ -2,6 +2,8 @@
   background-color: #fff;
   margin-top: 20px;
   padding: 20px;
+  box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
+  border-radius: 5px;
 }
 
 @include responsive(tab-port) {
@@ -25,10 +27,12 @@
     padding: 20px;
     text-align: left;
     white-space: nowrap;
+    font-size: 14px;
   }
 }
 .tableHead {
   font-weight: 700;
+  background: #F5F5F5;
 }
 .pagination-container{
     display: flex;

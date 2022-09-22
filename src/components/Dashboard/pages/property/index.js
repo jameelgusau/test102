@@ -8,7 +8,9 @@ import { BsHouse } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLocationOutline, IoAddOutline } from "react-icons/io5";
 import { BsFillCircleFill } from "react-icons/bs";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink,
+  //  useNavigate, useLocation 
+  } from "react-router-dom";
 import { APIS } from "../../../../_services";
 import { setProperties } from "./../../../../redux/Properties";
 import AddProperty from "./AddProperty";
@@ -26,49 +28,49 @@ import { NotFound } from "../../../../assets/img/Icons";
 const Property = () => {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation()
+  // const navigate = useNavigate();
+  // const location = useLocation();
   const [property, setProperty] = useState({});
-  const [loading, setLoading] =  useState(false);
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
   const properties = useSelector((state) => state.properties.value);
-
-
   useEffect(() => {
     getProperties();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
   const getProperties = async () => {
-    let isMounted  = true;
-    setLoading(true)
+    let isMounted = true;
+    setLoading(true);
     const {
       getProperties: { path },
     } = APIS;
 
     setLoading(true);
-    const controller =  new AbortController();
-    const getProperties =  async () =>{
-      try{
+    const controller = new AbortController();
+    const getProperties = async () => {
+      try {
         const response = await axiosPrivate.get(`/api${path}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        console.log(response.data, "response.data")
-        if(response?.data){
-            dispatch(setProperties(response?.data?.data))};
-       
-        console.log(isMounted)
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        console.log(response.data, "response.data");
+        if (response?.data) {
+          dispatch(setProperties(response?.data?.data));
+        }
+
+        console.log(isMounted);
+      } catch (err) {
+        console.log(err, "err")
+        // navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getProperties()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getProperties();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
     // const url = `${baseUrl}${path}`;
     // const response = await requestJwt(method, url, {}, data);
     // console.log(response, "hahah")
@@ -87,6 +89,7 @@ const Property = () => {
     // setLoading(false)
   };
 
+
   const openDialog = () => {
     dispatch(displayAddProperty("block"));
   };
@@ -102,22 +105,58 @@ const Property = () => {
           </IconContext.Provider>
         </div>
       )}
+      <div className="keys">
+        <div className="keys__item">
+          <IconContext.Provider value={{ color: "green", className: "dot" }}>
+            <div>
+              <BsFillCircleFill />
+            </div>
+          </IconContext.Provider>
+          <p>Available</p>
+        </div>
+        <div className="keys__item">
+          <IconContext.Provider value={{ color: "red", className: "dot" }}>
+            <div>
+              <BsFillCircleFill />
+            </div>
+          </IconContext.Provider>
+          <p>Sold</p>
+        </div>
+        <div className="keys__item">
+          <IconContext.Provider value={{ color: "indigo", className: "dot" }}>
+            <div>
+              <BsFillCircleFill />
+            </div>
+          </IconContext.Provider>
+          <p>Occupied</p>
+        </div>
+        <div className="keys__item">
+          <IconContext.Provider value={{ color: "yellow", className: "dot" }}>
+            <div>
+              <BsFillCircleFill />
+            </div>
+          </IconContext.Provider>
+          <p>Reserved</p>
+        </div>
+      </div>
       {loading && (
-        <div  className="emptyD">
+        <div className="emptyD">
           <Loading />
         </div>
       )}
-        {!loading && properties.length === 0 && (
+      {!loading && properties.length === 0 && (
         <div className="emptyD">
           <NotFound size="100px" color="#0b2d40" />
         </div>
       )}
       {!loading && properties.length > 0 && (
-          <div className="property-overview">
+        <div className="property-overview">
           {properties.map((item) => (
             <div className="propertycard" key={item.id}>
               <div className="propertycard__icon">
-                <IconContext.Provider value={{ className: "global-class-name" }}>
+                <IconContext.Provider
+                  value={{ className: "global-class-name" }}
+                >
                   <div>
                     <BsHouse />
                   </div>
@@ -126,9 +165,11 @@ const Property = () => {
               <div className="propertycard__info">
                 <p>{item.name}</p>
               </div>
-  
+
               <div className="propertycard__icon">
-                <IconContext.Provider value={{ className: "global-class-name" }}>
+                <IconContext.Provider
+                  value={{ className: "global-class-name" }}
+                >
                   <div>
                     <IoLocationOutline />
                   </div>
@@ -183,7 +224,7 @@ const Property = () => {
                   <p>10</p>
                 </div>
               </div>
-  
+
               {user.role && user.role === "Admin" && (
                 <div className="edit-property">
                   <div
@@ -218,7 +259,7 @@ const Property = () => {
                   </div>
                 </div>
               )}
-  
+
               <div className="propertycard__button">
                 <NavLink to={item.id} className="propertycard__button--btn">
                   Check Available units
@@ -226,16 +267,13 @@ const Property = () => {
               </div>
             </div>
           ))}
-        </div>)
-      }
+        </div>
+      )}
 
       {/* Add property dialog */}
       <AddProperty getProperties={() => getProperties()} />
       {/* Edit Property */}
-      <EditProperty
-        property={property}
-        getProperties={() => getProperties()}
-      />
+      <EditProperty property={property} getProperties={() => getProperties()} />
       {/* Delete */}
       <DeleteProperty
         property={property}

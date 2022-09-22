@@ -74,6 +74,33 @@ export const requestJwt = (method, url, data, jwt) => {
     });
 };
 
+export const requestImg= async (method, url, data, jwt) => {
+  const opts =
+    method === "GET"
+      ? {
+          method,
+          headers: {
+            Authorization: `Bearer ${jwt}`
+          }
+        }
+      : {
+          method,
+          headers: {
+            Authorization: `Bearer ${jwt}`
+          },
+          body: data
+        };
+  try {
+    const res = await fetch(url, opts);
+    const jsonData = await res.json();
+    const response = ({ ...jsonData, status: res.status });
+    console.log(response, method, url);
+    return response;
+  } catch (error) {
+    console.log(error, "error");
+    return error
+  }
+};
 
 
 // export const requestImg = (method, url, data, jwt) => {

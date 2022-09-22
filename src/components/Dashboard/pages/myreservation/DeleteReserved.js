@@ -49,7 +49,7 @@ const DeleteReserved = (props) => {
   };
 
   const closeDialog = async() =>{
-    await dispatch(displayDeleteReserve("none"))
+ dispatch(displayDeleteReserve("none"))
 
   }
 

@@ -1,7 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 export const APIS = {
-  // baseUrl: "http://localhost:4000/api",
-  baseUrl: "https://hommesestate.herokuapp.com/api",
+  baseUrl: "https://api.hommesestate.com:9090/api",
+  // baseUrl: "http://localhost:9090/api",
+  // https://api.hommesestate.com:9090/
+  // baseUrl: "https://hommesestate.herokuapp.com/api",
 
   initSignup: {
     method: "POST",
@@ -99,7 +101,7 @@ export const APIS = {
     method: "GET",
     path: ({ id, floor }) => `/get-unitsbyfloor/${id}/${floor}`,
   },
-  setPropertyImage: {
+  setFloorImage: {
     method: "POST",
     path: "/image",
   },
@@ -194,5 +196,9 @@ export const APIS = {
   revokeToken: {
     method: "POST",
     path: "/revoke-token",
+  },
+  upload: {
+    method: "POST",
+    path: "/upload",
   },
 };

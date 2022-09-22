@@ -181,7 +181,7 @@ const ProManagement = () => {
         setImage(response?.data?.data)
         console.log(isMounted)
       }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
+        // navigate('/login', { state: {from: location}, replace: true})
       }finally{
         setLoadingImage(false);
       }

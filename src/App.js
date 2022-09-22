@@ -9,7 +9,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import CustomizedSnackbars from "./Snackbar";
-import Reservations  from "./components/Dashboard/pages/reservation";
+import Reservations from "./components/Dashboard/pages/reservation";
 import NotificationSetting from "./components/Dashboard/pages/notificationSetting";
 import Users from "./components/Dashboard/pages/users";
 import Prospect from "./components/Dashboard/pages/prospect";
@@ -47,18 +47,17 @@ const App = () => {
         <CustomizedSnackbars />
         <Suspense fallback={<Loading />}>
           <Routes>
+            <Route path="/" element={<Dashboard />}>
               <Route
-                path="/"
                 element={
-                  <Dashboard />
+                  <RequireAuth allowRoles={["Admin", "User", "Prospect"]} />
                 }
               >
-                <Route element={<RequireAuth  allowRoles={["Admin", "User", "Prospect"]}/>}>
                 <Route path="" element={<Home />} />
                 <Route path="property/*" element={<PropRoutes />} />
                 <Route path="myreservation/*" element={<MyReservation />} />
-                </Route>
-                <Route element={<RequireAuth  allowRoles={["Admin"]}/>}>
+              </Route>
+              <Route element={<RequireAuth allowRoles={["Admin"]} />}>
                 <Route path="prospects" element={<Prospect />} />
                 <Route path="users" element={<Users />} />
                 <Route
@@ -70,7 +69,7 @@ const App = () => {
                 <Route path="agents" element={<Agent />} />
               </Route>
             </Route>
-           
+
             <Route path="signup" element={<Signup />} />
             <Route path="checkmail" element={<CheckMail />} />
             <Route path="resetmail" element={<ResetMail />} />

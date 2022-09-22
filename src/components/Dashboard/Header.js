@@ -54,9 +54,10 @@ function Header() {
         console.log(response.data, "response")
         if(response?.data){
         dispatch(setProfileImage(response?.data?.data))}
+        console.log(response.data, "response")
         console.log(isMounted)
       }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
+        // navigate('/login', { state: {from: location}, replace: true})
       }finally{
         setLoading(false);
       }
@@ -66,19 +67,6 @@ function Header() {
       isMounted = false
       controller.abort()
     }
-
-    // const {
-    //   baseUrl,
-    //   getProfileImage: { method, path },
-    // } = APIS;
-    // const url = `${baseUrl}${path}`;
-    // const response = await requestJwt(method, url, {}, data);
-    // if (response.meta && response.meta.status === 200) {
-    //   dispatch(setProfileImage(response.data));
-    // }
-    // if (response.meta && response.meta.status >= 400) {
-    //   dispatch(setProfileImage(null));
-    // }
   };
 
 const logout = async ()=>{
@@ -122,7 +110,7 @@ const logout = async ()=>{
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            { proImage ? (<img src={proImage.image} alt="Avatar" className="header__avatar" />):
+            { proImage ? (<img src={`http://localhost:4000/images/${proImage.image}`} alt="Avatar" className="header__avatar" />):
               (<img src={imgs} alt="Avatar" className="header__avatar" />)
             }
           </div>

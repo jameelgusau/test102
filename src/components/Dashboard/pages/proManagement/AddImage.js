@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TextField, Button, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { displayAddImage } from "../../../../redux/display";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS, requestImg } from "../../../../_services";
 import { useParams } from "react-router-dom";
 import { setAlert } from "../../../../redux/snackbar";
 
@@ -10,15 +10,18 @@ const AddImage = (props) => {
   const { getImage, floor } = props;
   let params = useParams();
   const myRef = useRef();
+  const [newImage, setNewImage] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
+
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.display.openAddImage);
   const dispatch = useDispatch();
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
+    setNewImage(e.target.files)
     const base64 = await convertBase64(file);
     //  setFile(base64)
     setImage(base64);
@@ -52,18 +55,24 @@ const AddImage = (props) => {
     setLoading(true);
     if (validate()) {
       // console.log(file)
+      console.log(newImage)
+      const formData = new FormData();
+      Object.keys(newImage).forEach(key =>{
+        formData.append(newImage.item(key).name, newImage.item(key))});
+        formData.append("propertyId", params.id);
+        formData.append("floorNumber", floor);
       const {
         baseUrl,
-        setPropertyImage: { method, path },
+        setFloorImage: { method, path },
       } = APIS;
-      const data = {
-        image,
-        propertyId: params.id,
-        floorNumber: floor,
-      };
-      console.log(data);
+      // const data = {
+      //   image,
+      //   propertyId: params.id,
+      //   floorNumber: floor,
+      // };
+      // console.log(data);
       const url = `${baseUrl}${path}`;
-      const response = await requestJwt(method, url, data, user.jwtToken);
+      const response = await requestImg(method, url, formData, user.jwtToken);
       // console.log(response);
       if (response.meta && response.meta.status === 200) {
         console.log(response);
