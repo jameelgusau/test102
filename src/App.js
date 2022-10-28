@@ -17,9 +17,13 @@ import MyReservation from "./components/Dashboard/pages/myreservation";
 import PaymentRoutes from "./components/Dashboard/pages/payments/PaymentRoutes";
 import PropRoutes from "./components/Dashboard/pages/property/proRoutes";
 import Home from "./components/Dashboard/pages/home";
-import Agent from "./components/Dashboard/pages/agent";
+// import Agent from "./components/Dashboard/pages/agent";
 import Unauthorized from "./components/Dashboard/pages/unauthorized";
 import RequireAuth from "./RequiredAuth";
+import Store from "./components/Dashboard/pages/store";
+import Item from "./components/Dashboard/pages/items";
+import Category from "./components/Dashboard/pages/category";
+
 const theme = createTheme({
   palette: {
     primary: { main: "#CC5518" },
@@ -57,7 +61,12 @@ const App = () => {
                 <Route path="property/*" element={<PropRoutes />} />
                 <Route path="myreservation/*" element={<MyReservation />} />
               </Route>
+              <Route element={<RequireAuth allowRoles={["Admin", "User"]} />}>
+                <Route path="category" element={<Category />} />
+                <Route path="item" element={<Item />} />
+              </Route>
               <Route element={<RequireAuth allowRoles={["Admin"]} />}>
+                <Route path="store" element={<Store />} />
                 <Route path="prospects" element={<Prospect />} />
                 <Route path="users" element={<Users />} />
                 <Route
@@ -66,7 +75,7 @@ const App = () => {
                 />
                 <Route path="reservations" element={<Reservations />} />
                 <Route path="payments/*" element={<PaymentRoutes />} />
-                <Route path="agents" element={<Agent />} />
+                {/* <Route path="agents" element={<Agent />} /> */}
               </Route>
             </Route>
 

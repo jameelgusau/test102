@@ -30,7 +30,7 @@ const MyReservation = () => {
        // eslint-disable-next-line
   }, []);
 
-  const getReservedUnit = async (jwt) => {
+  const getReservedUnit = async () => {
 
     let isMounted  = true;
     const {
@@ -77,7 +77,9 @@ const MyReservation = () => {
   };
   return (
     <div className="myreservation">
-      <div className="myreservation__header">My Reservations</div>
+      <div className="myreservation__header">
+        <h2 className="myreservation__title">My Reservations</h2>
+      </div>
       <div className="myreservation__cardContainer">
         {reserved &&
           reserved.map((item) => (

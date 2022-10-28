@@ -8,9 +8,10 @@ import { BsHouse } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLocationOutline, IoAddOutline } from "react-icons/io5";
 import { BsFillCircleFill } from "react-icons/bs";
-import { NavLink,
-  //  useNavigate, useLocation 
-  } from "react-router-dom";
+import {
+  NavLink,
+  //  useNavigate, useLocation
+} from "react-router-dom";
 import { APIS } from "../../../../_services";
 import { setProperties } from "./../../../../redux/Properties";
 import AddProperty from "./AddProperty";
@@ -60,7 +61,7 @@ const Property = () => {
 
         console.log(isMounted);
       } catch (err) {
-        console.log(err, "err")
+        console.log(err, "err");
         // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
@@ -89,55 +90,60 @@ const Property = () => {
     // setLoading(false)
   };
 
-
   const openDialog = () => {
     dispatch(displayAddProperty("block"));
   };
 
   return (
     <div>
-      {user.role && user.role === "Admin" && (
-        <div className="add-property" onClick={openDialog}>
-          <IconContext.Provider value={{ className: "global-class-name" }}>
-            <div>
-              <IoAddOutline />
-            </div>
-          </IconContext.Provider>
+      <div className="props">
+        <div className="keys">
+          <div className="keys__item">
+            <IconContext.Provider value={{ color: "green", className: "dot" }}>
+              <div>
+                <BsFillCircleFill />
+              </div>
+            </IconContext.Provider>
+            <p>Available</p>
+          </div>
+          <div className="keys__item">
+            <IconContext.Provider value={{ color: "red", className: "dot" }}>
+              <div>
+                <BsFillCircleFill />
+              </div>
+            </IconContext.Provider>
+            <p>Sold</p>
+          </div>
+          <div className="keys__item">
+            <IconContext.Provider value={{ color: "indigo", className: "dot" }}>
+              <div>
+                <BsFillCircleFill />
+              </div>
+            </IconContext.Provider>
+            <p>Occupied</p>
+          </div>
+          <div className="keys__item">
+            <IconContext.Provider value={{ color: "yellow", className: "dot" }}>
+              <div>
+                <BsFillCircleFill />
+              </div>
+            </IconContext.Provider>
+            <p>Reserved</p>
+          </div>
         </div>
-      )}
-      <div className="keys">
-        <div className="keys__item">
-          <IconContext.Provider value={{ color: "green", className: "dot" }}>
-            <div>
-              <BsFillCircleFill />
+        {user.role && user.role === "Admin" && (
+          <div className="searchContainer">
+            <div></div>
+            <div className="add-btn" onClick={openDialog}>
+              <IconContext.Provider value={{ className: "global-class-name" }}>
+                <div>
+                  <IoAddOutline />
+                </div>
+              </IconContext.Provider>
+              <span className="axz">Add Property</span>
             </div>
-          </IconContext.Provider>
-          <p>Available</p>
-        </div>
-        <div className="keys__item">
-          <IconContext.Provider value={{ color: "red", className: "dot" }}>
-            <div>
-              <BsFillCircleFill />
-            </div>
-          </IconContext.Provider>
-          <p>Sold</p>
-        </div>
-        <div className="keys__item">
-          <IconContext.Provider value={{ color: "indigo", className: "dot" }}>
-            <div>
-              <BsFillCircleFill />
-            </div>
-          </IconContext.Provider>
-          <p>Occupied</p>
-        </div>
-        <div className="keys__item">
-          <IconContext.Provider value={{ color: "yellow", className: "dot" }}>
-            <div>
-              <BsFillCircleFill />
-            </div>
-          </IconContext.Provider>
-          <p>Reserved</p>
-        </div>
+          </div>
+        )}
       </div>
       {loading && (
         <div className="emptyD">

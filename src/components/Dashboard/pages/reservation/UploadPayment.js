@@ -109,6 +109,7 @@ const UploadPayment = (props) => {
           <form onSubmit={ uploadFile }>
             <div className="property-input">
              <h3 className="align">Upload Payment</h3>
+             <label >Amount:</label>
              <TextField
                 placeholder="Amount"
                 className="signup__input--item-a"
@@ -123,6 +124,7 @@ const UploadPayment = (props) => {
                   helperText: errors.amount,
                 })}
               />
+              <label >Unit number:</label>
              <TextField
                 placeholder="Unit number"
                 className="signup__input--item-a"

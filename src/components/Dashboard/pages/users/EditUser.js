@@ -126,6 +126,7 @@ const EditUser = (props) => {
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
+            <label>User name:</label>
               <TextField
                 placeholder="Name"
                 className="signup__input--item-a"
@@ -138,6 +139,7 @@ const EditUser = (props) => {
                 value={name}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
+              <label>Email:</label>
               <TextField
                 placeholder="Email"
                 variant="outlined"
@@ -149,6 +151,7 @@ const EditUser = (props) => {
                 value={email}
                 {...(errors.email && { error: true, helperText: errors.email })}
               />
+              <label>Phone:</label>
               <MuiPhoneNumber
                 defaultCountry={"ng"}
                 className="signup__input--item-b"
@@ -161,6 +164,7 @@ const EditUser = (props) => {
                 placeholder="Phone Number"
                 variant="outlined"
               />
+              <label>Select role:</label>
               <TextField
                 placeholder="Select role"
                 select

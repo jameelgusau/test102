@@ -1,0 +1,15 @@
+
+.add-btn{
+min-height: 30px;
+display: flex;
+cursor: pointer;
+align-items: center;
+justify-content: center;
+background-color: #fff;
+border-radius: 8px;
+border: 1px solid #E5E7EB;
+padding: 0.5rem 1rem;
+    & span{
+        font-size: 1.5rem;
+    }
+}

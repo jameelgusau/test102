@@ -120,6 +120,7 @@ const AddImage = (props) => {
           <form onSubmit={uploadFile}>
             <div className="property-input">
               <h3 className="align">upload Image</h3>
+              <label>Unit name</label>
               <TextField
                 placeholder="Unit number"
                 className="signup__input--item-a"

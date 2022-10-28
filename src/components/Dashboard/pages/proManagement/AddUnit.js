@@ -17,7 +17,7 @@ const AddUnit = (props) => {
     const [status, setStatus] = useState("Available");
     const [paymentType, setPaymentType] = useState("One-off");
     const [dimension, setDimension] = useState("");
-    const [discription, setDiscription] = useState("");
+    const [description, setDescription] = useState("");
     const display = useSelector((state) => state.display.openAddUnit);
     const dispatch = useDispatch();
     let params = useParams();
@@ -27,7 +27,7 @@ const AddUnit = (props) => {
       let temp = {};
       temp.name = name.length > 0  && name.length < 10? "" : "Minimum of 1 characters and less than 10 characters required";
       temp.dimension = dimension.length > 0 ? "" : "Dimension is required";
-      temp.discription = discription.length > 2 && discription.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
+      temp.description = description.length > 2 && description.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
       temp.price = !isNaN(price) && price.length >= 1 ? "" : "Price is required";
       temp.status = status.length >= 1 ? "" : "Status is required";
       temp.paymentType = paymentType.length >= 1 ? "" : "Payment type is required";
@@ -57,7 +57,7 @@ const AddUnit = (props) => {
             // releaseDate: date,
             paymentType,
             floorNumber: floor,
-            discription,
+            description,
             dimension,
             status,
           };
@@ -96,7 +96,7 @@ const AddUnit = (props) => {
       setPaymentType("");
       setPrice("");
       // setFloorNumber("");
-      setDiscription("");
+      setDescription("");
       setDimension("");
       setStatus("");
       
@@ -154,6 +154,7 @@ const AddUnit = (props) => {
           </div>
           <form onSubmit={submitAddUnits}>
             <div className="property-input">
+            <label >Unit name:</label>
               <TextField
                 placeholder="Unit number"
                 className="signup__input--item-a"
@@ -165,6 +166,7 @@ const AddUnit = (props) => {
                 value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
+              <label >Price:</label>
               <TextField
                 placeholder="Price"
                 className="signup__input--item-a"
@@ -179,6 +181,7 @@ const AddUnit = (props) => {
                   helperText: errors.price,
                 })}
               />
+              <label >Dimension:</label>
               <TextField
                 placeholder="Dimension"
                 className="signup__input--item-a"
@@ -193,22 +196,24 @@ const AddUnit = (props) => {
                   helperText: errors.dimension,
                 })}
               />
+              <label >Description:</label>
               <TextField
-                placeholder="Discription"
+                placeholder="Description"
                 className="signup__input--item-a"
                 variant="outlined"
                 multiline
                 rows={4}
                 type="text"
                 onChange={({ target }) => {
-                  setDiscription(target.value);
+                  setDescription(target.value);
                 }}
-                value={discription || ""}
-                {...(errors.discription && {
+                value={description || ""}
+                {...(errors.description && {
                   error: true,
-                  helperText: errors.discription,
+                  helperText: errors.description,
                 })}
               />
+                            <label >Select status:</label>
               <TextField
                 placeholder="Select status"
                 select
@@ -235,6 +240,7 @@ const AddUnit = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <label>Select payment type:</label>
               <TextField
                 placeholder="Select payment type"
                 select

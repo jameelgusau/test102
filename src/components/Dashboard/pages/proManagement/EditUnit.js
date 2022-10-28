@@ -158,8 +158,9 @@ const EditUnit = (props) => {
           </div>
           <form onSubmit={submitEditUnits}>
             <div className="property-input">
+              <label>Unit name:</label>
               <TextField
-                placeholder="Unit number"
+                placeholder="Unit name"
                 className="signup__input--item-a"
                 variant="outlined"
                 type="text"
@@ -169,6 +170,7 @@ const EditUnit = (props) => {
                 value={name}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
+                            <label>Price:</label>
               <TextField
                 placeholder="Price"
                 className="signup__input--item-a"
@@ -180,6 +182,7 @@ const EditUnit = (props) => {
                 value={price}
                 {...(errors.address && { error: true, helperText: errors.price })}
               />
+                                        <label>Dimension:</label>
               <TextField
                 placeholder="Dimension"
                 className="signup__input--item-a"
@@ -191,6 +194,7 @@ const EditUnit = (props) => {
                 value={dimension}
                 {...(errors.dimension && { error: true, helperText: errors.dimension})}
               />
+                  <label>Discription:</label>
               <TextField
                 placeholder="Discription"
                 className="signup__input--item-a"
@@ -204,6 +208,7 @@ const EditUnit = (props) => {
                 value={discription}
                 {...(errors.discription && { error: true, helperText: errors.discription })}
               />
+                 <label>Select status:</label>
               <TextField
                 placeholder="Select status"
                 select
@@ -228,6 +233,7 @@ const EditUnit = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <label>Select payment type:</label>
               <TextField
                 placeholder="Select payment type"
                 select

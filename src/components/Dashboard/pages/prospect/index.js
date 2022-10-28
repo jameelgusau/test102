@@ -208,7 +208,7 @@ const Prospects = () => {
           />
         </div>
         <div
-          className="add-prospect"
+          className="add-btn"
           onClick={() => dispatch(displayAddProspect("block"))}
         >
           <IconContext.Provider value={{ className: "global-class-name" }}>
@@ -216,6 +216,7 @@ const Prospects = () => {
               <IoAddOutline />
             </div>
           </IconContext.Provider>
+          <span>Add Client</span>
         </div>
       </div>
       {/* <div className="overflow">

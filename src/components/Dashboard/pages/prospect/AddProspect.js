@@ -111,8 +111,9 @@ const AddProspect = (props) => {
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
+            <label >Client name:</label>
               <TextField
-                placeholder="Name"
+                placeholder="Client name"
                 className="signup__input--item-a"
                 variant="outlined"
                 type="text"
@@ -123,6 +124,7 @@ const AddProspect = (props) => {
                 value={name}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
+              <label >Email:</label>
               <TextField
                 placeholder="Email"
                 variant="outlined"
@@ -134,6 +136,7 @@ const AddProspect = (props) => {
                 value={email}
                 {...(errors.email && { error: true, helperText: errors.email })}
               />
+              <label >Phone:</label>
               <MuiPhoneNumber
                 defaultCountry={"ng"}
                 className="signup__input--item-b"
@@ -146,6 +149,7 @@ const AddProspect = (props) => {
                 placeholder="Phone Number"
                 variant="outlined"
               />
+              <label >Address:</label>
               <TextField
                 placeholder="Address"
                 className="signup__input--item-a"

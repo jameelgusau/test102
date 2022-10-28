@@ -27,7 +27,15 @@ const initialState = {
   openSettings: "none",
   openAddAgent: "none",
   openEditAgent: "none",
-  openDeleteAgent: "none"
+  openDeleteAgent: "none",
+  openAddStore: "none",
+  openEditStore: "none",
+  openDeleteStore: "none",
+  openAddItem: "none",
+  openEditItem: "none",
+  openDeleteItem: "none",
+  openAllocate: "none",
+  openRestock: "none",
 };
 
 
@@ -108,6 +116,30 @@ export const displays = createSlice({
     displayEditAgent: (state, action) => {
       state.openEditAgent = action.payload;
     },
+    displayDeleteStore: (state, action) => {
+      state.openDeleteStore = action.payload;
+    },
+    displayAddStore: (state, action) => {
+      state.openAddStore = action.payload;
+    },
+    displayEditStore: (state, action) => {
+      state.openEditStore = action.payload;
+    },
+    displayDeleteItem: (state, action) => {
+      state.openDeleteItem = action.payload;
+    },
+    displayAddItem: (state, action) => {
+      state.openAddItem = action.payload;
+    },
+    displayEditItem: (state, action) => {
+      state.openEditItem = action.payload;
+    },
+    displayAllocate: (state, action) => {
+      state.openAllocate = action.payload;
+    },
+    displayRestock: (state, action) => {
+      state.openRestock = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, (state)=>{
@@ -118,6 +150,14 @@ export const displays = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  displayRestock,
+  displayAllocate,
+  displayEditItem,
+  displayAddItem,
+  displayDeleteItem,
+  displayEditStore,
+  displayAddStore,
+  displayDeleteStore,
   displayEditAgent,
   displayAddAgent,
   displayDeleteAgent,

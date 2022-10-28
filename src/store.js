@@ -17,6 +17,12 @@ import profileImage from './redux/profileImage'
 import Agents from './redux/Agents'
 import Agentslist from './redux/Agentslist'
 import property from './redux/property'
+import store from './redux/store'
+import item from './redux/Item'
+import category from './redux/category'
+import dashReserved from './redux/dashReserved'
+import outOfStock from './redux/outOfStock'
+import dashPayment from './redux/dashPayment'
 
 export const rootReducer = combineReducers({
       alert: Alert,
@@ -34,6 +40,11 @@ export const rootReducer = combineReducers({
       payment: payment,
       profileImage: profileImage,
       payments: payments,
-      property: property
-
+      property: property,
+      store: store,
+      item: item,
+      category: category,
+      dashReserved: dashReserved,
+      dashPayment: dashPayment,
+      outOfStock: outOfStock,
 })

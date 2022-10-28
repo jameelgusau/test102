@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 export const APIS = {
-  baseUrl: "https://api.hommesestate.com:9090/api",
-  // baseUrl: "http://localhost:9090/api",
+  // baseUrl: "https://api.hommesestate.com:9090/api",
+  baseUrl: "http://localhost:9090/api",
   // https://api.hommesestate.com:9090/
   // baseUrl: "https://hommesestate.herokuapp.com/api",
 
@@ -201,4 +201,85 @@ export const APIS = {
     method: "POST",
     path: "/upload",
   },
+  getStore: {
+    method: "GET",
+    path: "/store",
+  },
+  addStore: {
+    method: "POST",
+    path: "/store",
+  },
+  editStore: {
+    method: "PUT",
+    path: "/store",
+  },
+  deleteStore: {
+    method: "DELETE",
+    path: ({ id }) => `/store/${id}`,
+  },
+  getItem: {
+    method: "GET",
+    path: "/item",
+  },
+  addItem: {
+    method: "POST",
+    path: "/item",
+  },
+  editItem: {
+    method: "PUT",
+    path: "/item",
+  },
+  deleteItem: {
+    method: "DELETE",
+    path: ({ id }) => `/item/${id}`,
+  },
+  getCategory: {
+    method: "GET",
+    path: "/category",
+  },
+  addCategory: {
+    method: "POST",
+    path: "/category",
+  },
+  editCaterory: {
+    method: "PUT",
+    path: "/category",
+  },
+  deleteCaterory: {
+    method: "DELETE",
+    path: ({ id }) => `/category/${id}`,
+  },
+  restock: {
+    method: "POST",
+    path: "/restock",
+  },
+  allocate: {
+    method: "POST",
+    path: "/allocate",
+  },
+  getDashReserved: {
+    method: "GET",
+    path: "/get-dash-reserved",
+  },
+  getDashPayment: {
+    method: "GET",
+    path: "/get-dash-payments",
+  },
+  getOutOfStock: {
+    method: "GET",
+    path: "/get-outofStock",
+  },
+  getCounts: {
+    method: "GET",
+    path: "/get-counts",
+  },
+  getStatus: {
+    method: "GET",
+    path: "/get-status",
+  },
+  getChart: {
+    method: "GET",
+    path: "/get-dash-chart",
+  },
+ 
 };

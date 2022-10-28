@@ -11,6 +11,9 @@ import Prospect from "./pages/prospect";
 import Users from "./pages/users";
 import NotificationSetting from "./pages/notificationSetting"
 import Reservations from "./pages/reservation";
+import Store from "./pages/store";
+import Item from "./pages/items";
+import Category from "./pages/category";
 
 function Main() {
   const routes = [
@@ -41,6 +44,18 @@ function Main() {
     {
       path: "reservations",
       main: <Reservations />
+    },
+    {
+      path: "store",
+      main: <Store />
+    },
+    {
+      path: "category",
+      main: <Category />
+    },
+    {
+      path: "item",
+      main: <Item />
     },
     {
       path: "payments/*",

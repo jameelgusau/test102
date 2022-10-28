@@ -180,12 +180,13 @@ const Users = () => {
             }}
           />
         </div>
-        <div className="add-prospect" onClick={openDialog}>
+        <div className="add-btn" onClick={openDialog}>
           <IconContext.Provider value={{ className: "global-class-name" }}>
             <div>
               <IoAddOutline />
             </div>
           </IconContext.Provider>
+          <span>Add User</span>
         </div>
       </div>
       <Table loading={loading} columns={columns} tableData={List} />

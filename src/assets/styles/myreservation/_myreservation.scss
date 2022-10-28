@@ -1,10 +1,14 @@
 .myreservation{
     margin: 20px;
-    &__header{
+    &__title{
         // background-color: #fff;
         // padding-left: 20px;
         // border-radius: 3px;
+        font-size: 20px;
+        color: #CC5418;
+        font-weight: 700;
     }
+
     &__cardContainer{
         display: grid;
         grid-template-columns:repeat(3, 1fr);
@@ -35,6 +39,7 @@
     padding: 20px;
     border-radius: 3px;
     background-color: #fff;
+    box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
 
 }
 .end{

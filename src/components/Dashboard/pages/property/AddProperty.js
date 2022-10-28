@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TextField, MenuItem, Button, CircularProgress } from "@mui/material";
-import { APIS, requestImg,
-  //  requestJwt 
-  } from "../../../../_services";
+import {
+  APIS,
+  requestImg,
+  //  requestJwt
+} from "../../../../_services";
 import { displayAddProperty } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
 
@@ -67,15 +69,15 @@ const AddProperty = (props) => {
       const url = `${baseUrl}${path}`;
       console.log(url);
       const response = await requestImg(method, url, formData, user.jwtToken);
-      console.log(response)
-    //   const response = await fetch( url, {
-    //   method,
-    //   headers: {
-    //     Authorization: `Bearer ${user.jwtToken}`
-    //   },
-    //   body: formData
-    // })
-    // console.log(response);
+      console.log(response);
+      //   const response = await fetch( url, {
+      //   method,
+      //   headers: {
+      //     Authorization: `Bearer ${user.jwtToken}`
+      //   },
+      //   body: formData
+      // })
+      // console.log(response);
       // const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
         await getProperties(user.jwtToken);
@@ -88,8 +90,7 @@ const AddProperty = (props) => {
           })
         );
         closeDialog();
-        clearInput()
-        
+        clearInput();
       }
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
@@ -111,7 +112,6 @@ const AddProperty = (props) => {
     }
     setLoading(false);
   };
-
 
   const validate = () => {
     let temp = {};
@@ -150,15 +150,14 @@ const AddProperty = (props) => {
   };
   const clearInput = () => {
     setLoading(false);
-    setName("")
-    setAddress("")
-    setStatus("")
-    setFloors("")
-    setUnits("")
-    setDate("")
+    setName("");
+    setAddress("");
+    setStatus("");
+    setFloors("");
+    setUnits("");
+    setDate("");
     ref.current.value = "";
-
-  }
+  };
   return (
     <>
       <div className="modal" style={{ display: `${display}` }}>
@@ -173,8 +172,9 @@ const AddProperty = (props) => {
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
+              <label>Property name: </label>
               <TextField
-                placeholder="Name"
+                placeholder="Property name"
                 className="signup__input--item-a"
                 variant="outlined"
                 type="text"
@@ -185,6 +185,8 @@ const AddProperty = (props) => {
                 value={name}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
+
+              <label>Address: </label>
               <TextField
                 placeholder="Address"
                 className="signup__input--item-a"
@@ -200,6 +202,7 @@ const AddProperty = (props) => {
                   helperText: errors.address,
                 })}
               />
+              <label>Number of floors: </label>
               <TextField
                 placeholder="Number of floors"
                 className="signup__input--item-a"
@@ -215,6 +218,7 @@ const AddProperty = (props) => {
                   helperText: errors.floors,
                 })}
               />
+              <label>Number of Units: </label>
               <TextField
                 placeholder="Number of Units"
                 className="signup__input--item-a"
@@ -227,17 +231,7 @@ const AddProperty = (props) => {
                 value={units}
                 {...(errors.units && { error: true, helperText: errors.units })}
               />
-              <TextField
-                placeholder="Completion date"
-                className="signup__input--item-a"
-                variant="outlined"
-                type="date"
-                onChange={({ target }) => {
-                  setDate(target.value);
-                }}
-                value={date || new Date().toISOString().split("T")[0]}
-                {...(errors.date && { error: true, helperText: errors.date })}
-              />
+              <label>Select status: </label>
               <TextField
                 placeholder="Select status"
                 select
@@ -246,7 +240,7 @@ const AddProperty = (props) => {
                 // ref={myRef}
                 // className="password__input--item-a"
                 variant="outlined"
-                label="Select status"
+                // label="Select status"
                 value={status}
                 size="small"
                 onChange={(e) => {
@@ -262,6 +256,18 @@ const AddProperty = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <label>Completion date: </label>
+              <TextField
+                placeholder="Completion date"
+                className="signup__input--item-a"
+                variant="outlined"
+                type="date"
+                onChange={({ target }) => {
+                  setDate(target.value);
+                }}
+                value={date || new Date().toISOString().split("T")[0]}
+                {...(errors.date && { error: true, helperText: errors.date })}
+              />
               <input
                 type="file"
                 name="image"

@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import makeAnimated from 'react-select/animated';
 import { TextField, MenuItem, Button, CircularProgress } from "@mui/material";
 import MuiPhoneNumber from "material-ui-phone-number";
+import Select from "react-select";
 import { APIS, requestJwt } from "../../../../_services";
 import { displayAddUser } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
-
+const animatedComponents = makeAnimated();
 const AddUser = (props) => {
   const { getUser } = props;
   const myRef = useRef();
@@ -13,15 +15,26 @@ const AddUser = (props) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [ role, setRole ] = useState("User");
+  const [role, setRole] = useState("User");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [storeArr, setStoresArr] = useState([]);
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const stores = useSelector((state) => state.store.value);
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.display.openAddUser);
-
+  // const countries = [
+  //   { id: 1, name: "Afghanistan" },
+  //   { id: 2, name: "Albania" },
+  //   { id: 3, name: "Algeria" },
+  //   { id: 4, name: "American Samoa" },
+  // ];
+  const transformed = stores.map(({ id, name }) => ({
+    label: name,
+    value: id,
+  }));
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -35,7 +48,8 @@ const AddUser = (props) => {
         phone,
         address,
         email,
-        role
+        role,
+        storeArr
       };
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
@@ -54,11 +68,14 @@ const AddUser = (props) => {
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
         setErrMessage(response.meta.message);
-        dispatch(setAlert({ open: true,
-          severity: "error",
-          color: "error",
-          message: response.meta.message
-      }))
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "error",
+            color: "error",
+            message: response.meta.message,
+          })
+        );
         setErr(true);
         setTimeout(() => {
           setErr(false);
@@ -69,6 +86,15 @@ const AddUser = (props) => {
     setLoading(false);
   };
 
+  const clearInput = () => {
+    setLoading(false);
+    setName("");
+    setEmail("");
+    setRole("");
+    setPhone("");
+    setAddress("");
+    setStoresArr([]);
+  };
   const validate = () => {
     let temp = {};
     temp.name = name.length > 2 ? "" : "Minimum 3 characters required";
@@ -86,9 +112,9 @@ const AddUser = (props) => {
         : "Phone is not valid";
     temp.role = role.length > 0 ? "" : "Role is required";
     temp.address =
-    address.length > 2 && address.length < 250
-      ? ""
-      : "Minimum of 3 characters and less than 250 characters required";
+      address.length > 2 && address.length < 250
+        ? ""
+        : "Minimum of 3 characters and less than 250 characters required";
     setErrors({
       ...temp,
     });
@@ -107,8 +133,17 @@ const AddUser = (props) => {
   ];
   const closeDialog = () => {
     dispatch(displayAddUser("none"));
+    clearInput()
   };
 
+  const handleStoreChange = (e) => {
+    // console.log("hardSoreChange", e);
+    let p=[]
+      e.map(store => p.push(store.value))
+   setStoresArr(p)
+  }
+
+  // console.log(storeArr, "storeArr")
   return (
     <>
       <div className="modal" style={{ display: `${display}` }}>
@@ -123,6 +158,7 @@ const AddUser = (props) => {
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
+              <label>User name:</label>
               <TextField
                 placeholder="Name"
                 className="signup__input--item-a"
@@ -135,6 +171,7 @@ const AddUser = (props) => {
                 value={name}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
+              <label>Email:</label>
               <TextField
                 placeholder="Email"
                 variant="outlined"
@@ -146,6 +183,7 @@ const AddUser = (props) => {
                 value={email}
                 {...(errors.email && { error: true, helperText: errors.email })}
               />
+              <label>Phone:</label>
               <MuiPhoneNumber
                 defaultCountry={"ng"}
                 className="signup__input--item-b"
@@ -158,23 +196,24 @@ const AddUser = (props) => {
                 placeholder="Phone Number"
                 variant="outlined"
               />
-          <TextField
-            placeholder="Address"
-            className="signup__input--item-a"
-            variant="outlined"
-            multiline
-            rows={4}
-            type="text"
-            onChange={({ target }) => {
-              setAddress(target.value);
-            }}
-            value={address || ""}
-            {...(errors.address && {
-              error: true,
-              helperText: errors.address,
-            })}
-          />
-
+              <label>Address:</label>
+              <TextField
+                placeholder="Address"
+                className="signup__input--item-a"
+                variant="outlined"
+                multiline
+                rows={4}
+                type="text"
+                onChange={({ target }) => {
+                  setAddress(target.value);
+                }}
+                value={address || ""}
+                {...(errors.address && {
+                  error: true,
+                  helperText: errors.address,
+                })}
+              />
+              <label>Select role:</label>
               <TextField
                 placeholder="Select role"
                 select
@@ -199,6 +238,14 @@ const AddUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[transformed[4], transformed[5]]}
+                isMulti
+                onChange={handleStoreChange}
+                options={transformed}
+              />
               <div className="property-input__btn">
                 <Button
                   variant="contained"
