@@ -82,15 +82,7 @@ const Prospects = () => {
             horizontal: "left",
           }}
         >
-          <MenuItem
-            onClick={() => {
-              setAccount(item);
-              setStudentItem(idx, null);
-              dispatch(displayLoginInvite("block"));
-            }}
-          >
-            Invite to Login
-          </MenuItem>
+  
           <MenuItem
             onClick={() => {
               setAccount(item);
@@ -102,6 +94,15 @@ const Prospects = () => {
             Edit
           </MenuItem>
           <MenuItem
+              onClick={() => {
+                setAccount(item);
+                setStudentItem(idx, null);
+                dispatch(displayLoginInvite("block"));
+              }}
+            >
+              Invite to Login
+            </MenuItem>
+          <MenuItem
             onClick={() => {
               setAccount(item);
               setStudentItem(idx, null);
@@ -110,13 +111,17 @@ const Prospects = () => {
           >
             delete
           </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setStudentItem(idx, null);
-            }}
-          >
-            Upload payment
-          </MenuItem>
+          {
+            item?.status !== 'Prospect' && (
+              <MenuItem
+              onClick={() => {
+                setStudentItem(idx, null);
+              }}
+            >
+              Upload payment
+            </MenuItem>
+            )
+          }
         </Menu>
       </>
     ),

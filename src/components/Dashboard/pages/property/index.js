@@ -267,7 +267,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>6</p>
+                  <p>{item.num_of_units}</p>
                 </div>
                 <div className="propertycard__details--dots">
                   <IconContext.Provider
@@ -277,7 +277,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>14</p>
+                  <p>0</p>
                 </div>
                 <div className="propertycard__details--dots">
                   <IconContext.Provider
@@ -287,7 +287,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>20</p>
+                  <p>0</p>
                 </div>
                 <div className="propertycard__details--dots">
                   <IconContext.Provider
@@ -297,7 +297,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>10</p>
+                  <p>0</p>
                 </div>
               </div>
               <div className="propertycard__button">

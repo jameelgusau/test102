@@ -49,6 +49,7 @@ const AddProspect = (props) => {
           })
         );
         closeDialog();
+        clearInput()
       }
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
@@ -95,8 +96,16 @@ const AddProspect = (props) => {
 
   const closeDialog = () => {
     dispatch(displayAddProspect("none"));
+    clearInput()
   };
 
+  const clearInput = () => {
+    setLoading(false);
+    setName("");
+    setEmail("");
+    setPhone("");
+    setAddress("");
+  };
   return (
     <>
       <div className="modal" style={{ display: `${display}` }}>
