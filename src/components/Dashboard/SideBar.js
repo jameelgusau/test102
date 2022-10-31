@@ -64,7 +64,7 @@ const Aside = () => {
          {
           title: "Stores",
           icon: <HiOutlineUserGroup />,
-          path:  "/stores"
+          path:  "/store"
          },
          {
           title: "Category",

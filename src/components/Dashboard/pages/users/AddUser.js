@@ -241,20 +241,28 @@ const AddUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <label>
               <input
-
                 checked={isChecked}
                 onChange={handleOnChecked}
+                type="checkbox"
               />
-              <label>Select Store(s):</label>
-              <Select
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                // defaultValue={[transformed[4], transformed[5]]}
-                isMulti
-                onChange={handleStoreChange}
-                options={transformed}
-              />
+              Grand store access</label>
+                {
+                  isChecked && (
+                    <>
+                    <label>Select Store(s):</label>
+                    <Select
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      // defaultValue={[transformed[4], transformed[5]]}
+                      isMulti
+                      onChange={handleStoreChange}
+                      options={transformed}
+                    />
+                    </>
+                  )
+                }
               <div className="property-input__btn">
                 <Button
                   variant="contained"
