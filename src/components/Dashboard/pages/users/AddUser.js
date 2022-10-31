@@ -241,13 +241,18 @@ const AddUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
-              <label>
-              <input
-                checked={isChecked}
-                onChange={handleOnChecked}
-                type="checkbox"
-              />
-              Grand store access</label>
+
+              {
+                role === "User" && (
+                  <label>
+                  <input
+                    checked={isChecked}
+                    onChange={handleOnChecked}
+                    type="checkbox"
+                  />
+                  Grand store access</label>
+                )
+              }
                 {
                   isChecked && (
                     <>

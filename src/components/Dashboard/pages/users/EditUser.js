@@ -5,6 +5,9 @@ import MuiPhoneNumber from "material-ui-phone-number";
 import { APIS, requestJwt } from "../../../../_services";
 import { displayEditUser } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
+const animatedComponents = makeAnimated();
 
 const EditUser = (props) => {
   const { getUser, account  } = props;
@@ -14,10 +17,13 @@ const EditUser = (props) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [storeArr, setStoresArr] = useState([]);
+  const [ isChecked,  setIsChecked] = useState(false);
   const [ role, setRole ] = useState("User");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const stores = useSelector((state) => state.store.value);
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.display.openEditUser);
 
@@ -28,6 +34,10 @@ const EditUser = (props) => {
       setRole(account.role);
   }, [account])
 
+  const transformed = stores.map(({ id, name }) => ({
+    label: name,
+    value: id,
+  }));
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -41,6 +51,7 @@ const EditUser = (props) => {
         name,
         phone,
         email,
+        storeArr
       };
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
@@ -110,6 +121,17 @@ const EditUser = (props) => {
   
   const closeDialog = () => {
     dispatch(displayEditUser("none"));
+  };
+
+  const handleStoreChange = (e) => {
+    // console.log("hardSoreChange", e);
+    let p=[]
+      e.map(store => p.push(store.value))
+   setStoresArr(p)
+  }
+
+  const handleOnChecked = () => {
+    setIsChecked(!isChecked);
   };
 
   return (
@@ -189,6 +211,32 @@ const EditUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              {
+                role === "User" && (
+                  <label>
+                  <input
+                    checked={isChecked}
+                    onChange={handleOnChecked}
+                    type="checkbox"
+                  />
+                  Grand store access</label>
+                )
+              }
+                {
+                  isChecked && (
+                    <>
+                    <label>Select Store(s):</label>
+                    <Select
+                      closeMenuOnSelect={false}
+                      components={animatedComponents}
+                      // defaultValue={[transformed[4], transformed[5]]}
+                      isMulti
+                      onChange={handleStoreChange}
+                      options={transformed}
+                    />
+                    </>
+                  )
+                }
               <div className="property-input__btn">
                 <Button
                   variant="contained"
