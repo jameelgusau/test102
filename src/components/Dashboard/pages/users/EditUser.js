@@ -6,11 +6,11 @@ import { APIS, requestJwt } from "../../../../_services";
 import { displayEditUser } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
 import Select from "react-select";
-import makeAnimated from 'react-select/animated';
+import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
 
 const EditUser = (props) => {
-  const { getUser, account  } = props;
+  const { getUser, account } = props;
   const myRef = useRef();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -18,8 +18,8 @@ const EditUser = (props) => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [storeArr, setStoresArr] = useState([]);
-  const [ isChecked,  setIsChecked] = useState(false);
-  const [ role, setRole ] = useState("User");
+  const [isChecked, setIsChecked] = useState(false);
+  const [role, setRole] = useState("User");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -27,12 +27,12 @@ const EditUser = (props) => {
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.display.openEditUser);
 
-  useEffect(()=>{
-      setName(account.name);
-      setEmail(account.email);
-      setPhone(account.phone);
-      setRole(account.role);
-  }, [account])
+  useEffect(() => {
+    setName(account.name);
+    setEmail(account.email);
+    setPhone(account.phone);
+    setRole(account.role);
+  }, [account]);
 
   const transformed = stores.map(({ id, name }) => ({
     label: name,
@@ -51,7 +51,7 @@ const EditUser = (props) => {
         name,
         phone,
         email,
-        storeArr
+        storeArr,
       };
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
@@ -65,16 +65,19 @@ const EditUser = (props) => {
             message: response.meta.message,
           })
         );
-       closeDialog();
+        closeDialog();
       }
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
         setErrMessage(response.meta.message);
-        dispatch(setAlert({ open: true,
-          severity: "error",
-          color: "error",
-          message: response.meta.message
-      }))
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "error",
+            color: "error",
+            message: response.meta.message,
+          })
+        );
         setErr(true);
         setTimeout(() => {
           setErr(false);
@@ -100,7 +103,7 @@ const EditUser = (props) => {
       )
         ? ""
         : "Phone is not valid";
-    temp.role = role.length >  0 ? "" : "Role is required";
+    temp.role = role.length > 0 ? "" : "Role is required";
     setErrors({
       ...temp,
     });
@@ -118,17 +121,16 @@ const EditUser = (props) => {
     },
   ];
 
-  
   const closeDialog = () => {
     dispatch(displayEditUser("none"));
   };
 
   const handleStoreChange = (e) => {
     // console.log("hardSoreChange", e);
-    let p=[]
-      e.map(store => p.push(store.value))
-   setStoresArr(p)
-  }
+    let p = [];
+    e.map((store) => p.push(store.value));
+    setStoresArr(p);
+  };
 
   const handleOnChecked = () => {
     setIsChecked(!isChecked);
@@ -148,7 +150,7 @@ const EditUser = (props) => {
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
-            <label>User name:</label>
+              <label>User name:</label>
               <TextField
                 placeholder="Name"
                 className="signup__input--item-a"
@@ -211,32 +213,29 @@ const EditUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
-              {
-                role === "User" && (
-                  <label>
+              {role === "User" && (
+                <label>
                   <input
                     checked={isChecked}
                     onChange={handleOnChecked}
                     type="checkbox"
                   />
-                  Grant store access</label>
-                )
-              }
-                {
-                  isChecked && (
-                    <>
-                    <label>Select Store(s):</label>
-                    <Select
-                      closeMenuOnSelect={false}
-                      components={animatedComponents}
-                      // defaultValue={[transformed[4], transformed[5]]}
-                      isMulti
-                      onChange={handleStoreChange}
-                      options={transformed}
-                    />
-                    </>
-                  )
-                }
+                  Grant store access
+                </label>
+              )}
+              {isChecked && (
+                <>
+                  <label>Select Store(s):</label>
+                  <Select
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[transformed[4], transformed[5]]}
+                    isMulti
+                    onChange={handleStoreChange}
+                    options={transformed}
+                  />
+                </>
+              )}
               <div className="property-input__btn">
                 <Button
                   variant="contained"

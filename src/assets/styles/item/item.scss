@@ -1,15 +1,16 @@
-
-.add-btn{
-min-height: 30px;
-display: flex;
-cursor: pointer;
-align-items: center;
-justify-content: center;
-background-color: #fff;
-border-radius: 8px;
-border: 1px solid #E5E7EB;
-padding: 0.5rem 1rem;
-    & span{
-        font-size: 1.5rem;
-    }
+.add-btn {
+  height: 35px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: #cc5418;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  border: 1px solid #cc5418;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.18), 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 1rem 0.5rem 0.7rem;
+  & span {
+    font-size: 1.5rem;
+  }
 }
