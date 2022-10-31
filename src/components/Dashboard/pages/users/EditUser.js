@@ -219,7 +219,7 @@ const EditUser = (props) => {
                     onChange={handleOnChecked}
                     type="checkbox"
                   />
-                  Grand store access</label>
+                  Grant store access</label>
                 )
               }
                 {
