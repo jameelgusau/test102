@@ -18,6 +18,7 @@ const AddUser = (props) => {
   const [role, setRole] = useState("User");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [ isChecked,  setIsChecked] = useState(false);
   const [storeArr, setStoresArr] = useState([]);
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
@@ -142,7 +143,9 @@ const AddUser = (props) => {
       e.map(store => p.push(store.value))
    setStoresArr(p)
   }
-
+  const handleOnChecked = () => {
+    setIsChecked(!isChecked);
+  };
   // console.log(storeArr, "storeArr")
   return (
     <>
@@ -238,6 +241,11 @@ const AddUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <input
+
+                checked={isChecked}
+                onChange={handleOnChecked}
+              />
               <label>Select Store(s):</label>
               <Select
                 closeMenuOnSelect={false}
