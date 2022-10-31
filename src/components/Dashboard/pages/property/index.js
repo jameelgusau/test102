@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { IconContext } from "react-icons";
-import {
-  MdOutlineModeEditOutline,
-  MdOutlineDeleteForever,
-} from "react-icons/md";
+// import {
+//   MdOutlineModeEditOutline,
+//   MdOutlineDeleteForever,
+// } from "react-icons/md";
+import { Menu, MenuItem } from "@mui/material";
 import { BsHouse } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
-import { IoLocationOutline, IoAddOutline } from "react-icons/io5";
+import {
+  IoLocationOutline,
+  IoAddOutline,
+  IoEllipsisVerticalOutline,
+} from "react-icons/io5";
 import { BsFillCircleFill } from "react-icons/bs";
+import IconButton from "@mui/material/IconButton";
 import {
   NavLink,
   //  useNavigate, useLocation
@@ -33,12 +39,29 @@ const Property = () => {
   // const location = useLocation();
   const [property, setProperty] = useState({});
   const [loading, setLoading] = useState(false);
+
   const user = useSelector((state) => state.userProfile.value);
   const properties = useSelector((state) => state.properties.value);
+  const [groupAnchorArr, setGroupAnchorArr] = useState(
+    new Array(properties?.length).fill(null)
+  );
+
   useEffect(() => {
     getProperties();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    setGroupAnchorArr(new Array(properties.length).fill(null));
+  }, [properties]);
+
+  const setStudentItem = (i, value) => {
+    console.log(i, value);
+    const newArr = groupAnchorArr.map((item, index) =>
+      index === i ? value : item
+    );
+    setGroupAnchorArr(newArr);
+  };
 
   const getProperties = async () => {
     let isMounted = true;
@@ -157,7 +180,7 @@ const Property = () => {
       )}
       {!loading && properties.length > 0 && (
         <div className="property-overview">
-          {properties.map((item) => (
+          {properties.map((item, idx) => (
             <div className="propertycard" key={item.id}>
               <div className="propertycard__icon">
                 <IconContext.Provider
@@ -170,6 +193,53 @@ const Property = () => {
               </div>
               <div className="propertycard__info">
                 <p>{item.name}</p>
+                {user.role && user.role === "Admin" && (
+                <div className="edit-property">
+                  <IconButton
+                    size="small"
+                    onClick={({ currentTarget }) =>
+                      setStudentItem(idx, currentTarget)
+                    }
+                  >
+                    {" "}
+                    <IoEllipsisVerticalOutline />
+                  </IconButton>
+                  <Menu
+                    id="demo-positioned-menu"
+                    aria-labelledby="demo-positioned-button"
+                    anchorEl={groupAnchorArr[idx]}
+                    open={Boolean(groupAnchorArr[idx])}
+                    onClose={() => setStudentItem(idx, null)}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                  >
+                    <MenuItem
+                      onClick={async () => {
+                        setProperty(item);
+                        setStudentItem(idx, null);
+                        dispatch(displayEditProperty("block"));
+                      }}
+                    >
+                      Edit
+                    </MenuItem>
+                    <MenuItem
+                      onClick={async () => {
+                        setProperty(item);
+                        setStudentItem(idx, null);
+                        dispatch(displayDeleteProperty("block"));
+                      }}
+                    >
+                      delete
+                    </MenuItem>
+                  </Menu>
+                </div>
+              )}
               </div>
 
               <div className="propertycard__icon">
@@ -230,42 +300,6 @@ const Property = () => {
                   <p>10</p>
                 </div>
               </div>
-
-              {user.role && user.role === "Admin" && (
-                <div className="edit-property">
-                  <div
-                    // className="add-units"
-                    onClick={async () => {
-                      setProperty(item);
-                      dispatch(displayEditProperty("block"));
-                    }}
-                  >
-                    <IconContext.Provider
-                      value={{ className: "global-class-name" }}
-                    >
-                      <div>
-                        <MdOutlineModeEditOutline />
-                      </div>
-                    </IconContext.Provider>
-                  </div>
-                  <div
-                    // className="add-units"
-                    onClick={async () => {
-                      setProperty(item);
-                      dispatch(displayDeleteProperty("block"));
-                    }}
-                  >
-                    <IconContext.Provider
-                      value={{ className: "global-class-name" }}
-                    >
-                      <div>
-                        <MdOutlineDeleteForever />
-                      </div>
-                    </IconContext.Provider>
-                  </div>
-                </div>
-              )}
-
               <div className="propertycard__button">
                 <NavLink to={item.id} className="propertycard__button--btn">
                   Check Available units

@@ -47,6 +47,8 @@
   &__info {
     font-size: 1.5rem;
     font-weight: 900;
+    display: flex;
+    justify-content: space-between;
   }
   &__details {
     grid-column: 1 / -1;
