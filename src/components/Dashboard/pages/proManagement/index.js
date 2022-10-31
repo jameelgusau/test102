@@ -214,14 +214,15 @@ const ProManagement = () => {
           </TextField>
         </div>
         {user.role && user.role === "Admin" && (
-          <div className="add-image" onClick={AddImageDialog}>
+          <div className="add-btn" onClick={AddImageDialog}>
             <IconContext.Provider
-              value={{ color: "#0C2D40", className: "global-class-name" }}
+              value={{className: "global-class-name" }}
             >
               <div>
                 <FaUpload />
               </div>
             </IconContext.Provider>
+            <span style={{marginLeft: '8px'}}>Upload Floor Image</span>
           </div>
         )}
       </div>
