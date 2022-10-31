@@ -9,12 +9,12 @@ const SideBarItem = ({ sidebar }) => {
   if (sidebar.childrens) {
     return (
       <div className={open ? "sidebar-item open" : "sidebar-item"}>
-        <div className="sidebar-title">
+        <div className="sidebar-title"  onClick={() => setOpen(!open)}>
           <span className="item-space">
             {sidebar.icon}
             {sidebar.title}
           </span>
-          <span className="toggle-btn" onClick={() => setOpen(!open)}>
+          <span className="toggle-btn">
             <BiChevronDown />
           </span>
         </div>
