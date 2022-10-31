@@ -238,6 +238,7 @@ const AddUser = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
+              <label>Select Store(s):</label>
               <Select
                 closeMenuOnSelect={false}
                 components={animatedComponents}

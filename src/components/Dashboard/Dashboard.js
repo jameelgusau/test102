@@ -1,8 +1,9 @@
 import React from "react";
 import { Outlet} from "react-router-dom";
 import Header from "./Header";
-import Aside from "./Aside";
+// import Aside from "./Aside"
 import Footer from "./Footer";
+import Aside from "./SideBar";
 // import Loading from "../Loading";
 // // import Main  from "./Main";
 // const Home = lazy(() => import("../Dashboard/pages/home"));
