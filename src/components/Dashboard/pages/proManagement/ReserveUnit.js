@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, CircularProgress, TextField, MenuItem } from "@mui/material";
+import { Button, CircularProgress,
+  //  TextField,
+    // MenuItem 
+  } from "@mui/material";
 import { IconContext } from "react-icons";
 import { APIS, requestJwt } from "../../../../_services";
 import {
@@ -16,13 +19,15 @@ import {
 import { setAlert } from "../../../../redux/snackbar";
 
 const ReserveUnit = (props) => {
-  const { unit, getUnits, agents } = props;
+  const { unit, getUnits,
+    //  agents 
+    } = props;
   const params = useParams();
   const myRef = useRef();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
-  const [agentId, setAgentId] = useState("");
+  // const [agentId, setAgentId] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const display = useSelector((state) => state.display.openReserve);
   const user = useSelector((state) => state.userProfile.value);
@@ -38,7 +43,7 @@ const ReserveUnit = (props) => {
       propertyId: params.id,
       unitId: unit.id,
       paymentPlanId: "",
-      agentId
+      // agentId
     };
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, data, user.jwtToken);
@@ -155,10 +160,9 @@ const ReserveUnit = (props) => {
           )}
         </div>
         <div className="model-button">
-          {unit.status !== "Reserved" && (
+          {unit.status === "Available" && (
             <>
-              {/* <div> */}
-              <p style={{ marginBottom: "10px" }}>Select Agent if any</p>
+              {/* <p style={{ marginBottom: "10px" }}>Select Agent if any</p>
               <TextField
                 placeholder="Select agent"
                 select
@@ -182,8 +186,7 @@ const ReserveUnit = (props) => {
                     {name}
                   </MenuItem>
                 ))}
-              </TextField>
-              {/* </div> */}
+              </TextField> */}
 
               <Button
                 variant="contained"
