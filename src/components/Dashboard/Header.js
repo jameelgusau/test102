@@ -102,7 +102,7 @@ const logout = async ()=>{
   return (
     <>
       <header className="header">
-        <div className="header__search">Search...</div>
+        <div className="header__search"></div>
         <>
           <div
             onClick={handleClick}

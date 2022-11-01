@@ -89,8 +89,8 @@ function Login() {
     {/* <img src={logo2} alt="Logo" style={{ display: "flex", alignContent: "center"}}/> */}
       <div className="login">
       <div className="login__already">
-          <p className="login__already--paragraph">Don’t Have An Account? <Link to="/signup">Register</Link>
-            </p>
+          {/* <p className="login__already--paragraph">Don’t Have An Account? <Link to="/signup">Register</Link>
+            </p> */}
         </div>
         <div className="login__title">
           <h2 className="login__title--heading">Login</h2>

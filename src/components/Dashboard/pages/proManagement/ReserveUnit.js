@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, CircularProgress,
-  //  TextField,
-    // MenuItem 
+   TextField,
+    MenuItem 
   } from "@mui/material";
 import { IconContext } from "react-icons";
 import { APIS, requestJwt } from "../../../../_services";
@@ -27,10 +27,12 @@ const ReserveUnit = (props) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
-  // const [agentId, setAgentId] = useState("");
+  const [prospectId, setProspectId] = useState("");
   const [errMessage, setErrMessage] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
   const display = useSelector((state) => state.display.openReserve);
   const user = useSelector((state) => state.userProfile.value);
+  const clients = useSelector((state) => state.prospects.value);
 
   const resevedUnit = async (e) => {
     e.preventDefault();
@@ -39,12 +41,17 @@ const ReserveUnit = (props) => {
       baseUrl,
       reserveUnit: { method, path },
     } = APIS;
-    const data = {
+    const data = prospectId !== "" ? {
       propertyId: params.id,
       unitId: unit.id,
       paymentPlanId: "",
-      // agentId
+      prospectId
+    }: {
+      propertyId: params.id,
+      unitId: unit.id,
+      paymentPlanId: ""
     };
+
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, data, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
@@ -87,7 +94,9 @@ const ReserveUnit = (props) => {
   const closeDialog = () => {
     dispatch(displayReserve("none"));
   };
-
+  const handleOnChecked = () => {
+    setIsChecked(!isChecked);
+  };
   return (
     <div className="modal" style={{ display: `${display}` }}>
       <div className="modal__content" ref={myRef}>
@@ -162,31 +171,45 @@ const ReserveUnit = (props) => {
         <div className="model-button">
           {unit.status === "Available" && (
             <>
-              {/* <p style={{ marginBottom: "10px" }}>Select Agent if any</p>
+                {user.role === "Admin" && (
+                <label style={{ padding: "10px 0",
+                  fontSize: "14px"}}>
+                  <input
+                    checked={isChecked}
+                    onChange={handleOnChecked}
+                    type="checkbox"
+                  />
+                  reserve for a client
+                </label>
+              )}
+              {isChecked && (
+                <>
+               <p style={{ marginBottom: "10px" }}>Select client</p>
               <TextField
-                placeholder="Select agent"
+                // placeholder="Select client"
                 select
-                id="agent"
+                id="prospect"
                 style={{ marginBottom: "10px", width: "100%" }}
                 variant="outlined"
-                value={agentId || ""}
-                label="Select agent"
+                value={prospectId || ""}
+                label="Select client"
                 defaultValue=""
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
-                  setAgentId(e.target.value);
+                  setProspectId(e.target.value);
                 }}
               >
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {agents.map(({ name, id }) => (
+                {clients.map(({ name, id }) => (
                   <MenuItem value={id} key={id}>
                     {name}
                   </MenuItem>
                 ))}
-              </TextField> */}
+              </TextField> 
+              </>)}
 
               <Button
                 variant="contained"

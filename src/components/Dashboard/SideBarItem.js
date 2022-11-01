@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SideBarItem = ({ sidebar }) => {
   const [open, setOpen] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
+    const user = useSelector((state) => state.userProfile.value);
 
   if (sidebar.childrens) {
     return (
@@ -24,22 +26,26 @@ const SideBarItem = ({ sidebar }) => {
       </div>
     );
   } else {
-    return (
-      <NavLink
-        className="sidebar-item plain"
-        onClick={() => setShowLinks(!showLinks)}
-        to={sidebar.path}
-        style={({ isActive }) => ({
-          background: isActive ? "rgba(255, 255, 255, 0.2)" : "",
-        })}
-      >
-        {/* <span className="item-space"> */}
-          {/* <MdOutlineDashboard /> */}
-          {sidebar.icon}
-          {sidebar.title}
-        {/* </span> */}
-      </NavLink>
-    );
+    if(user.role === "Prospect" && sidebar?.title === "Dashboard"){
+      return
+    }else{
+      return (
+        <NavLink
+          className="sidebar-item plain"
+          onClick={() => setShowLinks(!showLinks)}
+          to={sidebar.path}
+          style={({ isActive }) => ({
+            background: isActive ? "rgba(255, 255, 255, 0.2)" : "",
+          })}
+        >
+          {/* <span className="item-space"> */}
+            {/* <MdOutlineDashboard /> */}
+            {sidebar.icon}
+            {sidebar.title}
+          {/* </span> */}
+        </NavLink>
+      );
+    }
   }
 };
 
