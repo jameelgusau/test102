@@ -26,7 +26,7 @@ const SideBarItem = ({ sidebar }) => {
       </div>
     );
   } else {
-    if(user.role === "Prospect" && sidebar?.title === "Dashboard"){
+    if(user?.role === "Prospect" && sidebar?.title === "Dashboard"){
       return
     }else{
       return (
