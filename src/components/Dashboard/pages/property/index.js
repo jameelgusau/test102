@@ -252,7 +252,7 @@ const Property = () => {
                 </IconContext.Provider>
               </div>
               <div className="propertycard__info">
-                <p>{item.address}</p>
+                <p>{item?.address}</p>
               </div>
               <div className="propertycard__icon">
                 <h3 className="propertycard__icon--units">Units:</h3>
@@ -267,7 +267,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>{item.num_of_units}</p>
+                  <p>{item?.available}</p>
                 </div>
                 <div className="propertycard__details--dots">
                   <IconContext.Provider
@@ -277,7 +277,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>0</p>
+                  <p>{item?.sold}</p>
                 </div>
                 <div className="propertycard__details--dots">
                   <IconContext.Provider
@@ -287,7 +287,7 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>0</p>
+                  <p>{item?.occupied}</p>
                 </div>
                 <div className="propertycard__details--dots">
                   <IconContext.Provider
@@ -297,11 +297,11 @@ const Property = () => {
                       <BsFillCircleFill />
                     </div>
                   </IconContext.Provider>
-                  <p>0</p>
+                  <p>{item?.reserved}</p>
                 </div>
               </div>
               <div className="propertycard__button">
-                <NavLink to={item.id} className="propertycard__button--btn">
+                <NavLink to={item?.id} className="propertycard__button--btn">
                   Check Available units
                 </NavLink>
               </div>
