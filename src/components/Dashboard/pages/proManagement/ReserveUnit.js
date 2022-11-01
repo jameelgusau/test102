@@ -117,7 +117,7 @@ const ReserveUnit = (props) => {
                   onClick={() => dispatch(displayDeleteUnit("block"))}
                 >
                   <IconContext.Provider
-                    value={{ className: "global-class-name" }}
+                    value={{ color: "red", className: "global-class-name" }}
                   >
                     <div>
                       <MdOutlineDeleteForever />
