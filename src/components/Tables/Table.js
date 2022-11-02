@@ -21,7 +21,7 @@ const Table = (props) => {
     totalPages,
     pagination,
     tabCon,
-    rowPadding
+    rowPadding,
   } = props;
   const [pageValue, setPageValue] = useState(currentPage);
   useEffect(() => {
@@ -42,7 +42,10 @@ const Table = (props) => {
   tableData.map((item) => {
     tableDataList.push(
       columns.map((column, idx) => (
-        <td key={item[dataKeyNames[idx]]}  className={ rowPadding ? rowPadding: "tablebody__cell" } >
+        <td
+          key={item[dataKeyNames[idx]]}
+          className={rowPadding ? rowPadding : "tablebody__cell"}
+        >
           {item[dataKeyNames[idx]]}
         </td>
       ))
@@ -50,9 +53,9 @@ const Table = (props) => {
   });
 
   return (
-    <div className={ tabCon ? tabCon: "table-container" }>
+    <div className={tabCon ? tabCon : "table-container"}>
       {loading && (
-        <div  className="emptyData">
+        <div className="emptyData">
           <Loading />
         </div>
       )}
@@ -62,18 +65,19 @@ const Table = (props) => {
         </div>
       )}
       {!loading && tableData.length > 0 && (
-        <div className="overflow">
-          <table className="table">
-            <thead> <tr className="tableHead">{tableHead}</tr></thead>
-          <tbody> 
+        <table className="table">
+          <thead>
+            {" "}
+            <tr className="tableHead">{tableHead}</tr>
+          </thead>
+          <tbody>
             {tableDataList.length
               ? tableDataList.map((item) => (
                   <tr className="tablebody">{item}</tr>
                 ))
               : ""}
-              </tbody> 
-          </table>
-        </div>
+          </tbody>
+        </table>
       )}
       {pagination && (
         <div className="pagination-container">

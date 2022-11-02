@@ -457,7 +457,6 @@ const Home = () => {
       <div className="two-cards">
         <div className="car">
         <h1 className="card__title">Reservation Trends </h1>
-        <p className="card__subtitle"></p>
           <ResponsiveContainer
             width="100%"
             // height={200}

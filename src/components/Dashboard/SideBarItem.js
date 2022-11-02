@@ -7,7 +7,7 @@ const SideBarItem = ({ sidebar }) => {
   const [open, setOpen] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
     const user = useSelector((state) => state.userProfile.value);
-    console.log(user)
+    // console.log(user)
   if (sidebar.childrens) {
     if(!((user?.role === "Prospect" || (user?.stores === [] && user?.role !== "Admin"))&& (sidebar?.title === "Inventory" || sidebar?.title === "Settings" ))){
       return (
