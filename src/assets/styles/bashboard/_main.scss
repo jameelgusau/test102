@@ -171,6 +171,7 @@
   padding: 24px;
 
   @include responsive(phone) {
+    width: 335px;
     padding: 24px 0;
     & > h1, & >p {
       margin-left: 24px;
