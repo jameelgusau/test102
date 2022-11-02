@@ -65,6 +65,7 @@ const ReserveUnit = (props) => {
       );
       await getUnits(params.id);
       closeDialog();
+      clearInput()
       // getProperties(user.jwtToken);
     }
     if (response.meta && response.meta.status >= 400) {
@@ -93,7 +94,13 @@ const ReserveUnit = (props) => {
 
   const closeDialog = () => {
     dispatch(displayReserve("none"));
+    clearInput()
   };
+  const clearInput = () => {
+    setProspectId("")
+    setIsChecked(false)
+  }
+
   const handleOnChecked = () => {
     setIsChecked(!isChecked);
   };

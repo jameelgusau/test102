@@ -7,28 +7,33 @@ const SideBarItem = ({ sidebar }) => {
   const [open, setOpen] = useState(false);
   const [showLinks, setShowLinks] = useState(false);
     const user = useSelector((state) => state.userProfile.value);
-
+    console.log(user)
   if (sidebar.childrens) {
-    return (
-      <div className={open ? "sidebar-item open" : "sidebar-item"}>
-        <div className="sidebar-title"  onClick={() => setOpen(!open)}>
-          <span className="item-space">
-            {sidebar.icon}
-            {sidebar.title}
-          </span>
-          <span className="toggle-btn">
-            <BiChevronDown />
-          </span>
+    if(!((user?.role === "Prospect" || (user?.stores === [] && user?.role !== "Admin"))&& (sidebar?.title === "Inventory" || sidebar?.title === "Settings" ))){
+      return (
+        <div className={open ? "sidebar-item open" : "sidebar-item"}>
+              <div className="sidebar-title"  onClick={() => setOpen(!open)}>
+              <span className="item-space">
+                {sidebar.icon}
+                {sidebar.title}
+              </span>
+              <span className="toggle-btn">
+                <BiChevronDown />
+              </span>
+            </div>
+          <div className="sidebar-content">
+              {sidebar.childrens.map((sidebar, index) => <SideBarItem key={index} sidebar={sidebar}/>)}
+          </div>
         </div>
-        <div className="sidebar-content">
-            {sidebar.childrens.map((sidebar, index) => <SideBarItem key={index} sidebar={sidebar}/>)}
-        </div>
-      </div>
-    );
+      );
+    }
+
   } else {
-    if(user?.role === "Prospect" && sidebar?.title === "Dashboard"){
+    if((user?.role === "Prospect" || user?.role === "User") && (sidebar?.title === "Dashboard" || sidebar?.title === "Clients" ||sidebar?.title === "Reservations" || sidebar?.title === "Payments" ||  sidebar?.title === "Stores"|| sidebar.title === "Payments" || sidebar?.title === "Users" || sidebar?.title === "Notification" || sidebar?.title === "Settings")) {
       return
-    }else{
+    }else if((user?.role === "Prospect" || (user?.stores === [] && user?.role !== "Admin"))&& (sidebar?.title === "Inventory" || sidebar?.title  === "Category" || sidebar?.title === "Item")){
+      return
+    } else{
       return (
         <NavLink
           className="sidebar-item plain"
