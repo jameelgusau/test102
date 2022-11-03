@@ -31,7 +31,7 @@ export const APIS = {
   },
   getProperties: {
     method: "GET",
-    path: "/get-property",
+    path: "/get-property?name=Gourav&age=11",
   },
   addProperties: {
     method: "POST",

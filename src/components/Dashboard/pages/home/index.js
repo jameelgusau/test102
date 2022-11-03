@@ -104,6 +104,10 @@ const Home = () => {
   const dashPaymentList = dashPayment.map((item, idx) => ({
     ...item,
     sn: idx + 1,
+    amount: new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(item.amount),
     status: item.status === "pending" ? (
       <div className="table-btn" style={{ background: "#F39D11" }}>
         Pending
@@ -132,11 +136,12 @@ const Home = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
+      
         if (response?.data) {
+          console.log(response.data, "response.data");
           dispatch(setDashReserved(response?.data?.data));
         }
-
+        console.log(response, "response");
         console.log(isMounted);
       } catch (err) {
         console.log(err, "err");
@@ -185,7 +190,6 @@ const Home = () => {
       controller.abort();
     };
   };
-
   const getDashPayment = async () => {
     let isMounted = true;
     setLoading(true);
