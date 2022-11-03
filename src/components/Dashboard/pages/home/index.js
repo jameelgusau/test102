@@ -322,6 +322,7 @@ const Home = () => {
   return (
     <>
       <div className="main-cards">
+
         <div className="card">
           <h1 className="card__title">Latest Reservations</h1>
           <div className="card__label">
@@ -346,6 +347,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
+
         <div className="card">
           <h1 className="card__title">Properties</h1>
           <div className="card__property">
@@ -431,13 +433,14 @@ const Home = () => {
                   <BsHouse size={30} color="#fff" />
                 </div>
                 <div className="card__property--box--text">
-                  <h1 className="card__property--box--text--heading">{counts?.unit || 0}</h1>
+                  <h1 className="card__property--box--text--heading">{counts?.unit || 0 }</h1>
                   <p className="card__property--box--text--subtitle">Units</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div className="card">
           <h1 className="card__title">Inventory </h1>
           <p className="card__subtitle">Out of Stock:</p>

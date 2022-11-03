@@ -82,7 +82,7 @@
     }
     &--box{
       display: flex;
-      padding: 2rem;
+      padding: 1rem;
       align-items: center;
       @include responsive(phone) {
           padding: 0;
