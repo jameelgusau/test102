@@ -2,7 +2,7 @@
   background-color: #fff;
   margin-top: 20px;
   @include responsive(phone) {
-    overflow-x: scroll;
+    overflow-x: auto;
     width: 335px;
     padding: 0 2rem;
   }
@@ -14,7 +14,7 @@
 // width: 335px;
 .table-container1 {
   background-color: #fff;
-  overflow-x: scroll;
+  overflow-x: auto;
   // margin-top: 20px;
   // padding: 20px;
   // box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
