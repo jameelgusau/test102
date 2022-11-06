@@ -18,13 +18,11 @@ export const request = async (method, url, data) => {
     const response = await res.json();
     return response;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };
 
 export const requestDelete = async (method, url, jwt) => {
-  console.log(method, url);
   const opts = {
     method,
     headers: {
@@ -35,10 +33,8 @@ export const requestDelete = async (method, url, jwt) => {
   try {
     const res = await fetch(url, opts);
     const response = await res.json();
-    console.log(response, "response");
     return response;
   } catch (error) {
-    console.log(error, "error");
     return error;
   }
 };
@@ -66,11 +62,9 @@ export const requestJwt = (method, url, data, jwt) => {
       res.json().then(jsonData => ({ ...jsonData, status: res.status }))
     )
     .then(response => {
-      console.log(response, method, url);
       return response;
     })
     .catch(error => {
-      console.log(error, "error");
     });
 };
 
@@ -94,10 +88,8 @@ export const requestImg= async (method, url, data, jwt) => {
     const res = await fetch(url, opts);
     const jsonData = await res.json();
     const response = ({ ...jsonData, status: res.status });
-    console.log(response, method, url);
     return response;
   } catch (error) {
-    console.log(error, "error");
     return error
   }
 };
@@ -163,7 +155,6 @@ export const downloadFile = (method, url, data, jwt, fileName) => {
 };
 
 export const requestSub = async (method, url, data) => {
-  console.log(method, url, "ourjsbfkqeoujk");
   const opts =
     method === "GET"
       ? {
@@ -184,10 +175,8 @@ export const requestSub = async (method, url, data) => {
       res.json().then(jsonData => ({ ...jsonData, status: res.status }))
     )
     .then(response => {
-      console.log(response, method, url);
       return response;
     })
     .catch(error => {
-      console.log(error);
     });
 };

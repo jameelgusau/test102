@@ -7,9 +7,7 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const ReservationDetail = (props) => {
   const { getReservation, data } = props;
-  console.log(data);
   const { name , address,unit, floor, id, status, dimention, email, phone, paymentType, price } = data;
-
   const myRef = useRef();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -17,7 +15,7 @@ const ReservationDetail = (props) => {
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openReserveDetail);
+  const display = useSelector((state) => state.displays.openReserveDetail);
 
   const sendOfferLetter = async (e) => {
     e.preventDefault();

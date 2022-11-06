@@ -111,11 +111,8 @@ const Agent = () => {
         const response = await axiosPrivate.get(`/api/${path}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
         if(response?.data){
         dispatch(setAgents(response?.data?.data))};
-       
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -133,7 +130,6 @@ const Agent = () => {
   }, [usersArr]);
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
@@ -141,7 +137,6 @@ const Agent = () => {
   };
 
   const handleSearch = () => {
-    console.log("hahhaa");
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();

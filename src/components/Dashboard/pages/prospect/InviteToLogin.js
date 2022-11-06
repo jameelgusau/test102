@@ -10,9 +10,8 @@ const InviteToLogin = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openLoginInvite);
+  const display = useSelector((state) => state.displays.openLoginInvite);
   const dispatch = useDispatch();
-  console.log(account)
   const deleteProperty = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -28,9 +27,7 @@ const InviteToLogin = (props) => {
     }
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, data, user.jwtToken);
-    console.log(response);
     if (response.meta && response.meta.status === 200) {
-      console.log(response);
       await getProspect(user.jwtToken);
 
       await closeDialog();
@@ -38,10 +35,8 @@ const InviteToLogin = (props) => {
     if (response.meta && response.meta.status >= 400) {
       setLoading(false);
       await closeDialog();
-      console.log(response);
      
     }
-    console.log(response);
     setLoading(false);
   };
 

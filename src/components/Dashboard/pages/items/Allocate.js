@@ -17,9 +17,9 @@ const Allocate = (props) => {
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const users = useSelector((state) => state.users.value);
+  const { adminUsers } = useSelector((state) => state.dropdownCalls);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAllocate);
+  const display = useSelector((state) => state.displays.openAllocate);
 
   useEffect(() => {
     setItemId(account.id);
@@ -74,7 +74,6 @@ const Allocate = (props) => {
     }
     setLoading(false);
   };
-
   const validate = () => {
     let temp = {};
     temp.receiverId = receiverId !== "" ? "" : "Select receiver";
@@ -123,7 +122,7 @@ const Allocate = (props) => {
                   setQuantity(target.value);
                 }}
                 disabled
-                value={quantity}
+                value={quantity || 0}
                 {...(errors.quantity && {
                   error: true,
                   helperText: errors.quantity,
@@ -139,7 +138,7 @@ const Allocate = (props) => {
                 onChange={({ target }) => {
                   setQuantityAllocated(target.value);
                 }}
-                value={quantityAllocated}
+                value={quantityAllocated || 0}
                 {...(errors.quantityAllocated && {
                   error: true,
                   helperText: errors.quantityAllocated,
@@ -155,7 +154,7 @@ const Allocate = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select receiver"
-                value={receiverId}
+                value={receiverId || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -164,8 +163,8 @@ const Allocate = (props) => {
                 // ref={myRef}
                 //onBlur={props.handleBlur('name')}
               >
-                {users &&
-                  users.map(({ name, id }) => (
+                {adminUsers &&
+                  adminUsers.map(({ name, id }) => (
                     <MenuItem value={id} key={id}>
                       {name}
                     </MenuItem>

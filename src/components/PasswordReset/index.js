@@ -53,9 +53,7 @@ function PasswordReset() {
       }
       const url = `${baseUrl}${path}`;
       setLoading(true);
-  
       const response = await request(method, url, data);
-      console.log(response);
       if (response.meta && response.meta.status === 200) {
         navigate("/");
       }if(response.meta && response.meta.status === 400){
@@ -83,7 +81,7 @@ function PasswordReset() {
             className="password__input--item-a"
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
-            value={password}
+            value={password || ""}
             onChange={({ target }) => setPassword(target.value)}
             {...(errors.password && {
               error: true,

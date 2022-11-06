@@ -7,12 +7,10 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const DeleteEmailList = (props) => {
   const { account:{ id }, getEmailList } = props
-  console.log(props, "delete unit")
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteEmailList);
-  console.log(display)
+  const display = useSelector((state) => state.displays.openDeleteEmailList);
   const dispatch = useDispatch();
 
   const deleteUnit = async (e) => {
@@ -22,10 +20,10 @@ const DeleteEmailList = (props) => {
       baseUrl,
       deleteEmailList: { method, path },
     } = APIS;
-    const url = `${baseUrl}${path({id:id})}`;
+    const url = `${baseUrl}${path({id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
-      await getEmailList(user.jwtToken)
+      await getEmailList()
       dispatch(
         setAlert({
           open: true,
@@ -45,7 +43,6 @@ const DeleteEmailList = (props) => {
     }))
       setLoading(false);
     }
-    console.log(response);
     setLoading(false);
   };
 

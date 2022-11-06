@@ -10,7 +10,7 @@ const DeleteStore = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteStore);
+  const display = useSelector((state) => state.displays.openDeleteStore);
   const dispatch = useDispatch();
 
   const deleteUser = async (e) => {

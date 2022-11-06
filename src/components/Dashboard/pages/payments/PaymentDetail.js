@@ -23,9 +23,9 @@ const PaymentDetail = () => {
     // eslint-disable-next-line 
   }, []);
 
-  console.log(payment, "payment");
   const getPayment = async (id, jwt) => {
     setLoading(true)
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getPayment: { path },
@@ -37,10 +37,8 @@ const PaymentDetail = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
         if(response?.data){
         dispatch(setPayment(response?.data?.data))};
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{

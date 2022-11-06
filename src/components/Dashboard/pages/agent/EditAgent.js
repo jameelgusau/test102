@@ -20,7 +20,7 @@ const EditAgent = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openEditAgent);
+  const display = useSelector((state) => state.displays.openEditAgent);
 
   useEffect(()=>{
       setName(account.name);

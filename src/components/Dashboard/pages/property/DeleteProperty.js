@@ -10,7 +10,7 @@ const DeleteProperty = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteProperty);
+  const display = useSelector((state) => state.displays.openDeleteProperty);
   const dispatch = useDispatch();
 
   const deleteProperty = async (e) => {
@@ -23,7 +23,6 @@ const DeleteProperty = (props) => {
     const url = `${baseUrl}${path({id:property.id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
-      console.log(response);
       dispatch(setAlert({ open: true,
         severity: "success",
         color: "primary",
@@ -43,7 +42,6 @@ const DeleteProperty = (props) => {
     }))
     setLoading(false);
     }
-    console.log(response);
     setLoading(false);
   };
 

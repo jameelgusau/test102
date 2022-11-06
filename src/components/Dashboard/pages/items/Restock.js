@@ -18,9 +18,9 @@ const Restock = (props) => {
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const users = useSelector((state) => state.users.value);
+  const { adminUsers } = useSelector((state) => state.dropdownCalls);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openRestock);
+  const display = useSelector((state) => state.displays.openRestock);
 
   useEffect(() => {
     setItemId(account.id);
@@ -29,7 +29,6 @@ const Restock = (props) => {
 
   const submit = async (e) => {
     e.preventDefault();
-    console.log(users);
     setLoading(true);
     if (validate()) {
       const {
@@ -127,7 +126,7 @@ const Restock = (props) => {
                   setQuantity(target.value);
                 }}
                 disabled
-                value={quantity}
+                value={quantity || 0}
                 {...(errors.quantity && {
                   error: true,
                   helperText: errors.quantity,
@@ -143,7 +142,7 @@ const Restock = (props) => {
                 onChange={({ target }) => {
                   setQuantityPurchased(target.value);
                 }}
-                value={quantityPurchased}
+                value={quantityPurchased || 0}
                 {...(errors.quantityPurchased && {
                   error: true,
                   helperText: errors.quantityPurchased,
@@ -159,7 +158,7 @@ const Restock = (props) => {
                 onChange={({ target }) => {
                   setUnitCost(target.value);
                 }}
-                value={unitCost}
+                value={unitCost || 0}
                 {...(errors.unitCost && {
                   error: true,
                   helperText: errors.unitCost,
@@ -175,7 +174,7 @@ const Restock = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select purchaser"
-                value={purchaserId}
+                value={purchaserId || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -188,8 +187,8 @@ const Restock = (props) => {
                 // ref={myRef}
                 //onBlur={props.handleBlur('name')}
               >
-                {users &&
-                  users.map(({ name, id }) => (
+                {adminUsers &&
+                  adminUsers.map(({ name, id }) => (
                     <MenuItem value={id} key={id}>
                       {name}
                     </MenuItem>

@@ -36,24 +36,26 @@ const Users = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const usersArr = useSelector((state) => state.users.value);
+  const { totalRecord, records, totalPages, currentPage } = useSelector(
+    (state) => state.users.value
+  );
+  const [filter, setFilter] = useState({ page: 0 });
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [groupAnchorArr, setGroupAnchorArr] = useState(
-    new Array(usersArr?.length).fill(null)
+    new Array(records?.length).fill(null)
   );
 
-  const List = usersArr.map((item, idx) => ({
+  const List = records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     actions: (
       <>
         <IconButton
           size="small"
           onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
         >
-          {" "}
           <IoEllipsisVerticalOutline />
         </IconButton>
         <Menu
@@ -95,16 +97,18 @@ const Users = () => {
   }));
 
   useEffect(() => {
-    getUser();
+    getUserByPage();
     // eslint-disable-next-line
-  }, []);
+  }, [filter.page]);
 
   useEffect(() => {
-    setGroupAnchorArr(new Array(usersArr.length).fill(null));
-  }, [usersArr]);
+    setGroupAnchorArr(new Array(records.length).fill(null));
+  }, [records]);
 
+  const getUserByPage = async () => {
+    await getUser(filter);
+  };
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
@@ -113,44 +117,54 @@ const Users = () => {
 
   const getUser = async (data) => {
     setLoading(true);
-
-    let isMounted  = true;
+// eslint-disable-next-line
+    let isMounted = true;
     const {
       getUsers: { path },
-        } = APIS;
-    const url = `/api${path}`;
-    const controller =  new AbortController();
-    const getUs =  async () =>{
-      try{
+    } = APIS;
+    const url = `/api${path(data)}`;
+    const controller = new AbortController();
+    const getUs = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        console.log(response.data, "response.data")
-        if(response?.data){
-        dispatch(setUsers(response?.data?.data))};
-        console.log(isMounted)
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        if (response?.data) {
+          dispatch(setUsers(response?.data?.data));
+        }
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getUs()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getUs();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
 
-  const handleSearch = () => {
-    console.log("hahhaa");
+  const handleSearch = async () => {
+    const searchFilter = {
+      search,
+    };
+    setFilter(searchFilter);
+    getUser(searchFilter);
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
+  // onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Esc' || e.key === 27) handleSearch(); }}
+  const onKeyDown = async (event) => {
+    const key = event.key || event.keyCode;
 
+    if (key === "Enter" || key === 13) {
+      await handleSearch();
+    }
+  };
   const openDialog = () => {
-   dispatch(displayAddUser("block"));
+    dispatch(displayAddUser("block"));
   };
 
   return (
@@ -162,7 +176,8 @@ const Users = () => {
             variant="outlined"
             className="signup__input--item-b"
             type="text"
-            value={search}
+            value={search || ""}
+            onKeyDown={onKeyDown}
             onChange={({ target }) => setSearch(target.value)}
             InputProps={{
               endAdornment: (
@@ -189,10 +204,21 @@ const Users = () => {
           <span>Add User</span>
         </div>
       </div>
-      <Table loading={loading} columns={columns} tableData={List} />
-      <AddUser getUser={(e) => getUser(e)} />
-      <EditUser getUser={(e) => getUser(e)} account={account} />
-      <DeleteUser getUser={(e) => getUser(e)} account={account} />
+      <Table
+        loading={loading}
+        columns={columns}
+        tableData={List}
+        pagination
+        totalRecord={totalRecord}
+        pageAction={(newPage) =>
+          setFilter((prev) => ({ ...prev, page: newPage }))
+        }
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
+      <AddUser getUser={() => getUser(filter)} />
+      <EditUser getUser={() => getUser(filter)} account={account} />
+      <DeleteUser getUser={() => getUser(filter)} account={account} />
     </div>
   );
 };

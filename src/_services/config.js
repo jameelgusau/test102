@@ -31,7 +31,7 @@ export const APIS = {
   },
   getProperties: {
     method: "GET",
-    path: "/get-property?name=Gourav&age=11",
+    path: "/get-property",
   },
   addProperties: {
     method: "POST",
@@ -43,7 +43,9 @@ export const APIS = {
   },
   getUsers: {
     method: "GET",
-    path: "/",
+    path: ( {  search,page }) => {   
+      return `/?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   addUnit: {
     method: "POST",
@@ -55,7 +57,9 @@ export const APIS = {
   },
   getProspect: {
     method: "GET",
-    path: "/prospect",
+    path: ( {  search,page }) => {   
+      return `/prospect?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   editProspect: {
     method: "PUT",
@@ -143,7 +147,9 @@ export const APIS = {
   },
   getAllReserved: {
     method: "GET",
-    path: "/get-allReserved",
+    path: ( {  search,page }) => {   
+      return `/get-allReserved?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   sendRejectLetter: {
     method: "POST",
@@ -163,7 +169,9 @@ export const APIS = {
   },
   getPayments: {
     method: "GET",
-    path: "/get-payments",
+    path: ( {  search,page }) => {   
+      return `/get-payments?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   getAgents: {
     method: "GET",
@@ -203,7 +211,9 @@ export const APIS = {
   },
   getStore: {
     method: "GET",
-    path: "/store",
+    path: ( {  search,page }) => {   
+      return `/store?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   addStore: {
     method: "POST",
@@ -219,7 +229,9 @@ export const APIS = {
   },
   getItem: {
     method: "GET",
-    path: "/item",
+    path: ( {  search,page }) => {   
+      return `/item?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   addItem: {
     method: "POST",
@@ -235,7 +247,9 @@ export const APIS = {
   },
   getCategory: {
     method: "GET",
-    path: "/category",
+    path: ( {  search,page }) => {   
+      return `/category?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
   },
   addCategory: {
     method: "POST",
@@ -281,5 +295,25 @@ export const APIS = {
     method: "GET",
     path: "/get-dash-chart",
   },
- 
+  getDropdownStores: {
+    method: "GET",
+    path: "/get-dropdown-stores",
+  },
+  getDropdownCategories: {
+    method: "GET",
+    path: "/get-dropdown-categories",
+  },
+  getDropdownAdminUsers: {
+    method: "GET",
+    path: "/get-dropdown-adminusers",
+  },
+  getDropdownClients: {
+    method: "GET",
+    path: "/get-dropdown-clients",
+  },
+  getDropdownUsers: {
+    method: "GET",
+    path: "/get-dropdown-users",
+  },
+  
 };

@@ -21,9 +21,9 @@ const AddItem = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const stores = useSelector((state) => state.store.value);
-  const category = useSelector((state) => state.category.value);
-  const display = useSelector((state) => state.display.openAddItem);
+  const { stores, categories }= useSelector((state) => state.dropdownCalls);
+  // const { records: category} = useSelector((state) => state.category.value);
+  const display = useSelector((state) => state.displays.openAddItem);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -77,7 +77,6 @@ const AddItem = (props) => {
     }
     setLoading(false);
   };
-
   const clearInput = () => {
     setLoading(false);
     setName("");
@@ -130,7 +129,7 @@ const AddItem = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ""}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <label>Quantity: </label>
@@ -143,7 +142,7 @@ const AddItem = (props) => {
                 onChange={({ target }) => {
                   setQuantity(target.value);
                 }}
-                value={quantity}
+                value={quantity || 0}
                 {...(errors.quantity && {
                   error: true,
                   helperText: errors.quantity,
@@ -159,7 +158,7 @@ const AddItem = (props) => {
                 onChange={({ target }) => {
                   setUnitCost(target.value);
                 }}
-                value={unitCost}
+                value={unitCost || 0}
                 {...(errors.unitCost && {
                   error: true,
                   helperText: errors.unitCost,
@@ -175,7 +174,7 @@ const AddItem = (props) => {
                 onChange={({ target }) => {
                   setUnitName(target.value);
                 }}
-                value={unitName}
+                value={unitName || ''}
                 {...(errors.unitName && {
                   error: true,
                   helperText: errors.unitName,
@@ -191,7 +190,7 @@ const AddItem = (props) => {
                 onChange={({ target }) => {
                   setDescription(target.value);
                 }}
-                value={description}
+                value={description || ""}
                 {...(errors.description && {
                   error: true,
                   helperText: errors.description,
@@ -207,7 +206,7 @@ const AddItem = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select store"
-                value={storeId}
+                value={storeId || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -233,7 +232,7 @@ const AddItem = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select category"
-                value={categoryId}
+                value={categoryId || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -242,8 +241,8 @@ const AddItem = (props) => {
                 // ref={myRef}
                 //onBlur={props.handleBlur('name')}
               >
-                {category &&
-                  category.map(({ name, id }) => (
+                {categories &&
+                  categories.map(({ name, id }) => (
                     <MenuItem value={id} key={id}>
                       {name}
                     </MenuItem>

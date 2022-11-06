@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: [],
-};
+  value:  { totalRecord: 0, records: [], totalPages: 0, currentPage: 0 },
+}
 
 export const Item = createSlice({
   name: "item",

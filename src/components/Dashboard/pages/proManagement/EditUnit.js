@@ -19,7 +19,7 @@ const EditUnit = (props) => {
     const [dimension, setDimension] = useState("");
     const [discription, setDiscription] = useState("");
     const user = useSelector((state) => state.userProfile.value);
-    const display = useSelector((state) => state.display.openEditUnit);
+    const display = useSelector((state) => state.displays.openEditUnit);
     const dispatch = useDispatch();
     let params = useParams();
 
@@ -120,7 +120,7 @@ const EditUnit = (props) => {
         },
         {
           id: 3,
-          name: "Reserve"
+          name: "Reserved"
         },
         {
           id: 4,
@@ -167,7 +167,7 @@ const EditUnit = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ""}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
                             <label>Price:</label>
@@ -179,7 +179,7 @@ const EditUnit = (props) => {
                 onChange={({ target }) => {
                   setPrice(target.value);
                 }}
-                value={price}
+                value={price || 0}
                 {...(errors.address && { error: true, helperText: errors.price })}
               />
                                         <label>Dimension:</label>
@@ -191,7 +191,7 @@ const EditUnit = (props) => {
                 onChange={({ target }) => {
                   setDimension(target.value);
                 }}
-                value={dimension}
+                value={dimension || ""}
                 {...(errors.dimension && { error: true, helperText: errors.dimension})}
               />
                   <label>Discription:</label>
@@ -205,7 +205,7 @@ const EditUnit = (props) => {
                 onChange={({ target }) => {
                   setDiscription(target.value);
                 }}
-                value={discription}
+                value={discription || ""}
                 {...(errors.discription && { error: true, helperText: errors.discription })}
               />
                  <label>Select status:</label>
@@ -216,7 +216,7 @@ const EditUnit = (props) => {
                 // ref={myRef}
                 // className="password__input--item-a"
                 variant="outlined"
-                value={status || "Available"}
+                value={status || ""}
                 defaultValue={""}
                 label= "Select status"
                 size="small"
@@ -241,7 +241,7 @@ const EditUnit = (props) => {
                 // ref={myRef}
                 // className="password__input--item-a"
                 variant="outlined"
-                value={paymentType || "One-off"}
+                value={paymentType || ""}
                 label="Select payment type"
                 defaultValue={""}
                 size="small"

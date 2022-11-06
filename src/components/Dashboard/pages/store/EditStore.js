@@ -16,7 +16,7 @@ const EditStore = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openEditStore);
+  const display = useSelector((state) => state.displays.openEditStore);
 
   useEffect(() => {
     setName(account.name);
@@ -114,7 +114,7 @@ const EditStore = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <label>Location: </label>
@@ -127,7 +127,7 @@ const EditStore = (props) => {
                 onChange={({ target }) => {
                   setLocation(target.value);
                 }}
-                value={location}
+                value={location || ''}
                 {...(errors.location && {
                   error: true,
                   helperText: errors.location,

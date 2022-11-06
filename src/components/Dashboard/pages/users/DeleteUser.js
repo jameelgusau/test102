@@ -10,7 +10,7 @@ const DeleteUser = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteUser);
+  const display = useSelector((state) => state.displays.openDeleteUser);
   const dispatch = useDispatch();
 
   const deleteUser = async (e) => {
@@ -23,7 +23,7 @@ const DeleteUser = (props) => {
     const url = `${baseUrl}${path({id:account.id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
-      await getUser(user.jwtToken);
+      await getUser();
       dispatch(
         setAlert({
           open: true,

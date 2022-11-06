@@ -27,18 +27,24 @@ const Payments = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const payments = useSelector((state) => state.payments.value);
+  const { totalRecord, records, totalPages, currentPage } = useSelector((state) => state.payments.value);
+  const [filter, setFilter] = useState({ page: 0 });
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getPayment();
+    getPaymentByPage();
     // eslint-disable-next-line
-  }, []);
+  }, [filter.page]);
 
-  const List = payments.map((item, idx) => ({
+
+  const getPaymentByPage = async () => {
+    await getPayment(filter);
+  };
+
+  const List = records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     amount: new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
@@ -52,23 +58,22 @@ const Payments = () => {
       </>
     ),
   }));
-  const getPayment = async () => {
+  const getPayment = async (data) => {
     setLoading(true);
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getPayments: { path },
         } = APIS;
-    const url = `/api${path}`;
+    const url = `/api${path(data)}`;
     const controller =  new AbortController();
     const getUs =  async () =>{
       try{
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
         if(response?.data){
-        dispatch(setPayments(response?.data?.data))};
-        console.log(isMounted)
+        dispatch(setPayments(response?.data?.data))}
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -83,7 +88,6 @@ const Payments = () => {
   };
 
   const handleSearch = () => {
-    console.log("hahhaa");
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
@@ -117,7 +121,20 @@ const Payments = () => {
           />
         </div>
       </div>
-      <Table loading={loading} columns={columns} tableData={List} />
+      <Table 
+      loading={loading} 
+      columns={columns} 
+      tableData={List}
+      pagination
+      totalRecord={totalRecord}
+      pageAction={(newPage) =>
+        setFilter((prev) => ({ ...prev, page: newPage }))
+      }
+      totalPages={totalPages}
+      currentPage={currentPage}
+      
+      
+      />
     </div>
   );
 };

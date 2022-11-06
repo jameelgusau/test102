@@ -40,6 +40,7 @@ function Header() {
   };
   const getProfileImage = async (data) => {
     setLoading(true);
+    // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getProfileImage: { path },
@@ -51,11 +52,8 @@ function Header() {
         const response = await axiosPrivate.get(`${url}`,{
           signal: controller.signal
         });
-        console.log(response.data, "response")
         if(response?.data){
         dispatch(setProfileImage(response?.data?.data))}
-        console.log(response.data, "response")
-        console.log(isMounted)
       }catch(err){
         // navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -71,6 +69,7 @@ function Header() {
 
 const logout = async ()=>{
     setLoading(true);
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       revokeToken: { path },
@@ -82,10 +81,8 @@ const logout = async ()=>{
         const response = await axiosPrivate.post(`${url}`, {},{
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
         if(response?.data){
         dispatch(userProfile(response?.data?.data))}
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{

@@ -34,18 +34,18 @@ const Category = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const storeArr = useSelector((state) => state.category.value);
+  const { totalRecord, records, totalPages, currentPage } = useSelector((state) => state.category.value);
   const [account, setAccount] = useState({});
+  const [filter, setFilter] = useState({ page: 0 });
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [groupAnchorArr, setGroupAnchorArr] = useState(
-    new Array(storeArr?.length).fill(null)
+    new Array(records?.length).fill(null)
   );
 
-  console.log("Store", storeArr)
-  const List =storeArr.map((item, idx) => ({
+  const List = records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     actions: (
       <>
         <IconButton
@@ -94,41 +94,42 @@ const Category = () => {
   }));
 
   useEffect(() => {
-    getCategory();
+    getCategoryByPage();
     // eslint-disable-next-line
-  }, []);
+  }, [filter.page]);
 
   useEffect(() => {
-    setGroupAnchorArr(new Array(storeArr.length).fill(null));
-  }, [storeArr]);
+    setGroupAnchorArr(new Array(records.length).fill(null));
+  }, [records]);
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
     setGroupAnchorArr(newArr);
   };
 
+  const getCategoryByPage = async () => {
+    await getCategory(filter);
+  };
+
   const getCategory = async (data) => {
     setLoading(true);
-
+// eslint-disable-next-line
     let isMounted = true;
     const {
       getCategory: { path },
     } = APIS;
-    const url = `/api${path}`;
+    const url = `/api${path(data)}`;
     const controller = new AbortController();
     const getUs = async () => {
       try {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setCategory(response?.data?.data));
         }
-        console.log(isMounted);
       } catch (err) {
         navigate("/login", { state: { from: location }, replace: true });
       } finally {
@@ -143,8 +144,21 @@ const Category = () => {
   };
 
   const handleSearch = () => {
-    console.log("hahhaa");
+    const searchFilter = {
+      search,
+    };
+    setFilter(searchFilter);
+    getCategory(searchFilter);
   };
+
+  const onKeyDown = async (event) => {
+    const key = event.key || event.keyCode;
+
+    if (key === "Enter" || key === 13) {
+      await handleSearch();
+    }
+  };
+
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
@@ -163,6 +177,7 @@ const Category = () => {
             className="signup__input--item-b"
             type="text"
             value={search}
+            onKeyDown={onKeyDown}
             onChange={({ target }) => setSearch(target.value)}
             InputProps={{
               endAdornment: (
@@ -190,11 +205,22 @@ const Category = () => {
         </div>
       </div>
       <div className="store__table">
-        <Table loading={loading} columns={columns} tableData={List} />
+        <Table 
+        loading={loading} 
+        columns={columns} 
+        tableData={List} 
+        pagination
+        totalRecord={totalRecord}
+        pageAction={(newPage) =>
+          setFilter((prev) => ({ ...prev, page: newPage }))
+        }
+        totalPages={totalPages}
+        currentPage={currentPage}
+        />
       </div>
-      <AddCategory getCategory={(e) => getCategory(e)} />
-      <EditCategory getCategory={(e) => getCategory(e)} account={account} />
-      <DeleteCategory getCategory={(e) => getCategory(e)} account={account} />
+      <AddCategory getCategory={(e) => getCategory(filter)} />
+      <EditCategory getCategory={(e) => getCategory(filter)} account={account} />
+      <DeleteCategory getCategory={(e) => getCategory(filter)} account={account} />
     </div>
   );
 };

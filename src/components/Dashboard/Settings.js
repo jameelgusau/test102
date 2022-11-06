@@ -18,7 +18,7 @@ const Settings = (props) => {
   const [newImage, setNewImage] = useState([]);
   const user = useSelector((state) => state.userProfile.value);
   const proImage = useSelector((state) => state.profileImage.value);
-  const display = useSelector((state) => state.display.openSettings);
+  const display = useSelector((state) => state.displays.openSettings);
   const dispatch = useDispatch();
 
   const handleChange = async (e) => {
@@ -26,7 +26,6 @@ const Settings = (props) => {
     setNewImage(e.target.files)
     const base64 = await convertBase64(file);
     setImage(base64);
-    console.log(base64.length);
   };
 
   const convertBase64 = (file) => {
@@ -46,7 +45,6 @@ const Settings = (props) => {
   const uploadFile = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(newImage)
     const formData = new FormData();
     Object.keys(newImage).forEach(key =>{
       formData.append(newImage.item(key).name, newImage.item(key))});
@@ -56,10 +54,8 @@ const Settings = (props) => {
       } = APIS;
       const url = `${baseUrl}${path}`;
         const response = await requestImg(method, url, formData, user.jwtToken);
-          console.log(response)
           // closeDialog();
       if (response.meta && response.meta.status === 200) {
-        console.log(response);
         // await getImage(params.id);
         await getProfileImage(user?.jwtToken)
         dispatch(
@@ -83,7 +79,6 @@ const Settings = (props) => {
         );
         setLoading(false);
       }
-      console.log(response);
       setLoading(false);
   };
 

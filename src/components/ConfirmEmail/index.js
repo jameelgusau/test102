@@ -31,16 +31,12 @@ function ConfirmEmail() {
     }
     const url = `${baseUrl}${path}`;
     const response = await request(method, url, data);
-    console.log(response);
     if (response.meta && response.meta.status === 200) {
-        console.log(response,"200")
-        // dispatch(completeSignUp(response.data) )
         setErrMessage(response.meta.message)
     }else if(response.meta && response.meta.status >= 400){
         setErrMessage(response.meta.message)
         setErr(true)
         setLoading(false);
-        console.log(response,"400")
     }
     setLoading(false);
   };

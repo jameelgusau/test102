@@ -32,6 +32,7 @@ const MyReservation = () => {
   }, []);
 
   const getReservedUnit = async () => {
+    // eslint-disable-next-line
     let isMounted = true;
     const {
       getReservedUnits: { path },
@@ -44,11 +45,9 @@ const MyReservation = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setReservedUnits(response?.data?.data));
         }
-        console.log(isMounted);
       } catch (err) {
         navigate("/login", { state: { from: location }, replace: true });
       } finally {
@@ -84,7 +83,6 @@ const MyReservation = () => {
         {reserved &&
           reserved.map((item, idx) => (
             <div className="reservationCard" key={idx}>
-              {/* `{console.log(item)}` */}
               <h4
                 className="model-body__row--text"
                 style={{ fontSize: "25px" }}

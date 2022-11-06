@@ -24,7 +24,7 @@ const AddProperty = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddProperty);
+  const display = useSelector((state) => state.displays.openAddProperty);
   const ref = useRef();
 
   //   const handleSubmit= async(e)=>{
@@ -67,18 +67,7 @@ const AddProperty = (props) => {
       formData.append("completion_date", date);
       formData.append("status", status);
       const url = `${baseUrl}${path}`;
-      console.log(url);
       const response = await requestImg(method, url, formData, user.jwtToken);
-      console.log(response);
-      //   const response = await fetch( url, {
-      //   method,
-      //   headers: {
-      //     Authorization: `Bearer ${user.jwtToken}`
-      //   },
-      //   body: formData
-      // })
-      // console.log(response);
-      // const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
         await getProperties(user.jwtToken);
         dispatch(
@@ -182,7 +171,7 @@ const AddProperty = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
 
@@ -196,7 +185,7 @@ const AddProperty = (props) => {
                 onChange={({ target }) => {
                   setAddress(target.value);
                 }}
-                value={address}
+                value={address || ''}
                 {...(errors.address && {
                   error: true,
                   helperText: errors.address,
@@ -212,7 +201,7 @@ const AddProperty = (props) => {
                 onChange={({ target }) => {
                   setFloors(target.value);
                 }}
-                value={floors}
+                value={floors || ''}
                 {...(errors.floors && {
                   error: true,
                   helperText: errors.floors,
@@ -228,7 +217,7 @@ const AddProperty = (props) => {
                 onChange={({ target }) => {
                   setUnits(target.value);
                 }}
-                value={units}
+                value={units || ''}
                 {...(errors.units && { error: true, helperText: errors.units })}
               />
               <label>Select status: </label>
@@ -241,7 +230,7 @@ const AddProperty = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 // label="Select status"
-                value={status}
+                value={status || ''}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();

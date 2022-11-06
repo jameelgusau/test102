@@ -64,7 +64,6 @@ function Signup() {
 
   const submit = async (e) => {
     e.preventDefault();
-    console.log(validate(), "login");
     if (validate()) {
       const {
         baseUrl,
@@ -81,7 +80,6 @@ function Signup() {
       const url = `${baseUrl}${path}`;
       setLoading(true);
       const response = await request(method, url, data);
-      console.log(response);
       if (response.meta && response.meta.status === 200) {
         navigate("/checkmail");
       }
@@ -117,7 +115,7 @@ function Signup() {
             onChange={({ target }) => {
               setName(target.value);
             }}
-            value={name}
+            value={name || ''}
             {...(errors.email && { error: true, helperText: errors.name })}
           />
           <TextField
@@ -128,7 +126,7 @@ function Signup() {
             onChange={({ target }) => {
               setEmail(target.value);
             }}
-            value={email}
+            value={email || ''}
             {...(errors.email && { error: true, helperText: errors.email })}
           />
           <MuiPhoneNumber
@@ -137,7 +135,7 @@ function Signup() {
             onChange={(e) => {
               setPhone(e);
             }}
-            value={phone}
+            value={phone || ''}
             required
             {...(errors.phone && { error: true, helperText: errors.phone })}
             placeholder="Phone Number"
@@ -165,7 +163,7 @@ function Signup() {
             className="signup__input--item-b"
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
-            value={password}
+            value={password || ''}
             onChange={({ target }) => setPassword(target.value)}
             {...(errors.password && {
               error: true,
@@ -193,7 +191,7 @@ function Signup() {
             className="signup__input--item-b"
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"
-            value={confirmPassword}
+            value={confirmPassword || ''}
             onChange={({ target }) => setConfirmPassword(target.value)}
             {...(errors.confirmPassword && {
               error: true,

@@ -34,25 +34,24 @@ const Store = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const storeArr = useSelector((state) => state.store.value);
+  const { totalRecord, records, totalPages, currentPage }= useSelector((state) => state.store.value);
   const [account, setAccount] = useState({});
+  const [filter, setFilter] = useState({ page: 0 });
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [groupAnchorArr, setGroupAnchorArr] = useState(
-    new Array(storeArr?.length).fill(null)
+    new Array(records?.length).fill(null)
   );
 
-  console.log("Store", storeArr)
-  const List =storeArr.map((item, idx) => ({
+  const List =records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     actions: (
       <>
         <IconButton
           size="small"
           onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
         >
-          {" "}
           <IoEllipsisVerticalOutline />
         </IconButton>
         <Menu
@@ -94,16 +93,20 @@ const Store = () => {
   }));
 
   useEffect(() => {
-    getStore();
+    getStoreByPage();
     // eslint-disable-next-line
-  }, []);
+  }, [filter.page]);
 
   useEffect(() => {
-    setGroupAnchorArr(new Array(storeArr.length).fill(null));
-  }, [storeArr]);
+    setGroupAnchorArr(new Array(records.length).fill(null));
+  }, [records]);
+
+
+  const getStoreByPage = async () => {
+    await getStore(filter);
+  };
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
@@ -112,23 +115,21 @@ const Store = () => {
 
   const getStore = async (data) => {
     setLoading(true);
-
+ // eslint-disable-next-line 
     let isMounted = true;
     const {
       getStore: { path },
     } = APIS;
-    const url = `/api${path}`;
+    const url = `/api${path(data)}`;
     const controller = new AbortController();
     const getUs = async () => {
       try {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setStore(response?.data?.data));
         }
-        console.log(isMounted);
       } catch (err) {
         navigate("/login", { state: { from: location }, replace: true });
       } finally {
@@ -143,10 +144,21 @@ const Store = () => {
   };
 
   const handleSearch = () => {
-    console.log("hahhaa");
+    const searchFilter = {
+      search,
+    };
+    setFilter(searchFilter);
+    getStore(searchFilter);
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
+  };
+  const onKeyDown = async (event) => {
+    const key = event.key || event.keyCode;
+
+    if (key === "Enter" || key === 13) {
+      await handleSearch();
+    }
   };
 
   const openDialog = () => {
@@ -163,6 +175,7 @@ const Store = () => {
             className="signup__input--item-b"
             type="text"
             value={search}
+            onKeyDown={onKeyDown}
             onChange={({ target }) => setSearch(target.value)}
             InputProps={{
               endAdornment: (
@@ -190,11 +203,22 @@ const Store = () => {
         </div>
       </div>
       <div className="store__table">
-        <Table loading={loading} columns={columns} tableData={List} />
+        <Table 
+        loading={loading} 
+        columns={columns} 
+        tableData={List}
+        pagination
+        totalRecord={totalRecord}
+        pageAction={(newPage) =>
+          setFilter((prev) => ({ ...prev, page: newPage }))
+        }
+        totalPages={totalPages}
+        currentPage={currentPage}
+        />
       </div>
-      <AddStore getStore={(e) => getStore(e)} />
-      <EditStore getStore={(e) => getStore(e)} account={account} />
-      <DeleteStore getStore={(e) => getStore(e)} account={account} />
+      <AddStore getStore={() => getStore(filter)} />
+      <EditStore getStore={() => getStore(filter)} account={account} />
+      <DeleteStore getStore={() => getStore(filter)} account={account} />
     </div>
   );
 };

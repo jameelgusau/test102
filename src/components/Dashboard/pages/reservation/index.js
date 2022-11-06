@@ -35,21 +35,22 @@ const Reservations = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
+  const [filter, setFilter] = useState({ page: 0 });
   const [search, setSearch] = useState("");
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
-  const allReserved = useSelector((state) => state.allReserved.value);
+  const { totalRecord, records, totalPages, currentPage }  = useSelector((state) => state.allReserved.value);
   const [groupAnchorArr, setGroupAnchorArr] = useState(
-    new Array(allReserved.length).fill(null)
+    new Array(records.length).fill(null)
   );
   useEffect(() => {
-    getReservation();
+    getReservedByPage();
     // eslint-disable-next-line
-  }, []);
+  }, [filter.page]);
 
-  const List = allReserved.map((item, idx) => ({
+  const List = records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     actions: (
       <>
         <IconButton
@@ -100,24 +101,26 @@ const Reservations = () => {
       </>
     ),
   }));
+  const getReservedByPage = async () => {
+    await getReservation(filter);
+  };
 
   const getReservation = async (data) => {
     setLoading(true)
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getAllReserved: { path },
         } = APIS;
-    const url = `/api${path}`;
+    const url = `/api${path(data)}`;
     const controller =  new AbortController();
     const getUs =  async () =>{
       try{
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
         if(response?.data){
         dispatch(setAllReserved(response?.data?.data))};
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -147,12 +150,11 @@ const Reservations = () => {
   };
 
   useEffect(() => {
-    setGroupAnchorArr(new Array(allReserved.length).fill(null));
+    setGroupAnchorArr(new Array(records.length).fill(null));
     // eslint-disable-next-line
-  }, [allReserved]);
+  }, [records]);
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
@@ -160,13 +162,24 @@ const Reservations = () => {
   };
 
   const handleSearch = () => {
-    console.log("hahhaa");
+    const searchFilter = {
+      search,
+    };
+    setFilter(searchFilter);
+    getReservation(searchFilter);
+  };
+
+  const onKeyDown = async (event) => {
+    const key = event.key || event.keyCode;
+
+    if (key === "Enter" || key === 13) {
+      await handleSearch();
+    }
   };
 
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
-  console.log(account);
 
   return (
     <div className="reservation">
@@ -178,6 +191,7 @@ const Reservations = () => {
             className="signup__input--item-b"
             type="text"
             value={search}
+            onKeyDown={onKeyDown}
             onChange={({ target }) => setSearch(target.value)}
             // {...(errors.password && {
             //   error: true,
@@ -305,14 +319,25 @@ const Reservations = () => {
             ))}
         </div>
       </div> */}
-      <Table loading={loading} columns={columns} tableData={List}/>
+      <Table 
+      loading={loading} 
+      columns={columns} 
+      tableData={List}
+      pagination
+      totalRecord={totalRecord}
+      pageAction={(newPage) =>
+        setFilter((prev) => ({ ...prev, page: newPage }))
+      }
+      totalPages={totalPages}
+      currentPage={currentPage}
+      />
       <ReservationDetail
         data={account}
-        getReservation={(e) => getReservation(e)}
+        getReservation={() => getReservation(filter)}
       />
       <UploadPayment
         reservedUnitId={account.id}
-        getReservation={(e) => getReservation(e)}
+        getReservation={() => getReservation(filter)}
       />
     </div>
   );

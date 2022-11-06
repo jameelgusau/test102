@@ -23,9 +23,9 @@ const EditUser = (props) => {
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const stores = useSelector((state) => state.store.value);
+  const { stores }= useSelector((state) => state.dropdownCalls);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openEditUser);
+  const display = useSelector((state) => state.displays.openEditUser);
 
   useEffect(() => {
     setName(account.name);
@@ -56,7 +56,7 @@ const EditUser = (props) => {
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
-        await getUser(user.jwtToken);
+        await getUser();
         dispatch(
           setAlert({
             open: true,
@@ -126,7 +126,6 @@ const EditUser = (props) => {
   };
 
   const handleStoreChange = (e) => {
-    // console.log("hardSoreChange", e);
     let p = [];
     e.map((store) => p.push(store.value));
     setStoresArr(p);
@@ -160,7 +159,7 @@ const EditUser = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <label>Email:</label>
@@ -172,7 +171,7 @@ const EditUser = (props) => {
                 onChange={({ target }) => {
                   setEmail(target.value);
                 }}
-                value={email}
+                value={email  || ''}
                 {...(errors.email && { error: true, helperText: errors.email })}
               />
               <label>Phone:</label>
@@ -182,7 +181,7 @@ const EditUser = (props) => {
                 onChange={(e) => {
                   setPhone(e);
                 }}
-                value={phone}
+                value={phone  || ''}
                 required
                 {...(errors.phone && { error: true, helperText: errors.phone })}
                 placeholder="Phone Number"
@@ -194,7 +193,7 @@ const EditUser = (props) => {
                 select
                 id="select"
                 variant="outlined"
-                value={role || "User"}
+                value={role || ""}
                 label="Select role"
                 defaultValue="User"
                 size="small"

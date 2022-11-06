@@ -20,7 +20,7 @@ const EditProperty = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openEditProperty);
+  const display = useSelector((state) => state.displays.openEditProperty);
 
   useEffect(() => {
     setName(property.name);
@@ -85,7 +85,6 @@ const EditProperty = (props) => {
     }
     setLoading(false);
   };
-  // console.log(date)
   const validate = () => {
     let temp = {};
     temp.name = name.length > 2 ? "" : "Minimum 3 characters required";
@@ -146,7 +145,7 @@ const EditProperty = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <label>Address: </label>
@@ -159,7 +158,7 @@ const EditProperty = (props) => {
                 onChange={({ target }) => {
                   setAddress(target.value);
                 }}
-                value={address}
+                value={address || ''}
                 {...(errors.address && {
                   error: true,
                   helperText: errors.address,
@@ -175,7 +174,7 @@ const EditProperty = (props) => {
                 onChange={({ target }) => {
                   setFloors(target.value);
                 }}
-                value={floors}
+                value={floors || ""}
                 {...(errors.floors && {
                   error: true,
                   helperText: errors.floors,
@@ -191,7 +190,7 @@ const EditProperty = (props) => {
                 onChange={({ target }) => {
                   setUnits(target.value);
                 }}
-                value={units}
+                value={units || ''}
                 {...(errors.units && { error: true, helperText: errors.units })}
               />
               <label>Select status: </label>
@@ -204,7 +203,7 @@ const EditProperty = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select status"
-                value={status}
+                value={status || ''}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();

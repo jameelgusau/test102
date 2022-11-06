@@ -30,10 +30,10 @@ const ReserveUnit = (props) => {
   const [prospectId, setProspectId] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const display = useSelector((state) => state.display.openReserve);
+  const display = useSelector((state) => state.displays.openReserve);
   const user = useSelector((state) => state.userProfile.value);
-  const clients = useSelector((state) => state.prospects.value);
-
+  const { clients }= useSelector((state) => state.dropdownCalls);
+  console.log(clients)
   const resevedUnit = async (e) => {
     e.preventDefault();
     setLoading(true);

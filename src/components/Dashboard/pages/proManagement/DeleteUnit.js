@@ -13,7 +13,7 @@ const DeleteUnit = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteUnit);
+  const display = useSelector((state) => state.displays.openDeleteUnit);
   const dispatch = useDispatch();
 
   const deleteUnit = async (e) => {
@@ -26,7 +26,6 @@ const DeleteUnit = (props) => {
     const url = `${baseUrl}${path({id:unit.id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
-      console.log(response);
       await getUnits(params.id)
       dispatch(setAlert({ open: true,
         severity: "error",
@@ -34,10 +33,8 @@ const DeleteUnit = (props) => {
         message: response.meta.message
     }))
       closeDialog()
-
     }
     if (response.meta && response.meta.status >= 400) {
-      console.log(response);
       dispatch(setAlert({ open: true,
         severity: "error",
         color: "error",
@@ -45,7 +42,6 @@ const DeleteUnit = (props) => {
     }))
       setLoading(false);
     }
-    console.log(response);
     setLoading(false);
   };
 

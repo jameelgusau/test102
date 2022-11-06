@@ -37,9 +37,7 @@ function InitReset() {
       }
       const url = `${baseUrl}${path}`;
       setLoading(true);
-      
       const response = await request(method, url, data);
-      console.log(response);
       if (response.meta && response.meta.status === 200) {
         navigate("/resetmail");
       }if(response.meta && response.meta.status >= 400){
@@ -73,7 +71,7 @@ function InitReset() {
             onChange={({ target }) => {
               setEmail(target.value);
             }}
-            value={email}
+            value={email || ""}
             {...(errors.email && { error: true, helperText: errors.email })}
           />
           <Button variant="contained" color="primary" type="submit"  className="initpassword__input--item-a">

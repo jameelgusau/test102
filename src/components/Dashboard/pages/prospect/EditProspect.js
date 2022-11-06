@@ -7,8 +7,7 @@ import { displayEditProspect } from '../../../../redux/display'
 
 
 const EditProspect = (props) => {
-    const {getUser, account } = props
-    console.log(account, "EditProspect")
+    const {getProspect, account } = props
     const myRef = useRef();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -19,7 +18,7 @@ const EditProspect = (props) => {
     const [errMessage, setErrMessage] = useState("");
     const [errors, setErrors] = useState({});
     const user = useSelector((state) => state.userProfile.value);
-    const display = useSelector((state) => state.display.openEditProspect);
+    const display = useSelector((state) => state.displays.openEditProspect);
 
     useEffect(()=>{
       setName(account.name);
@@ -33,7 +32,7 @@ const EditProspect = (props) => {
         if (validate()) {
           const {
             baseUrl,
-            addProperties: { method, path },
+            editProspect: { method, path },
           } = APIS;
           const data = {
             id: account.id,
@@ -44,8 +43,8 @@ const EditProspect = (props) => {
           const url = `${baseUrl}${path}`;
           const response = await requestJwt(method, url, data, user.jwtToken);
           if (response.meta && response.meta.status === 200) {
-            await getUser(user.jwtToken);
-            await closeDialog()
+            await getProspect(user.jwtToken);
+            closeDialog()
           }
           if (response.meta && response.meta.status >= 400) {
             setLoading(false);
@@ -110,19 +109,20 @@ const EditProspect = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <label >Email:</label>
               <TextField
                 placeholder="Email"
                 variant="outlined"
+                disabled
                 className="signup__input--item-b"
                 type="email"
                 onChange={({ target }) => {
                   setEmail(target.value);
                 }}
-                value={email}
+                value={email || ''}
                 {...(errors.email && { error: true, helperText: errors.email })}
               />
               <label >Phone:</label>
@@ -132,7 +132,7 @@ const EditProspect = (props) => {
                 onChange={(e) => {
                   setPhone(e);
                 }}
-                value={phone}
+                value={phone || ''}
                 required
                 {...(errors.phone && { error: true, helperText: errors.phone })}
                 placeholder="Phone Number"
@@ -148,7 +148,7 @@ const EditProspect = (props) => {
                   {loading ? (
                     <CircularProgress style={{ color: "#ffffff" }} size={24} />
                   ) : (
-                    "Edit Prospect"
+                    "Save"
                   )}
                 </Button>
               </div>

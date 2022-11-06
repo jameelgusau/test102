@@ -20,7 +20,7 @@ const AddAgent = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddAgent);
+  const display = useSelector((state) => state.displays.openAddAgent);
 
   const submit = async (e) => {
     e.preventDefault();

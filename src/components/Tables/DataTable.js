@@ -136,7 +136,7 @@ const DataTable = (props) => {
                 variant="outlined"
                 name="page"
                 width="3em"
-                value={pageValue}
+                value={pageValue || ''}
                 placeHolder={currentPage}
                 onChange={({ target }) => setPageValue(target.value)}
                 onKeyDown={(e) => { if (e.keyCode === 13) submit(e.target.value - 1); }}

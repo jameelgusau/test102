@@ -6,11 +6,10 @@ import { APIS, requestJwt } from "../../../../_services";
 
 const DeleteProspect = (props) => {
   const { account, getProspect } = props
-  console.log(account, "DeleteProspect")
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteProspect);
+  const display = useSelector((state) => state.displays.openDeleteProspect);
   const dispatch = useDispatch();
 
   const deleteProperty = async (e) => {
@@ -23,15 +22,12 @@ const DeleteProspect = (props) => {
     const url = `${baseUrl}${path({id:account.id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
-      console.log(response);
       await getProspect(user.jwtToken)
       await closeDialog()
     }
     if (response.meta && response.meta.status >= 400) {
-      console.log(response);
       setLoading(false);
     }
-    console.log(response);
     setLoading(false);
   };
 

@@ -10,7 +10,7 @@ const DeleteReserved = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteReserve);
+  const display = useSelector((state) => state.displays.openDeleteReserve);
   const dispatch = useDispatch();
 
   const deleteReserved = async (e) => {
@@ -23,7 +23,6 @@ const DeleteReserved = (props) => {
     const url = `${baseUrl}${path({id:unit.id})}`;
     const response = await requestJwt(method, url, {}, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
-      console.log(response);
       await getReservedUnit(user.jwtToken);
       dispatch(
         setAlert({
@@ -37,7 +36,6 @@ const DeleteReserved = (props) => {
 
     }
     if (response.meta && response.meta.status >= 400) {
-      console.log(response);
       dispatch(setAlert({ open: true,
         severity: "error",
         color: "error",

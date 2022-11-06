@@ -9,11 +9,11 @@ const AddEmailList = (props) => {
     const myRef = useRef();
     const { group, getEmailList } = props
     const user = useSelector((state) => state.userProfile.value);
-    const usersArr = useSelector((state) => state.users.value);
+    const { records} = useSelector((state) => state.users.value);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState("");
-    const display = useSelector((state) => state.display.openEmailList);
+    const display = useSelector((state) => state.displays.openEmailList);
     const dispatch = useDispatch();
 
     const validate = () => {
@@ -24,10 +24,7 @@ const AddEmailList = (props) => {
         ...temp,
       });
       return Object.values(temp).every((x) => x === "");
-    };
-
-console.log(usersArr, "usersArr")
-
+    }
 
     const submitAddUnits = async (e) =>{
         e.preventDefault();
@@ -115,7 +112,7 @@ console.log(usersArr, "usersArr")
                 }}
                 {...(errors.selected && { error: true, helperText: errors.selected })}
               >
-                {usersArr.map(({ name, id, email }) => (
+                {records.map(({ name, id, email }) => (
                   <MenuItem value={id} key={name}>
                     {name}
                   </MenuItem>

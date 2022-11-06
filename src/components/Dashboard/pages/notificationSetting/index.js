@@ -63,7 +63,7 @@ const NotificationSetting = () => {
 
   const getEmailList = async () => {
     setLoading(true);
-
+// eslint-disable-next-line
     let isMounted  = true;
     const {
       getEmailList: { path },
@@ -75,10 +75,8 @@ const NotificationSetting = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
         if(response?.data){
         dispatch(setEmailList(response?.data?.data))};
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{

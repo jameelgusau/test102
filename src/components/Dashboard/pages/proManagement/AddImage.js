@@ -16,7 +16,7 @@ const AddImage = (props) => {
   const [image, setImage] = useState("");
 
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddImage);
+  const display = useSelector((state) => state.displays.openAddImage);
   const dispatch = useDispatch();
 
   const handleChange = async (e) => {
@@ -25,7 +25,6 @@ const AddImage = (props) => {
     const base64 = await convertBase64(file);
     //  setFile(base64)
     setImage(base64);
-    console.log(base64.length);
   };
 
   const convertBase64 = (file) => {
@@ -54,8 +53,6 @@ const AddImage = (props) => {
     e.preventDefault();
     setLoading(true);
     if (validate()) {
-      // console.log(file)
-      console.log(newImage)
       const formData = new FormData();
       Object.keys(newImage).forEach(key =>{
         formData.append(newImage.item(key).name, newImage.item(key))});
@@ -70,12 +67,9 @@ const AddImage = (props) => {
       //   propertyId: params.id,
       //   floorNumber: floor,
       // };
-      // console.log(data);
       const url = `${baseUrl}${path}`;
       const response = await requestImg(method, url, formData, user.jwtToken);
-      // console.log(response);
       if (response.meta && response.meta.status === 200) {
-        console.log(response);
         await getImage(params.id);
         dispatch(
           setAlert({
@@ -95,7 +89,6 @@ const AddImage = (props) => {
       }))
         setLoading(false);
       }
-      // console.log(response);
       setLoading(false);
     }
   };

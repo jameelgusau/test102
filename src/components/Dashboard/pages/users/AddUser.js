@@ -23,9 +23,9 @@ const AddUser = (props) => {
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const stores = useSelector((state) => state.store.value);
+  const { stores }= useSelector((state) => state.dropdownCalls);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddUser);
+  const display = useSelector((state) => state.displays.openAddUser);
   // const countries = [
   //   { id: 1, name: "Afghanistan" },
   //   { id: 2, name: "Albania" },
@@ -55,7 +55,7 @@ const AddUser = (props) => {
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
-        await getUser(user.jwtToken);
+        await getUser();
         dispatch(
           setAlert({
             open: true,
@@ -138,7 +138,6 @@ const AddUser = (props) => {
   };
 
   const handleStoreChange = (e) => {
-    // console.log("hardSoreChange", e);
     let p=[]
       e.map(store => p.push(store.value))
    setStoresArr(p)
@@ -146,7 +145,7 @@ const AddUser = (props) => {
   const handleOnChecked = () => {
     setIsChecked(!isChecked);
   };
-  // console.log(storeArr, "storeArr")
+
   return (
     <>
       <div className="modal" style={{ display: `${display}` }}>

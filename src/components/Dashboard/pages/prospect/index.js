@@ -40,20 +40,23 @@ const Prospects = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({ page: 0 });
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
-  const prospect = useSelector((state) => state.prospects.value);
+  const { totalRecord, records, totalPages, currentPage } = useSelector(
+    (state) => state.prospects.value
+  );
   const [groupAnchorArr, setGroupAnchorArr] = useState(
-    new Array(prospect.length).fill(null)
+    new Array(records.length).fill(null)
   );
   useEffect(() => {
-    getProspect();
+    getProspectByPage();
     // eslint-disable-next-line
-  }, []);
+  }, [filter.page]);
 
-  const List = prospect.map((item, idx) => ({
+  const List = records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     actions: (
       <>
         <IconButton
@@ -82,7 +85,6 @@ const Prospects = () => {
             horizontal: "left",
           }}
         >
-  
           <MenuItem
             onClick={() => {
               setAccount(item);
@@ -94,14 +96,14 @@ const Prospects = () => {
             Edit
           </MenuItem>
           <MenuItem
-              onClick={() => {
-                setAccount(item);
-                setStudentItem(idx, null);
-                dispatch(displayLoginInvite("block"));
-              }}
-            >
-              Invite to Login
-            </MenuItem>
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayLoginInvite("block"));
+            }}
+          >
+            Invite to Login
+          </MenuItem>
           <MenuItem
             onClick={() => {
               setAccount(item);
@@ -111,7 +113,7 @@ const Prospects = () => {
           >
             delete
           </MenuItem>
-          {
+          {/* {
             item?.status !== 'Prospect' && (
               <MenuItem
               onClick={() => {
@@ -121,59 +123,71 @@ const Prospects = () => {
               Upload payment
             </MenuItem>
             )
-          }
+          } */}
         </Menu>
       </>
     ),
   }));
 
+  const getProspectByPage = async () => {
+    await getProspect(filter);
+  }
+
   const getProspect = async (data) => {
-    setLoading(true)
-    let isMounted  = true;
+    setLoading(true);
+     // eslint-disable-next-line 
+    let isMounted = true;
     const {
       getProspect: { path },
-        } = APIS;
-    const url = `/api${path}`;
-    const controller =  new AbortController();
-    const getUs =  async () =>{
-      try{
+    } = APIS;
+    const url = `/api${path(data)}`;
+    const controller = new AbortController();
+    const getUs = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        console.log(response?.data, "response.data")
-        if(response?.data){
+        if (response?.data) {
           dispatch(setProspect(response?.data?.data));
         }
-        
-        console.log(isMounted)
-      }catch(err){
-        console.log(err, "error")
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getUs()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getUs();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
 
   useEffect(() => {
-    setGroupAnchorArr(new Array(prospect.length).fill(null));
-  }, [prospect]);
+    setGroupAnchorArr(new Array(records.length).fill(null));
+  }, [records]);
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
     setGroupAnchorArr(newArr);
   };
 
-  const handleSearch = () => {
-    console.log("hahhaa");
+  const handleSearch = async () => {
+    const searchFilter = {
+      search,
+    };
+    setFilter(searchFilter);
+    getProspect(searchFilter);
+  };
+
+  const onKeyDown = async (event) => {
+    const key = event.key || event.keyCode;
+
+    if (key === "Enter" || key === 13) {
+      await handleSearch();
+    }
   };
 
   const handleMouseDownSearch = (event) => {
@@ -190,12 +204,8 @@ const Prospects = () => {
             className="signup__input--item-b"
             type="text"
             value={search}
+            onKeyDown={onKeyDown}
             onChange={({ target }) => setSearch(target.value)}
-            // {...(errors.password && {
-            //   error: true,
-            //   helperText: errors.password,
-            // })}
-            //onBlur={props.handleBlur('name')}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -309,11 +319,20 @@ const Prospects = () => {
             ))}
         </div>
       </div> */}
-      <Table loading={loading} columns={columns} tableData={List}/>
-      <AddProspect account={account} getProspect={() => getProspect()} />
-      <EditProspect account={account} getProspect={() => getProspect()} />
-      <DeleteProspect account={account} getProspect={() => getProspect()} />
-      <InviteToLogin account={account} getProspect={() => getProspect()} />
+      <Table 
+      loading={loading}
+       columns={columns} 
+       tableData={List}
+       pagination
+       totalRecord={totalRecord}
+       pageAction={newPage => setFilter(prev => ({ ...prev, page: newPage }))}
+       totalPages={totalPages}
+       currentPage={currentPage}
+       />
+      <AddProspect account={account} getProspect={() => getProspect(filter)} />
+      <EditProspect account={account} getProspect={() => getProspect(filter)} />
+      <DeleteProspect account={account} getProspect={() => getProspect(filter)} />
+      <InviteToLogin account={account} getProspect={() => getProspect(filter)} />
     </div>
   );
 };

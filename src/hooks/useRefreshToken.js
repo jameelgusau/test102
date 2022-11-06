@@ -14,7 +14,6 @@ const useRefreshToken = () => {
 
   //     });
   //     // dispatch(userProfile(response.data))
-  //     console.log(response.data, "refresh")
 
   // }
   const refresh = async () => {
@@ -28,7 +27,6 @@ const useRefreshToken = () => {
     const data = {};
     const response = await request(method, url, data);
     dispatch(userProfile(response.data));
-    // console.log(response.data.jwtToken);
     return response.data.jwtToken;
   };
 

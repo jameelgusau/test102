@@ -57,10 +57,8 @@ function Login() {
       const url = `${baseUrl}${path}`;
       setLoading(true);
       const response = await request(method, url, data);
-      console.log(response);
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
-        console.log(from)
         navigate(from, {replace: true});
         dispatch( setAlert({ open: true,
           severity: "success",
@@ -106,7 +104,7 @@ function Login() {
             onChange={({ target }) => {
               setEmail(target.value);
             }}
-            value={email}
+            value={email || ""}
             {...(errors.email && { error: true, helperText: errors.email })}
           />
                 <div className="login__already">
@@ -119,7 +117,7 @@ function Login() {
             className="login__input--item-a"
             type={showPassword ? "text" : "password"}
             autoComplete="password"
-            value={password}
+            value={password || ""}
             onChange={({ target }) => setPassword(target.value)}
             {...(errors.password && {
               error: true,

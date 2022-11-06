@@ -13,14 +13,13 @@ const UploadPayment = (props) => {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openUploadPayment);
+  const display = useSelector((state) => state.displays.openUploadPayment);
   const dispatch = useDispatch();
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     setImage(base64);
-    console.log(base64.length);
   };
 
   const convertBase64 = (file) => {
@@ -60,11 +59,9 @@ const UploadPayment = (props) => {
         amount,
         reservedUnitId
       };
-      console.log(data);
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
-        console.log(response);
         await getReservation(user.jwtToken);
         dispatch(
           setAlert({
@@ -77,7 +74,6 @@ const UploadPayment = (props) => {
         await closeDialog();
       }
       if (response.meta && response.meta.status >= 400) {
-        console.log(response);
         dispatch(setAlert({ open: true,
           severity: "error",
           color: "error",

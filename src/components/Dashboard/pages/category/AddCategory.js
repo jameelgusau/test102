@@ -15,7 +15,7 @@ const AddCategory = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddStore);
+  const display = useSelector((state) => state.displays.openAddStore);
 
   const submit = async (e) => {
     e.preventDefault();

@@ -123,6 +123,7 @@ const Home = () => {
     
   }));
   const getDashReserved = async () => {
+     // eslint-disable-next-line 
     let isMounted = true;
     setLoading(true);
     const {
@@ -138,14 +139,10 @@ const Home = () => {
         });
       
         if (response?.data) {
-          console.log(response.data, "response.data");
           dispatch(setDashReserved(response?.data?.data));
         }
-        console.log(response, "response");
-        console.log(isMounted);
+
       } catch (err) {
-        console.log(err, "err");
-        // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
       }
@@ -158,6 +155,7 @@ const Home = () => {
   };
 
   const getOutOfStock = async () => {
+     // eslint-disable-next-line 
     let isMounted = true;
     setLoading(true);
     const {
@@ -171,14 +169,11 @@ const Home = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setOutOfStock(response?.data?.data));
         }
 
-        console.log(isMounted);
       } catch (err) {
-        console.log(err, "err");
         // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
@@ -191,6 +186,7 @@ const Home = () => {
     };
   };
   const getDashPayment = async () => {
+     // eslint-disable-next-line 
     let isMounted = true;
     setLoading(true);
     const {
@@ -204,15 +200,10 @@ const Home = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setDashPayment(response?.data?.data));
         }
-
-        console.log(isMounted);
       } catch (err) {
-        console.log(err, "err");
-        // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
       }
@@ -224,6 +215,7 @@ const Home = () => {
     };
   };
   const getCounts = async () => {
+    // eslint-disable-next-line
     let isMounted = true;
     setLoading(true);
     const {
@@ -237,15 +229,10 @@ const Home = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setCounts(response?.data?.data));
         }
-
-        console.log(isMounted);
       } catch (err) {
-        console.log(err, "err");
-        // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
       }
@@ -257,6 +244,7 @@ const Home = () => {
     };
   };
   const getStatus = async () => {
+     // eslint-disable-next-line 
     let isMounted = true;
     setLoading(true);
     const {
@@ -270,15 +258,10 @@ const Home = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setStatus(response?.data?.data));
         }
-
-        console.log(isMounted);
       } catch (err) {
-        console.log(err, "err");
-        // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
       }
@@ -291,6 +274,7 @@ const Home = () => {
   };
 
   const getChart = async () => {
+    // eslint-disable-next-line
     let isMounted = true;
     setLoading(true);
     const {
@@ -304,15 +288,12 @@ const Home = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setChart(response?.data?.data));
         }
 
-        console.log(isMounted);
       } catch (err) {
-        console.log(err, "err");
-        // navigate("/login", { state: { from: location }, replace: true });
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -372,7 +353,6 @@ const Home = () => {
                       key={`cell-${entry}`}
                       fill={entry?.color}
                     />
-                    // console.log(entry, index)
                   ))}
                 </Pie>
                 <Tooltip />
@@ -504,7 +484,7 @@ const Home = () => {
             rowPadding="tablebody__cell1"
           />
           <div className="card__links">
-            <Link to="reservations" className="card__links--text">
+            <Link to="payments" className="card__links--text">
               See more &#8594;
             </Link>
           </div>

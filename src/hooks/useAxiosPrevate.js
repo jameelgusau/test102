@@ -20,7 +20,9 @@ const useAxiosPrevate = () => {
         )
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
-            response => response,
+            response =>{ 
+            console.log(response)
+            return response },
             async (error)=> {
                 console.log(error);
                 const prevRequest = error?.config;

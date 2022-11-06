@@ -18,7 +18,7 @@ const AddUnit = (props) => {
     const [paymentType, setPaymentType] = useState("One-off");
     const [dimension, setDimension] = useState("");
     const [description, setDescription] = useState("");
-    const display = useSelector((state) => state.display.openAddUnit);
+    const display = useSelector((state) => state.displays.openAddUnit);
     const dispatch = useDispatch();
     let params = useParams();
 

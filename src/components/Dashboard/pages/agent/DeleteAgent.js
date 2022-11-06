@@ -10,7 +10,7 @@ const DeleteAgent = (props) => {
   const myRef = useRef();
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openDeleteAgent);
+  const display = useSelector((state) => state.displays.openDeleteAgent);
   const dispatch = useDispatch();
 
   const deleteUser = async (e) => {

@@ -56,7 +56,6 @@ const Property = () => {
   }, [properties]);
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
@@ -64,6 +63,7 @@ const Property = () => {
   };
 
   const getProperties = async () => {
+     // eslint-disable-next-line 
     let isMounted = true;
     setLoading(true);
     const {
@@ -77,14 +77,10 @@ const Property = () => {
         const response = await axiosPrivate.get(`/api${path}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setProperties(response?.data?.data));
         }
-
-        console.log(isMounted);
       } catch (err) {
-        console.log(err, "err");
         // navigate("/login", { state: { from: location }, replace: true });
       } finally {
         setLoading(false);
@@ -94,23 +90,7 @@ const Property = () => {
     return () => {
       isMounted = false;
       controller.abort();
-    };
-    // const url = `${baseUrl}${path}`;
-    // const response = await requestJwt(method, url, {}, data);
-    // console.log(response, "hahah")
-    // if(!response){
-    //   setLoading(false)
-    // } else
-    // if (response.meta && response.meta.status === 200) {
-    //   dispatch(setProperties(response.data));
-    //   setLoading(false)
-    //   console.log(response)
-    // }
-    // if (response.meta && response.meta.status >= 400) {
-    //   dispatch(setProperties([]));
-    //   setLoading(false)
-    // }
-    // setLoading(false)
+    }
   };
 
   const openDialog = () => {

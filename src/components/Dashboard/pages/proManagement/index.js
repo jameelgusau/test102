@@ -18,19 +18,19 @@ import { BsFillCircleFill } from "react-icons/bs";
 import { TextField, MenuItem } from "@mui/material";
 import { setUnits } from "../../../../redux/Units";
 import { setProperty } from "../../../../redux/property";
-import { setAgentsList } from "../../../../redux/Agentslist";
 import EditUnit from "./EditUnit";
 import AddUnit from "./AddUnit";
 import ReserveUnit from "./ReserveUnit";
 import DeleteUnit from "./DeleteUnit";
 import AddImage from "./AddImage";
+import { setDropdownClients } from "../../../../redux/dropdownCalls";
 
 const ProManagement = () => {
   let params = useParams();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const [select, setSelect] = useState("Ground floor");
+  const [select, setSelect] = useState("");
   const [unit, setUnit] = useState({});
   const [loading, setLoading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
@@ -54,6 +54,7 @@ const ProManagement = () => {
     async function fetchData() {
       // const selected = await properties.find((e) => e.id === params.id);
       // setSetProperty(selected);
+     
       await getProperty(params.id)
       await getUnits(params.id);
       await getPropertyImage(params.id);
@@ -61,6 +62,7 @@ const ProManagement = () => {
     }
   
     fetchData();
+    setSelect("Ground floor")
 
     // eslint-disable-next-line
   }, [select]);
@@ -71,6 +73,7 @@ const ProManagement = () => {
     }
 
   const getUnits = async (id) => {
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getUnits: { path },
@@ -83,10 +86,8 @@ const ProManagement = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response, "response.data")
         if(response?.data){
         dispatch(setUnits(response?.data?.data))};
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -102,6 +103,7 @@ const ProManagement = () => {
 
   const getProperty = async (id) => {
     setLoading(true);
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getProperty: { path },
@@ -117,7 +119,6 @@ const ProManagement = () => {
         if(response?.data){
         dispatch(setProperty(response?.data?.data))};
        
-        console.log(isMounted)
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -135,9 +136,10 @@ const ProManagement = () => {
 
   const getAgentsList = async (id) => {
     setLoading(true);
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
-      getAgentsList: { path },
+      getDropdownClients: { path },
         } = APIS;
     const controller =  new AbortController();
     const getAgents =  async () =>{
@@ -145,11 +147,9 @@ const ProManagement = () => {
         const response = await axiosPrivate.get(`/api/${path}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
+        console.log(response)
         if(response?.data){
-        dispatch(setAgentsList(response?.data?.data))};
-       
-        console.log(isMounted)
+        dispatch(setDropdownClients(response?.data?.data))};
       }catch(err){
         navigate('/login', { state: {from: location}, replace: true})
       }finally{
@@ -163,8 +163,8 @@ const ProManagement = () => {
     }
   };
   const getPropertyImage = async (id) => {
-    console.log("Image")
     setLoadingImage(true);
+     // eslint-disable-next-line 
     let isMounted  = true;
     const {
       getPropertyImage: { path },
@@ -176,12 +176,8 @@ const ProManagement = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal
         });
-        console.log(response.data, "response.data")
-        // dispatch(setAgentsList(response?.data?.data));
         setImage(response?.data?.data)
-        console.log(isMounted)
       }catch(err){
-        // navigate('/login', { state: {from: location}, replace: true})
       }finally{
         setLoadingImage(false);
       }

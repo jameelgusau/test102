@@ -19,6 +19,7 @@ const Table = (props) => {
     currentPage,
     loading,
     totalPages,
+    totalRecord,
     pagination,
     tabCon,
     rowPadding,
@@ -43,10 +44,12 @@ const Table = (props) => {
     tableDataList.push(
       columns.map((column, idx) => (
         <td
-          key={item[dataKeyNames[idx]]}
+          key={item[dataKeyNames[idx]]+column?.columnName.length}
           className={rowPadding ? rowPadding : "tablebody__cell"}
         >
-          {item[dataKeyNames[idx]]}
+          {
+          item[dataKeyNames[idx]]
+          }
         </td>
       ))
     );
@@ -67,45 +70,44 @@ const Table = (props) => {
       {!loading && tableData.length > 0 && (
         <table className="table">
           <thead>
-            {" "}
             <tr className="tableHead">{tableHead}</tr>
           </thead>
           <tbody>
             {tableDataList.length
-              ? tableDataList.map((item) => (
-                  <tr className="tablebody">{item}</tr>
+              ? tableDataList.map((item, idx) => (
+                  <tr className="tablebody" key={idx}>{item}</tr>
                 ))
               : ""}
           </tbody>
         </table>
       )}
-      {pagination && (
+      {(pagination && totalRecord > 10) && (
         <div className="pagination-container">
           <div className="pagination">
             <IconButton
               onClick={() => pageAction(0)}
-              disabled={currentPage === 1}
+              disabled={currentPage === 0}
             >
               <BiChevronsLeft />
             </IconButton>
             <IconButton
-              onClick={() => pageAction(currentPage - 2)}
-              disabled={currentPage === 1}
+              onClick={() => pageAction((currentPage + 1) - 2)}
+              disabled={currentPage === 0}
             >
               <BiChevronLeft />
             </IconButton>
-            <h2>{pageValue}</h2>
+            <h2>{pageValue + 1}</h2>
             <IconButton
               onClick={() =>
-                pageAction(currentPage === totalPages - 1 ? -1 : currentPage)
+                pageAction((currentPage + 1) === totalPages - 1 ? 1 : (currentPage + 1))
               }
-              disabled={currentPage === totalPages}
+              disabled={(currentPage + 1) === totalPages}
             >
               <BiChevronRight />
             </IconButton>
             <IconButton
-              onClick={() => pageAction(-1)}
-              disabled={currentPage === totalPages}
+              onClick={() => pageAction(1)}
+              disabled={(currentPage + 1) === totalPages}
             >
               <BiChevronsRight />
             </IconButton>

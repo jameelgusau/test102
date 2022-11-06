@@ -20,10 +20,11 @@ const EditStore = (props) => {
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const stores = useSelector((state) => state.store.value);
-  const category = useSelector((state) => state.category.value);
+  // const { records: stores }= useSelector((state) => state.store.value);
+  // const { records: category} = useSelector((state) => state.category.value);
+  const { stores, categories }= useSelector((state) => state.dropdownCalls);
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openEditItem);
+  const display = useSelector((state) => state.displays.openEditItem);
 
   useEffect(() => {
     setName(account.name);
@@ -135,7 +136,7 @@ const EditStore = (props) => {
                 onChange={({ target }) => {
                   setName(target.value);
                 }}
-                value={name}
+                value={name || ''}
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
               <label>Quantity: </label>
@@ -149,7 +150,7 @@ const EditStore = (props) => {
                   setQuantity(target.value);
                 }}
                 disabled
-                value={quantity}
+                value={quantity || 0}
                 {...(errors.quantity && {
                   error: true,
                   helperText: errors.quantity,
@@ -165,7 +166,7 @@ const EditStore = (props) => {
                 onChange={({ target }) => {
                   setUnitCost(target.value);
                 }}
-                value={unitCost}
+                value={unitCost || 0}
                 {...(errors.unitCost && {
                   error: true,
                   helperText: errors.unitCost,
@@ -181,7 +182,7 @@ const EditStore = (props) => {
                 onChange={({ target }) => {
                   setUnitName(target.value);
                 }}
-                value={unitName}
+                value={unitName || ''}
                 {...(errors.unitName && {
                   error: true,
                   helperText: errors.unitName,
@@ -197,7 +198,7 @@ const EditStore = (props) => {
                 onChange={({ target }) => {
                   setDescription(target.value);
                 }}
-                value={description}
+                value={description || ""}
                 {...(errors.description && {
                   error: true,
                   helperText: errors.description,
@@ -213,7 +214,7 @@ const EditStore = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select store"
-                value={storeId}
+                value={storeId || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -239,7 +240,7 @@ const EditStore = (props) => {
                 // className="password__input--item-a"
                 variant="outlined"
                 label="Select category"
-                value={categoryId}
+                value={categoryId || ""}
                 size="small"
                 onChange={(e) => {
                   e.preventDefault();
@@ -248,8 +249,8 @@ const EditStore = (props) => {
                 // ref={myRef}
                 //onBlur={props.handleBlur('name')}
               >
-                {category &&
-                  category.map(({ name, id }) => (
+                {categories &&
+                  categories.map(({ name, id }) => (
                     <MenuItem value={id} key={id}>
                       {name}
                     </MenuItem>

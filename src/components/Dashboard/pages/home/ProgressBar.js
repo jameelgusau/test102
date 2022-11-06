@@ -1,29 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Progress = ({ done }) => {
   const [style, setStyle] = React.useState({});
   const [styleE, setStyleE] = React.useState({});
-
-  setTimeout(() => {
-    const newStyle = {
-      opacity: 1,
-      width: `${done}%`,
-    };
-
-    const newStyleE = {
-        width: `${100-done}%`,
-        alignSelf: "center",
-        textAlign: "center",
+  useEffect(
+    () => {
+      const timer1 = setTimeout(() => {
+        const newStyle = {
+          opacity: 1,
+          width: `${done}%`,
+        };
+    
+        const newStyleE = {
+            width: `${100-done}%`,
+            alignSelf: "center",
+            textAlign: "center",
+          };
+        setStyle(newStyle);
+        setStyleE(newStyleE)
+      }, 200);
+      return () => {
+        clearTimeout(timer1);
       };
-    setStyle(newStyle);
-    setStyleE(newStyleE);
-  }, 200);
-
+    },[done]);
   return (
     <div className="progress">
       <div className="progress-done" style={style}>
         {
-            done && done <= 0 ? (""): `${done}%`
+            (done && done <= 0) ? "": `${done}%`
         }
 
       </div>

@@ -7,8 +7,7 @@ import { displayAddProspect } from "../../../../redux/display";
 import { setAlert } from "../../../../redux/snackbar";
 
 const AddProspect = (props) => {
-  const { getProspect, account } = props;
-  console.log(account, "addprospect");
+  const { getProspect } = props;
   const myRef = useRef();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -20,7 +19,7 @@ const AddProspect = (props) => {
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.userProfile.value);
-  const display = useSelector((state) => state.display.openAddProspect);
+  const display = useSelector((state) => state.displays.openAddProspect);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -39,7 +38,7 @@ const AddProspect = (props) => {
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
-        await getProspect(user.jwtToken);
+        await getProspect();
         dispatch(
           setAlert({
             open: true,

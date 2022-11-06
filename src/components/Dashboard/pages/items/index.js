@@ -14,8 +14,7 @@ import {
   displayRestock,
 } from "../../../../redux/display";
 import { setItem } from "../../../../redux/Item";
-import { setCategory } from "../../../../redux/category";
-import { setStore } from "../../../../redux/store";
+import { setDropdownStores, setDropdownCategories, setDropdownAdminUsers } from "../../../../redux/dropdownCalls"
 import { APIS } from "../../../../_services";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
@@ -45,24 +44,24 @@ const Item = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
-  const usersArr = useSelector((state) => state.item.value);
+  const [filter, setFilter] = useState({ page: 0 });
+  const { totalRecord, records, totalPages, currentPage }= useSelector((state) => state.item.value);
   const [account, setAccount] = useState({});
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [groupAnchorArr, setGroupAnchorArr] = useState(
-    new Array(usersArr?.length).fill(null)
+    new Array(records?.length).fill(null)
   );
 
-  const List = usersArr.map((item, idx) => ({
+  const List = records.map((item, idx) => ({
     ...item,
-    sn: idx + 1,
+    sn: idx + 1 + currentPage * 10,
     actions: (
       <>
         <IconButton
           size="small"
           onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
         >
-          {" "}
           <IoEllipsisVerticalOutline />
         </IconButton>
         <Menu
@@ -122,28 +121,38 @@ const Item = () => {
   }));
 
   useEffect(() => {
-    getItem();
+    // getItemByPage()
+    getAllUser()
     getStore();
     getCategory();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    setGroupAnchorArr(new Array(usersArr.length).fill(null));
-  }, [usersArr]);
+    getItemByPage()
+    // eslint-disable-next-line
+  }, [filter.page]);
+
+  useEffect(() => {
+    setGroupAnchorArr(new Array(records.length).fill(null));
+  }, [records]);
 
   const setStudentItem = (i, value) => {
-    console.log(i, value);
     const newArr = groupAnchorArr.map((item, index) =>
       index === i ? value : item
     );
     setGroupAnchorArr(newArr);
   };
 
+  const getItemByPage = async () => {
+    await getItem(filter);
+  };
+
   const getStore = async (data) => {
+     // eslint-disable-next-line 
     let isMounted = true;
     const {
-      getStore: { path },
+      getDropdownStores: { path },
     } = APIS;
     const url = `/api${path}`;
     const controller = new AbortController();
@@ -152,13 +161,11 @@ const Item = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
-          dispatch(setStore(response?.data?.data));
+          dispatch(setDropdownStores(response?.data?.data));
         }
-        console.log(isMounted);
       } catch (err) {
-        dispatch(setStore([]));
+        dispatch(setDropdownStores([]));
       }
     };
     getUs();
@@ -169,9 +176,10 @@ const Item = () => {
   };
 
   const getCategory = async (data) => {
+     // eslint-disable-next-line 
     let isMounted = true;
     const {
-      getCategory: { path },
+      getDropdownCategories: { path },
     } = APIS;
     const url = `/api${path}`;
     const controller = new AbortController();
@@ -180,13 +188,38 @@ const Item = () => {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
-          dispatch(setCategory(response?.data?.data));
+          dispatch(setDropdownCategories(response?.data?.data));
         }
-        console.log(isMounted);
       } catch (err) {
-        dispatch(setCategory([]));
+        dispatch(setDropdownCategories([]));
+      }
+    };
+    getUs();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
+  };
+
+  const getAllUser = async (data) => {
+     // eslint-disable-next-line 
+    let isMounted = true;
+    const {
+      getDropdownAdminUsers: { path },
+    } = APIS;
+    const url = `/api${path}`;
+    const controller = new AbortController();
+    const getUs = async () => {
+      try {
+        const response = await axiosPrivate.get(`${url}`, {
+          signal: controller.signal,
+        });
+        if (response?.data) {
+          dispatch(setDropdownAdminUsers(response?.data?.data));
+        }
+      } catch (err) {
+        dispatch(setDropdownAdminUsers([]));
       }
     };
     getUs();
@@ -198,23 +231,21 @@ const Item = () => {
 
   const getItem = async (data) => {
     setLoading(true);
-
+    // eslint-disable-next-line
     let isMounted = true;
     const {
       getItem: { path },
     } = APIS;
-    const url = `/api${path}`;
+    const url = `/api${path(data)}`;
     const controller = new AbortController();
     const getUs = async () => {
       try {
         const response = await axiosPrivate.get(`${url}`, {
           signal: controller.signal,
         });
-        console.log(response.data, "response.data");
         if (response?.data) {
           dispatch(setItem(response?.data?.data));
         }
-        console.log(isMounted);
       } catch (err) {
         navigate("/login", { state: { from: location }, replace: true });
       } finally {
@@ -229,7 +260,20 @@ const Item = () => {
   };
 
   const handleSearch = () => {
-    console.log("hahhaa");
+    const searchFilter = {
+      search,
+    };
+    setFilter(searchFilter);
+    getItem(searchFilter);
+  };
+
+
+  const onKeyDown = async (event) => {
+    const key = event.key || event.keyCode;
+
+    if (key === "Enter" || key === 13) {
+      await handleSearch();
+    }
   };
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
@@ -249,6 +293,7 @@ const Item = () => {
             className="signup__input--item-b"
             type="text"
             value={search}
+            onKeyDown={onKeyDown}
             onChange={({ target }) => setSearch(target.value)}
             InputProps={{
               endAdornment: (
@@ -276,7 +321,18 @@ const Item = () => {
         </div>
       </div>
       {/* <div className="store__table"> */}
-      <Table loading={loading} columns={columns} tableData={List} />
+      <Table 
+      loading={loading} 
+      columns={columns} 
+      tableData={List} 
+        pagination
+        totalRecord={totalRecord}
+        pageAction={(newPage) =>
+          setFilter((prev) => ({ ...prev, page: newPage }))
+        }
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
       {/* </div> */}
       <AddItem getItem={(e) => getItem(e)} />
       <EditItem getItem={(e) => getItem(e)} account={account} />
