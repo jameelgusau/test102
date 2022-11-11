@@ -147,8 +147,8 @@ export const APIS = {
   },
   getAllReserved: {
     method: "GET",
-    path: ( {  search,page }) => {   
-      return `/get-allReserved?page=${page || 0}${search ? `&search=${search}` : ''}`
+    path: ( {  search,page, startDate, endDate, select }) => {   
+      return `/get-allReserved?page=${page || 0}${search ? `&search=${search}` : ''}${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''}${select ? `&select=${select}` : ''}`
     }
   },
   sendRejectLetter: {

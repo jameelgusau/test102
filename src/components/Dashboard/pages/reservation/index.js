@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TextField } from "@mui/material";
+import { IconContext } from "react-icons";
 import { AiOutlineSearch } from "react-icons/ai";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -10,13 +11,19 @@ import { setAllReserved } from "../../../../redux/allReserved";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrevate";
 // import StyledEngineProvider from "@mui/material/StyledEngineProvider";
-import { IoEllipsisVerticalOutline } from "react-icons/io5";
 import { APIS } from "../../../../_services";
 import {
   displayReserveDetail,
   displayUploadPayment,
 } from "../../../../redux/display";
+import {
+  // IoLocationOutline,
+  // IoAddOutline,
+  IoEllipsisVerticalOutline,
+} from "react-icons/io5";
+import { BiFilter } from "react-icons/bi";
 import ReservationDetail from "./ReservationDetail";
+// import DateRangePickerExample from "./Datepicker";
 import UploadPayment from "./UploadPayment";
 import Table from "../../../Tables/Table";
 
@@ -29,24 +36,35 @@ const columns = [
   { columnName: "Payment Type", keyName: "paymentType" },
   { columnName: "Actions", keyName: "actions" },
 ];
+const group = [{ name: "All" }, { name: "Untreated" }, { name: "Treated" }];
 
 const Reservations = () => {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
+  const [startDate, setStartDate] =   useState(
+    new Date(new Date().setMonth(new Date().getMonth()-1)).toISOString().split("T")[0]
+    );
+  const [endDate, setEndDate] = useState(new Date().toISOString().split("T")[0]);
+
   const [filter, setFilter] = useState({ page: 0 });
   const [search, setSearch] = useState("");
   const [account, setAccount] = useState({});
+  // const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const { totalRecord, records, totalPages, currentPage }  = useSelector((state) => state.allReserved.value);
+  const [select, setSelect] = useState("All");
+  const { totalRecord, records, totalPages, currentPage } = useSelector(
+    (state) => state.allReserved.value
+  );
   const [groupAnchorArr, setGroupAnchorArr] = useState(
     new Array(records.length).fill(null)
   );
+  console.log(endDate)
   useEffect(() => {
     getReservedByPage();
     // eslint-disable-next-line
-  }, [filter.page]);
+  }, [filter.page, select]);
 
   const List = records.map((item, idx) => ({
     ...item,
@@ -102,51 +120,37 @@ const Reservations = () => {
     ),
   }));
   const getReservedByPage = async () => {
-    await getReservation(filter);
+    await getReservation({...filter, select});
   };
 
   const getReservation = async (data) => {
-    setLoading(true)
-     // eslint-disable-next-line 
-    let isMounted  = true;
+    setLoading(true);
+    // eslint-disable-next-line
+    let isMounted = true;
     const {
       getAllReserved: { path },
-        } = APIS;
+    } = APIS;
     const url = `/api${path(data)}`;
-    const controller =  new AbortController();
-    const getUs =  async () =>{
-      try{
+    const controller = new AbortController();
+    const getUs = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        if(response?.data){
-        dispatch(setAllReserved(response?.data?.data))};
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        if (response?.data) {
+          dispatch(setAllReserved(response?.data?.data));
+        }
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
+    };
+    getUs();
+    return () => {
+      isMounted = false;
+      controller.abort();
     }
-    getUs()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
-    // const {
-    //   baseUrl,
-    //   getAllReserved: { method, path },
-    // } = APIS;
-    // const url = `${baseUrl}${path}`;
-    // const response = await requestJwt(method, url, {}, data);
-    // if (response.meta && response.meta.status === 200) {
-    //   dispatch(setAllReserved(response.data));
-    //   setLoading(false)
-    // }
-    // if (response.meta && response.meta.status >= 400) {
-    //   dispatch(setAllReserved([]));
-    //   setLoading(false)
-    // }
-    // setLoading(false)
   };
 
   useEffect(() => {
@@ -180,156 +184,135 @@ const Reservations = () => {
   const handleMouseDownSearch = (event) => {
     event.preventDefault();
   };
+  const searchByDate = async (date) => {
+    const data ={
+      startDate,
+      endDate,
+      select
+    }
+    console.log(data);
+    await getReservation(data);
+  };
 
   return (
     <div className="reservation">
       <div className="searchContainer">
-        <div className="search">
-          <TextField
-            placeholder="Search"
-            variant="outlined"
-            className="signup__input--item-b"
-            type="text"
-            value={search}
-            onKeyDown={onKeyDown}
-            onChange={({ target }) => setSearch(target.value)}
-            // {...(errors.password && {
-            //   error: true,
-            //   helperText: errors.password,
-            // })}
-            //onBlur={props.handleBlur('name')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleSearch}
-                    onMouseDown={handleMouseDownSearch}
-                    edge="end"
-                  >
-                    <AiOutlineSearch />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+        <div className="filter-date">
+         {/* <div className="">  */}
+            <label className="date-filter">
+                Status:
+              <TextField
+                placeholder="Select status"
+                select
+                id="select"
+                // ref={myRef}
+                className="signup__input--item-b"
+                variant="outlined"
+                value={select}
+                //   label="Select status"
+                size="small"
+                // defaultValue={"Available"}
+                onChange={(e) => {
+                  e.preventDefault();
+                  setSelect(e.target.value);
+                }}
+              >
+                {group.map(({ name }) => (
+                  <MenuItem value={name} key={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </label>
+            <label className="date-filter">
+              Search:
+              <TextField
+                placeholder="Search"
+                variant="outlined"
+                className="signup__input--item-b"
+                type="text"
+                value={search}
+                onKeyDown={onKeyDown}
+                onChange={({ target }) => setSearch(target.value)}
+                // {...(errors.password && {
+                //   error: true,
+                //   helperText: errors.password,
+                // })}
+                //onBlur={props.handleBlur('name')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleSearch}
+                        onMouseDown={handleMouseDownSearch}
+                        edge="end"
+                      >
+                        <AiOutlineSearch />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </label>
+          {/* </div> */}
         </div>
-        {/* <div
-          className="add-prospect"
-          onClick={() => dispatch(displayAddProspect("block"))}
-        >
-          <IconContext.Provider value={{ className: "global-class-name" }}>
-            <div>
-              <IoAddOutline />
+        <div className="filter-date">
+          <label className="date-filter">
+            {" "}
+            From:
+            <TextField
+              placeholder="Start date"
+              className="signup__input--item-a"
+              variant="outlined"
+              type="date"
+              onChange={({ target }) => {
+                setStartDate(target.value);
+              }}
+              value={startDate || new Date().toISOString().split("T")[0]}
+              // {...(errors.startDate && { error: true, helperText: errors.startDate })}
+            />
+          </label>
+          <label className="date-filter">
+            To:{" "}
+            <TextField
+              placeholder="End date"
+              className="signup__input--item-a"
+              variant="outlined"
+              type="date"
+              onChange={({ target }) => {
+                setEndDate(target.value);
+              }}
+              value={endDate || new Date().toISOString().split("T")[0]}
+              // {...(errors.endDate && { error: true, helperText: errors.endDate })}
+            />
+          </label>
+          <div className="searchContainer">
+            <div></div>
+            <div className="add-btn" onClick={searchByDate}>
+              <IconContext.Provider value={{ className: "global-class-name" }}>
+                <div>
+                  <BiFilter />
+                </div>
+              </IconContext.Provider>
+              <span className="axz">Filter</span>
             </div>
-          </IconContext.Provider>
-        </div> */}
+          </div>
+        </div>
       </div>
-      {/* <div className="overflow">
-        <div className="reservationTableContainer">
-          {
-            <div className="reservationTableRow reservationTableRow__title">
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                S/N
-              </h3>
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                Name
-              </h3>
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                Email
-              </h3>
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                Property
-              </h3>
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                Unit
-              </h3>
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                Payment Type
-              </h3>
-              <h3 className="reservationTableColumn reservationTableColumn__title">
-                Actions
-              </h3>
-            </div>
-          }
-          {allReserved &&
-            allReserved.map((item, idx) => (
-              // const { account, property, unit, id } = item
-              <div className="reservationTableRow" key={item.id}>
-                <h3 className="reservationTableColumn">{idx + 1}</h3>
-                <h3 className="reservationTableColumn">{item.account.name}</h3>
-                <h3 className="reservationTableColumn">{item.account.email}</h3>
-                <h3 className="reservationTableColumn">{item.property.name}</h3>
-                <h3 className="reservationTableColumn">{item.unit.name}</h3>
-                <h3 className="reservationTableColumn">
-                  {item.unit.paymentType}
-                </h3>
-                <>
-                  <div
-                    className="reservationTableColumn"
-                    onClick={({ currentTarget }) =>
-                      setStudentItem(idx, currentTarget)
-                    }
-                  >
-                    <IoEllipsisVerticalOutline className="tableColumn__link" />
-                  </div>
-                  <StyledEngineProvider injectFirst>
-                    <Menu
-                      id="demo-positioned-menu"
-                      aria-labelledby="demo-positioned-button"
-                      // anchorEl={anchorEl}
-                      // open={open}
-                      // elevation={2}
-                      open={Boolean(groupAnchorArr[idx])}
-                      anchorEl={groupAnchorArr[idx]}
-                      // onClose={handleClose}
-                      onClose={() => setStudentItem(idx, null)}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                    >
-                      <MenuItem
-                        onClick={() => {
-                          setAccount(item);
-                          setStudentItem(idx, null);
-                          dispatch(displayReserveDetail("block"));
-                          // setAnchorEl(null);
-                        }}
-                      >
-                        Reservation Details
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => {
-                          setAccount(item);
-                          setStudentItem(idx, null);
-                          dispatch(displayUploadPayment("block"));
-                        }}
-                      >
-                        Upload payment
-                      </MenuItem>
-                    </Menu>
-                  </StyledEngineProvider>
-                </>
-              </div>
-            ))}
-        </div>
-      </div> */}
-      <Table 
-      loading={loading} 
-      columns={columns} 
-      tableData={List}
-      pagination
-      totalRecord={totalRecord}
-      pageAction={(newPage) =>
-        setFilter((prev) => ({ ...prev, page: newPage }))
-      }
-      totalPages={totalPages}
-      currentPage={currentPage}
+      {/* <DateRangePickerExample /> */}
+
+      <Table
+        loading={loading}
+        columns={columns}
+        tableData={List}
+        pagination
+        totalRecord={totalRecord}
+        pageAction={(newPage) =>
+          setFilter((prev) => ({ ...prev, page: newPage }))
+        }
+        totalPages={totalPages}
+        currentPage={currentPage}
       />
       <ReservationDetail
         data={account}

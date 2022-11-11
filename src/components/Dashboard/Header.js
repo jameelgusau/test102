@@ -152,7 +152,6 @@ const logout = async ()=>{
                 dispatch(displaySettings("block"));
               }}
             >
-              {" "}
               <FiUser /> Profile
             </MenuItem>
             <MenuItem sx={{ gap: 1 }}   onClick={logout}>

@@ -25,58 +25,152 @@
     margin-right: 2rem;
   }
 }
+// .propertycard {
+//   box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
+//   // display: grid;
+//   // grid-template-columns: 5rem 1fr;
+//   justify-content: center;
+//   align-items: center;
+//   row-gap: 10px;
+//   padding: 20px;
+//   border-radius: 5px;
+//   background-color: #fff;
+//   &__icon {
+//     &--units {
+//       font-size: 14px;
+//       font-weight: 600;
+//     }
+//   }
+//   &__info {
+//     font-size: 1.5rem;
+//     font-weight: 900;
+//     display: flex;
+//     justify-content: space-between;
+//   }
+//   &__details {
+//     grid-column: 1 / -1;
+//     display: grid;
+//     grid-template-columns: repeat(4, 1fr);
+//     align-items: space-between;
+//     &--dots {
+//       display: flex;
+//       flex-direction: row;
+//     }
+//   }
+//   &__button {
+//     grid-column: 2/ -1;
+//     margin-top: 5px;
+//     justify-self: flex-end;
+//     &--btn {
+//       background: #cc5518;
+//       color: #ffff;
+//       padding: 6px 20px;
+//       border-radius: 3px;
+//       text-decoration: none;
+//     }
+//   }
+// }
+
 .propertycard {
-  // display: flex;
-  // // align-items: center;
-  // justify-content: space-between;
   box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
-  display: grid;
-  grid-template-columns: 5rem 1fr;
-  justify-content: center;
-  align-items: center;
-  row-gap: 10px;
-  padding: 20px;
-  border-radius: 5px;
   background-color: #fff;
-  &__icon {
-    &--units {
-      font-size: 14px;
-      font-weight: 600;
-    }
+  border-radius: 5px;
+  &__header {
+    display: flex;
+    background-color: #cc5518;
+    justify-content: space-between;
+    padding: 1rem;
+    font-size: 2rem;
+    color: #fff;
+  }
+  &__detail {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
   }
   &__info {
-    font-size: 1.5rem;
-    font-weight: 900;
     display: flex;
+    width: 100%;
     justify-content: space-between;
   }
-  &__details {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: space-between;
-    &--dots {
-      display: flex;
-      flex-direction: row;
+  &__counts {
+    display: flex;
+    margin: 1rem 0;
+    align-items: center;
+    &--header {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-right: 1rem;
+    }
+    &--text {
+      font-size: 1.5rem;
+    }
+  }
+  &__address {
+    display: flex;
+    margin: 1rem 0;
+    align-items: center;
+    &--header {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-right: 1rem;
+    }
+    &--text {
+      font-size: 1.5rem;
     }
   }
   &__button {
-    grid-column: 2/ -1;
-    margin-top: 5px;
-    justify-self: flex-end;
+    display: flex;
+    flex-direction: row-reverse;
+    // height: 35px;
+    // display: flex;
+    // cursor: pointer;
+    // align-items: center;
+    // justify-content: center;
+    // background-color: #cc5418;
+    // border-radius: 0.5rem;
+    // color: #ffffff;
+    // // border: 1px solid #cc5418;
+    // box-shadow: 0 3px 6px 0 rgb(0 0 0 / 18%), 0 4px 8px 0 rgb(0 0 0 / 15%);
+    // padding: 0.5rem 1rem 0.5rem 0.7rem;
+    // &:hover{
+    //   background-color: rgba(204, 84, 24, 0.86);
+    // }
     &--btn {
       background: #cc5518;
       color: #ffff;
+      height: 35px;
+      display: flex;
+      box-shadow: 0 3px 6px 0 rgb(0 0 0 / 18%), 0 4px 8px 0 rgb(0 0 0 / 15%);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
       padding: 6px 20px;
       border-radius: 3px;
       text-decoration: none;
+      &:hover {
+        background-color: rgba(204, 84, 24, 0.86);
+        box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2)
+      }
+    }
+  }
+  &__keysCon {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    &--dots {
+      display: flex;
+      align-items: center;
+      &--text {
+        font-size: 2rem;
+      }
     }
   }
 }
+
 .global-class-name {
   width: 2rem;
   height: 2rem;
-
 }
 .dot {
   margin-right: 2px;
@@ -233,8 +327,16 @@
   justify-content: space-between;
   margin: 1rem 2rem 0 0;
   @include responsive(phone) {
-    & .axz{
+    & .axz {
       display: none;
     }
   }
+}
+.global-class-home {
+  height: 40px;
+  width: 40px;
+}
+.dot-size {
+  width: 20px;
+  height: 20px;
 }

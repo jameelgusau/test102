@@ -86,11 +86,15 @@ const Home = () => {
     ...item,
     sn: idx + 1,
     status: item.status === "Reserved" ? (
-      <div className="table-btn" style={{ background: "#D8D8D8", color: "#333333" }}>
+      <div 
+      className="table-btn" 
+      style={{ color: "#D8D8D8" }}>
         Untreated
       </div>
     ):(
-      <div className="table-btn" style={{ background: "#CC5418", color: "#fff" }}>
+      <div 
+      className="table-btn" 
+      style={{ color: "#CC5418" }}>
         Treated
       </div>
     )

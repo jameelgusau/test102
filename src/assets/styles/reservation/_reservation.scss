@@ -42,4 +42,14 @@
 .reservationTableColumn:not(:last-child) {
   border-right: 1px solid #efefef;
 }
+.date-filter{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+.filter-date{
+  display: flex;
+}
 

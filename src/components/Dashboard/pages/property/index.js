@@ -5,10 +5,10 @@ import { IconContext } from "react-icons";
 //   MdOutlineDeleteForever,
 // } from "react-icons/md";
 import { Menu, MenuItem } from "@mui/material";
-import { BsHouse } from "react-icons/bs";
+// import { BsHouse } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  IoLocationOutline,
+  // IoLocationOutline,
   IoAddOutline,
   IoEllipsisVerticalOutline,
 } from "react-icons/io5";
@@ -63,7 +63,7 @@ const Property = () => {
   };
 
   const getProperties = async () => {
-     // eslint-disable-next-line 
+    // eslint-disable-next-line
     let isMounted = true;
     setLoading(true);
     const {
@@ -90,7 +90,7 @@ const Property = () => {
     return () => {
       isMounted = false;
       controller.abort();
-    }
+    };
   };
 
   const openDialog = () => {
@@ -162,128 +162,161 @@ const Property = () => {
         <div className="property-overview">
           {properties.map((item, idx) => (
             <div className="propertycard" key={item.id}>
-              <div className="propertycard__icon">
+              {/* <div className="propertycard__icon">
                 <IconContext.Provider
-                  value={{ className: "global-class-name" }}
+                  value={{ className: "global-class-home" }}
                 >
                   <div>
                     <BsHouse />
                   </div>
                 </IconContext.Provider>
-              </div>
-              <div className="propertycard__info">
+              </div> */}
+              <div className="propertycard__header">
                 <p>{item.name}</p>
                 {user.role && user.role === "Admin" && (
-                <div className="edit-property">
-                  <IconButton
-                    size="small"
-                    onClick={({ currentTarget }) =>
-                      setStudentItem(idx, currentTarget)
-                    }
-                  >
-                    {" "}
-                    <IoEllipsisVerticalOutline />
-                  </IconButton>
-                  <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={groupAnchorArr[idx]}
-                    open={Boolean(groupAnchorArr[idx])}
-                    onClose={() => setStudentItem(idx, null)}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
-                  >
-                    <MenuItem
-                      onClick={async () => {
-                        setProperty(item);
-                        setStudentItem(idx, null);
-                        dispatch(displayEditProperty("block"));
+                  <div className="edit-property">
+                    <IconButton
+                      size="small"
+                      onClick={({ currentTarget }) =>
+                        setStudentItem(idx, currentTarget)
+                      }
+                    >
+                      <IoEllipsisVerticalOutline color="#fff" />
+                    </IconButton>
+                    <Menu
+                      id="demo-positioned-menu"
+                      aria-labelledby="demo-positioned-button"
+                      anchorEl={groupAnchorArr[idx]}
+                      open={Boolean(groupAnchorArr[idx])}
+                      onClose={() => setStudentItem(idx, null)}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
                       }}
                     >
-                      Edit
-                    </MenuItem>
-                    <MenuItem
-                      onClick={async () => {
-                        setProperty(item);
-                        setStudentItem(idx, null);
-                        dispatch(displayDeleteProperty("block"));
-                      }}
-                    >
-                      delete
-                    </MenuItem>
-                  </Menu>
-                </div>
-              )}
+                      <MenuItem
+                        onClick={async () => {
+                          setProperty(item);
+                          setStudentItem(idx, null);
+                          dispatch(displayEditProperty("block"));
+                        }}
+                      >
+                        Edit
+                      </MenuItem>
+                      <MenuItem
+                        onClick={async () => {
+                          setProperty(item);
+                          setStudentItem(idx, null);
+                          dispatch(displayDeleteProperty("block"));
+                        }}
+                      >
+                        delete
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                )}
               </div>
 
-              <div className="propertycard__icon">
-                <IconContext.Provider
-                  value={{ className: "global-class-name" }}
-                >
-                  <div>
-                    <IoLocationOutline />
+              <div className="propertycard__detail">
+                <div className="propertycard__address">
+                  <div className="propertycard__address--header">
+                    {/* <IconContext.Provider
+                        value={{ className: "global-class-home" }}
+                      >
+                        <div>
+                          <IoLocationOutline />
+                        </div>
+                      </IconContext.Provider> */}
+                    <h2>Location:</h2>
                   </div>
-                </IconContext.Provider>
-              </div>
-              <div className="propertycard__info">
-                <p>{item?.address}</p>
-              </div>
-              <div className="propertycard__icon">
-                <h3 className="propertycard__icon--units">Units:</h3>
-              </div>
-              <div className="propertycard__info">{item.num_of_units}</div>
-              <div className="propertycard__details">
-                <div className="propertycard__details--dots">
-                  <IconContext.Provider
-                    value={{ color: "green", className: "dot" }}
-                  >
-                    <div>
-                      <BsFillCircleFill />
-                    </div>
-                  </IconContext.Provider>
-                  <p>{item?.available}</p>
+                  <div className="propertycard__address--text">
+                    <p>{item?.address}</p>
+                  </div>
                 </div>
-                <div className="propertycard__details--dots">
-                  <IconContext.Provider
-                    value={{ color: "red", className: "dot" }}
-                  >
-                    <div>
-                      <BsFillCircleFill />
+                <div className="propertycard__info">
+                  <div className="propertycard__counts">
+                    <div className="propertycard__counts--header">
+                      {/* <IconContext.Provider
+                        value={{ className: "global-class-home" }}
+                      >
+                        <div>
+                          <IoLocationOutline />
+                        </div>
+                      </IconContext.Provider> */}
+                      <h2>Floors:</h2>
                     </div>
-                  </IconContext.Provider>
-                  <p>{item?.sold}</p>
-                </div>
-                <div className="propertycard__details--dots">
-                  <IconContext.Provider
-                    value={{ color: "indigo", className: "dot" }}
-                  >
-                    <div>
-                      <BsFillCircleFill />
+                    <div className="propertycard__counts--text">
+                      <p>{item?.num_of_floors}</p>
                     </div>
-                  </IconContext.Provider>
-                  <p>{item?.occupied}</p>
-                </div>
-                <div className="propertycard__details--dots">
-                  <IconContext.Provider
-                    value={{ color: "yellow", className: "dot" }}
-                  >
-                    <div>
-                      <BsFillCircleFill />
+                  </div>
+                  <div className="propertycard__counts">
+                    <div className="propertycard__counts--header">
+                      <h3>Units:</h3>
                     </div>
-                  </IconContext.Provider>
-                  <p>{item?.reserved}</p>
+                    <div className="propertycard__counts--text">
+                      <p>{item.num_of_units}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="propertycard__button">
-                <NavLink to={item?.id} className="propertycard__button--btn">
-                  Check Available units
-                </NavLink>
+                <div className="propertycard__keysCon">
+                  <div className="propertycard__keysCon--dots">
+                    <IconContext.Provider
+                      value={{ color: "green", className: "dot dot-size" }}
+                    >
+                      <div>
+                        <BsFillCircleFill />
+                      </div>
+                    </IconContext.Provider>
+                    <p className="propertycard__keysCon--dots--text">
+                      {item?.available}
+                    </p>
+                  </div>
+                  <div className="propertycard__keysCon--dots">
+                    <IconContext.Provider
+                      value={{ color: "red", className: "dot dot-size" }}
+                    >
+                      <div>
+                        <BsFillCircleFill />
+                      </div>
+                    </IconContext.Provider>
+                    <p className="propertycard__keysCon--dots--text">
+                      {item?.sold}
+                    </p>
+                  </div>
+                  <div className="propertycard__keysCon--dots">
+                    <IconContext.Provider
+                      value={{ color: "indigo", className: "dot dot-size" }}
+                    >
+                      <div>
+                        <BsFillCircleFill />
+                      </div>
+                    </IconContext.Provider>
+                    <p className="propertycard__keysCon--dots--text">
+                      {item?.occupied}
+                    </p>
+                  </div>
+                  <div className="propertycard__keysCon--dots">
+                    <IconContext.Provider
+                      value={{ color: "yellow", className: "dot dot-size" }}
+                    >
+                      <div>
+                        <BsFillCircleFill />
+                      </div>
+                    </IconContext.Provider>
+                    <p className="propertycard__keysCon--dots--text">
+                      {item?.reserved}
+                    </p>
+                  </div>
+                </div>
+                <div className="propertycard__button">
+                  <NavLink to={item?.id} className="propertycard__button--btn">
+                    Check Available units
+                  </NavLink>
+                </div>
               </div>
             </div>
           ))}
