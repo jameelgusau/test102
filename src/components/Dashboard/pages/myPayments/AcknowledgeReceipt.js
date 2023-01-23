@@ -28,7 +28,7 @@ const AcknowledgeReceipt = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getPayment(props.id);
+    props?.id && getPayment(props.id);
     // eslint-disable-next-line
   }, [props.id]);
 
