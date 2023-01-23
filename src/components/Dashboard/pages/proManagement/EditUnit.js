@@ -15,7 +15,7 @@ const EditUnit = (props) => {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [status, setStatus] = useState("Available");
-    const [paymentType, setPaymentType] = useState("One-off");
+    // const [paymentType, setPaymentType] = useState("One-off");
     const [dimension, setDimension] = useState("");
     const [discription, setDiscription] = useState("");
     const user = useSelector((state) => state.userProfile.value);
@@ -26,7 +26,7 @@ const EditUnit = (props) => {
 
     useEffect(() => {
       setName(unit.name);
-      setPaymentType(unit.paymentType);
+      // setPaymentType(unit.paymentType);
       setPrice(unit.price);
       setDiscription(unit.discription);
       setDimension(unit.dimension);
@@ -41,7 +41,7 @@ const EditUnit = (props) => {
       temp.discription = discription.length > 2 && discription.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
       temp.price = !isNaN(price) && price.length >= 1 ? "" : "Price is required";
       temp.status = status.length >= 1 ? "" : "Status is required";
-      temp.paymentType = paymentType.length >= 1 ? "" : "Payment type is required";
+      // temp.paymentType = paymentType.length >= 1 ? "" : "Payment type is required";
   
       setErrors({
         ...temp,
@@ -63,7 +63,7 @@ const EditUnit = (props) => {
           propertyId: params.id,
           id: unit.id,
           price,
-          paymentType,
+          // paymentType,
           floorNumber: floor,
           discription,
           dimension,
@@ -97,17 +97,17 @@ const EditUnit = (props) => {
       }
   }
 
-      const payment =[
-        {
-          id: 1,
-          name: "One-off"
-        },
-        {
-          id: 2,
-          name: "Installment"
-        }
+      // const payment =[
+      //   {
+      //     id: 1,
+      //     name: "One-off"
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "Installment"
+      //   }
     
-      ]
+      // ]
     
       const stat =[
         {
@@ -131,7 +131,7 @@ const EditUnit = (props) => {
 
       const setEmpty =()=>{
         setName("");
-        setPaymentType("");
+        // setPaymentType("");
         setPrice("");
         setDiscription("");
         setDimension("");
@@ -234,7 +234,7 @@ const EditUnit = (props) => {
                 ))}
               </TextField>
               <label>Select payment type:</label>
-              <TextField
+              {/* <TextField
                 placeholder="Select payment type"
                 select
                 id="select"
@@ -259,7 +259,7 @@ const EditUnit = (props) => {
                     {name}
                   </MenuItem>
                 ))}
-              </TextField>
+              </TextField> */}
               <div className="property-input__btn">
                 <Button
                   variant="contained"

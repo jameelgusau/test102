@@ -23,7 +23,9 @@ import RequireAuth from "./RequiredAuth";
 import Store from "./components/Dashboard/pages/store";
 import Item from "./components/Dashboard/pages/items";
 import Category from "./components/Dashboard/pages/category";
-
+import Certificates from "./components/Dashboard/pages/certificates";
+import MyPayments from "./components/Dashboard/pages/myPayments";
+import MyCertificates from "./components/Dashboard/pages/myCertificates";
 const theme = createTheme({
   palette: {
     primary: { main: "#CC5518" },
@@ -54,18 +56,26 @@ const App = () => {
             <Route path="/" element={<Dashboard />}>
               <Route
                 element={
-                  <RequireAuth allowRoles={["Admin", "User", "Prospect"]} />
+                  <RequireAuth allowRoles={["Admin","Prospect"]} />
                 }
               >
-                <Route path="" element={<Home />} />
                 <Route path="property/*" element={<PropRoutes />} />
+              </Route>
+              <Route
+                element={
+                  <RequireAuth allowRoles={["Prospect"]} />
+                }
+              >
                 <Route path="myreservation/*" element={<MyReservation />} />
+                <Route path="mycertificates" element={<MyCertificates />} />
+                <Route path="mypayments/*" element={<MyPayments />} />
               </Route>
               <Route element={<RequireAuth allowRoles={["Admin", "User"]} />}>
                 <Route path="category" element={<Category />} />
                 <Route path="item" element={<Item />} />
               </Route>
               <Route element={<RequireAuth allowRoles={["Admin"]} />}>
+                <Route path="" element={<Home />} />
                 <Route path="store" element={<Store />} />
                 <Route path="prospects" element={<Prospect />} />
                 <Route path="users" element={<Users />} />
@@ -75,7 +85,7 @@ const App = () => {
                 />
                 <Route path="reservations" element={<Reservations />} />
                 <Route path="payments/*" element={<PaymentRoutes />} />
-                {/* <Route path="agents" element={<Agent />} /> */}
+                <Route path="certificates/*" element={<Certificates />} />
               </Route>
             </Route>
 

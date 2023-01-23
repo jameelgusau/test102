@@ -49,144 +49,146 @@ const ProManagement = () => {
   const AddImageDialog = () => {
     dispatch(displayAddImage("block"));
   };
+  useEffect(() => {
+    setSelect("Ground floor");
+  },[])
 
   useEffect(() => {
     async function fetchData() {
       // const selected = await properties.find((e) => e.id === params.id);
       // setSetProperty(selected);
-     
-      await getProperty(params.id)
+      await getProperty(params.id);
       await getUnits(params.id);
       await getPropertyImage(params.id);
       await getAgentsList();
     }
-  
+
     fetchData();
-    setSelect("Ground floor")
+    // setSelect("Ground floor");
 
     // eslint-disable-next-line
   }, [select]);
 
   let floorsArr = [];
-    for (let i = 0; i < parseInt(property && property?.num_of_floors); i++) {
-     floorsArr.push(i === 0 ? { name: "Ground floor" } : { name: `Floor ${i}` });
-    }
+  for (let i = 0; i < parseInt(property && property?.num_of_floors); i++) {
+    floorsArr.push(i === 0 ? { name: "Ground floor" } : { name: `Floor ${i}` });
+  }
 
   const getUnits = async (id) => {
-     // eslint-disable-next-line 
-    let isMounted  = true;
+    // eslint-disable-next-line
+    let isMounted = true;
     const {
       getUnits: { path },
-        } = APIS;
+    } = APIS;
     setLoading(true);
     const url = `/api${path({ id, floor: select })}`;
-    const controller =  new AbortController();
-    const getUs =  async () =>{
-      try{
+    const controller = new AbortController();
+    const getUs = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        if(response?.data){
-        dispatch(setUnits(response?.data?.data))};
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        if (response?.data) {
+          dispatch(setUnits(response?.data?.data));
+        }
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getUs()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getUs();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
 
   const getProperty = async (id) => {
     setLoading(true);
-     // eslint-disable-next-line 
-    let isMounted  = true;
+    // eslint-disable-next-line
+    let isMounted = true;
     const {
       getProperty: { path },
-        } = APIS;
-    const controller =  new AbortController();
+    } = APIS;
+    const controller = new AbortController();
     const url = `/api${path({ id })}`;
-    const getAgents =  async () =>{
-      try{
+    const getAgents = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        console.log(response.data, "response.data")
-        if(response?.data){
-        dispatch(setProperty(response?.data?.data))};
-       
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        console.log(response.data, "response.data");
+        if (response?.data) {
+          dispatch(setProperty(response?.data?.data));
+        }
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getAgents()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getAgents();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
-
-
 
   const getAgentsList = async (id) => {
     setLoading(true);
-     // eslint-disable-next-line 
-    let isMounted  = true;
+    // eslint-disable-next-line
+    let isMounted = true;
     const {
       getDropdownClients: { path },
-        } = APIS;
-    const controller =  new AbortController();
-    const getAgents =  async () =>{
-      try{
+    } = APIS;
+    const controller = new AbortController();
+    const getAgents = async () => {
+      try {
         const response = await axiosPrivate.get(`/api/${path}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        console.log(response)
-        if(response?.data){
-        dispatch(setDropdownClients(response?.data?.data))};
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        console.log(response);
+        if (response?.data) {
+          dispatch(setDropdownClients(response?.data?.data));
+        }
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getAgents()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getAgents();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
   const getPropertyImage = async (id) => {
     setLoadingImage(true);
-     // eslint-disable-next-line 
-    let isMounted  = true;
+    // eslint-disable-next-line
+    let isMounted = true;
     const {
       getPropertyImage: { path },
-        } = APIS;
-        const url = `/api${path({ id, floor: select })}`;
-    const controller =  new AbortController();
-    const getAgents =  async () =>{
-      try{
+    } = APIS;
+    const url = `/api${path({ id, floor: select })}`;
+    const controller = new AbortController();
+    const getAgents = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        setImage(response?.data?.data)
-      }catch(err){
-      }finally{
+        setImage(response?.data?.data);
+      } catch (err) {
+      } finally {
         setLoadingImage(false);
       }
-    }
-    getAgents()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getAgents();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
 
   return (
@@ -198,7 +200,7 @@ const ProManagement = () => {
             placeholder="Select floor"
             defaultValue={""}
             variant="outlined"
-            value={select || ""}
+            value={select}
             size="small"
             onChange={({ target }) => setSelect(target.value)}
           >
@@ -211,51 +213,15 @@ const ProManagement = () => {
         </div>
         {user.role && user.role === "Admin" && (
           <div className="add-btn" onClick={AddImageDialog}>
-            <IconContext.Provider
-              value={{className: "global-class-name" }}
-            >
+            <IconContext.Provider value={{ className: "global-class-name" }}>
               <div>
                 <FaUpload />
               </div>
             </IconContext.Provider>
-            <span style={{marginLeft: '8px'}}>Upload Floor Image</span>
+            <span style={{ marginLeft: "8px" }}>Upload Floor Image</span>
           </div>
         )}
       </div>
-      <div className="pro-header">
-        {
-          loadingImage && (
-            <div>
-              Loading...
-            </div>
-          )
-        }
-        {!loadingImage && image &&(
-          // <iframe src={image.image} width="100%" height="300" style={{border:"none"}}></iframe>
-          <img src={image.image} alt="Red dot" className="pro-header__image" />
-          
-          // <embed src={image.image} width="600px" height="600px" /> style="width: 100%;height: 100%;border: none;"
-          // <iframe src={image.image} style ={{ width: "100%", height: "600px", }}></iframe>
-          // <iframe
-          //   src={image.image}
-          //   frameBorder="0"
-          //   // scrolling="auto"
-          //   style ={{ width: "100%", height: "600px", }}
-          //   height="100%"
-          //   width="100%"
-          // ></iframe>
-        // ) : (
-        //   <img src={icon} alt="Logo" className="pro-header__image" />
-        )}
-        {
-          !loadingImage && !image && (
-            <div>
-              No Image Uploaded
-            </div>
-          )
-        }
-      </div>
-
       <div className="pro-address">
         <div className="pro-address__icon">
           <IconContext.Provider
@@ -267,102 +233,121 @@ const ProManagement = () => {
           </IconContext.Provider>
         </div>
         <div>
-          <p>{property && property.address}</p>
+          <h1 className="card__title">{property && property.name}</h1>
         </div>
       </div>
-      <div className="units">
-        <div className="units__keys">
+      <div className="pro-container">
+        <div className="pro-header pro-container__row">
+          {loadingImage && <div>Loading...</div>}
+          {!loadingImage && image && (
+            // <iframe src={image.image} width="100%" height="300" style={{border:"none"}}></iframe>
+            <img
+              src={image?.link}
+              alt="Red dot"
+              className="pro-header__image"
+            />
+          )}
+          {!loadingImage && !image && <div className="pro-header__noimage"><h1 >No Image Uploaded</h1></div>}
+        </div>
+        <div className="units  pro-container__row">
           <div className="units__keys">
-            <div className="units__keys--dots">
-              <IconContext.Provider
-                value={{ color: "green", className: "dot" }}
-              >
-                <div>
-                  <BsFillCircleFill />
-                </div>
-              </IconContext.Provider>
-              <p>Available</p>
+            <div className="units__keys">
+              <div className="units__keys--dots">
+                <IconContext.Provider
+                  value={{ color: "green", className: "dot" }}
+                >
+                  <div>
+                    <BsFillCircleFill />
+                  </div>
+                </IconContext.Provider>
+                <p>Available</p>
+              </div>
+              <div className="units__keys--dots">
+                <IconContext.Provider
+                  value={{ color: "red", className: "dot" }}
+                >
+                  <div>
+                    <BsFillCircleFill />
+                  </div>
+                </IconContext.Provider>
+                <p>Sold</p>
+              </div>
+              <div className="units__keys--dots">
+                <IconContext.Provider
+                  value={{ color: "indigo", className: "dot" }}
+                >
+                  <div>
+                    <BsFillCircleFill />
+                  </div>
+                </IconContext.Provider>
+                <p>Occupied</p>
+              </div>
+              <div className="units__keys--dots">
+                <IconContext.Provider
+                  value={{ color: "yellow", className: "dot" }}
+                >
+                  <div>
+                    <BsFillCircleFill />
+                  </div>
+                </IconContext.Provider>
+                <p>Reserved</p>
+              </div>
             </div>
-            <div className="units__keys--dots">
-              <IconContext.Provider value={{ color: "red", className: "dot" }}>
-                <div>
-                  <BsFillCircleFill />
-                </div>
-              </IconContext.Provider>
-              <p>Sold</p>
-            </div>
-            <div className="units__keys--dots">
-              <IconContext.Provider
-                value={{ color: "indigo", className: "dot" }}
-              >
-                <div>
-                  <BsFillCircleFill />
-                </div>
-              </IconContext.Provider>
-              <p>Occupied</p>
-            </div>
-            <div className="units__keys--dots">
-              <IconContext.Provider
-                value={{ color: "yellow", className: "dot" }}
-              >
-                <div>
-                  <BsFillCircleFill />
-                </div>
-              </IconContext.Provider>
-              <p>Reserved</p>
-            </div>
+            {user.role && user.role === "Admin" && (
+              <div className="add-units" onClick={openAddUnitDialog}>
+                <IconContext.Provider
+                  value={{ color: "#0C2D40", className: "global-class-name" }}
+                >
+                  <div>
+                    <IoAddOutline />
+                  </div>
+                </IconContext.Provider>
+              </div>
+            )}
           </div>
-          {user.role && user.role === "Admin" && (
-            <div className="add-units" onClick={openAddUnitDialog}>
-              <IconContext.Provider
-                value={{ color: "#0C2D40", className: "global-class-name" }}
-              >
-                <div>
-                  <IoAddOutline />
+
+          <div className="units__text">
+            <p className="units__text--heading">Select a unit</p>
+          </div>
+          {!loading && units.length > 0 && (
+            <div className="units__boxs">
+              {units.map((item) => (
+                <div
+                  className="units__boxs--box"
+                  style={{
+                    color: `${
+                      item.status && item.status === "Available"
+                        ? "green"
+                        : item.status === "Sold"
+                        ? "red"
+                        : item.status === "Reserved"
+                        ? "yellow"
+                        : item.status === "Occupied"
+                        ? "indigo"
+                        : ""
+                    }`,
+                  }}
+                  onClick={() => {
+                    setUnit(item);
+                    dispatch(displayReserve("block"));
+                  }}
+                  key={item.id}
+                >
+                  <h3 className="num">{item.name}</h3>
                 </div>
-              </IconContext.Provider>
+              ))}
             </div>
           )}
         </div>
-
-        <div className="units__text">
-          <p className="units__text--heading">Select a unit</p>
-        </div>
-        {!loading && units.length > 0 && (
-          <div className="units__boxs">
-            {units.map((item) => (
-              <div
-                className="units__boxs--box"
-                style={{
-                  color: `${
-                    item.status && item.status === "Available"
-                      ? "green"
-                      : item.status === "Sold"
-                      ? "red"
-                      : item.status === "Reserved"
-                      ? "yellow"
-                      : item.status === "Occupied"
-                      ? "indigo"
-                      : ""
-                  }`,
-                }}
-                onClick={() => {
-                  setUnit(item);
-                  dispatch(displayReserve("block"));
-                }}
-                key={item.id}
-              >
-                <h3 className="num">{item.name}</h3>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
-
       {/* dialog Reserve Unit */}
       <ReserveUnit unit={unit} getUnits={(e) => getUnits(e)} agents={agents} />
       {/* dialog Add Unit */}
-      <AddUnit floorsArr={floorsArr} getUnits={(e) => getUnits(e)} floor={select} />
+      <AddUnit
+        floorsArr={floorsArr}
+        getUnits={(e) => getUnits(e)}
+        floor={select}
+      />
       {/* dialog edit Unit */}
       <EditUnit
         floorsArr={floorsArr}

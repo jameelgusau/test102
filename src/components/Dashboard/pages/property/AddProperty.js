@@ -19,7 +19,8 @@ const AddProperty = (props) => {
   const [status, setStatus] = useState("Completed");
   const [floors, setFloors] = useState("");
   const [units, setUnits] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  // const [ image, setImage] = useState("");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -49,12 +50,15 @@ const AddProperty = (props) => {
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const files = ref.current.files;
+    console.log(files);
+    // setImage(files)
+    // console.log(files, "files")
     if (validate()) {
       const {
         baseUrl,
         addProperties: { method, path },
       } = APIS;
-      const files = ref.current.files;
       const formData = new FormData();
       Object.keys(files).forEach((key) => {
         formData.append(files.item(key).name, files.item(key));
@@ -115,9 +119,9 @@ const AddProperty = (props) => {
         : "Number of floor(s) are required";
     temp.units =
       !isNaN(units) && units.length >= 1 ? "" : "Number of units are required";
-    temp.date = date.length >= 1 ? "" : "Date is required";
+    temp.date = date ? "" : "Date is required";
     temp.status = status.length >= 1 ? "" : "Status is required";
-
+    temp.image =  ref?.current?.files?.length > 0 ? "" : "Image is required";
     setErrors({
       ...temp,
     });
@@ -161,8 +165,9 @@ const AddProperty = (props) => {
           </div>
           <form onSubmit={submit}>
             <div className="property-input">
-              <label>Property name: </label>
+              <label>Property name* </label>
               <TextField
+                name="property"
                 placeholder="Property name"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -175,8 +180,9 @@ const AddProperty = (props) => {
                 {...(errors.name && { error: true, helperText: errors.name })}
               />
 
-              <label>Address: </label>
+              <label>Address* </label>
               <TextField
+                name="address"
                 placeholder="Address"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -191,8 +197,9 @@ const AddProperty = (props) => {
                   helperText: errors.address,
                 })}
               />
-              <label>Number of floors: </label>
+              <label>Number of floors* </label>
               <TextField
+                name="floors"
                 placeholder="Number of floors"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -207,8 +214,9 @@ const AddProperty = (props) => {
                   helperText: errors.floors,
                 })}
               />
-              <label>Number of Units: </label>
+              <label>Number of Units* </label>
               <TextField
+                name="units"
                 placeholder="Number of Units"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -220,8 +228,9 @@ const AddProperty = (props) => {
                 value={units || ''}
                 {...(errors.units && { error: true, helperText: errors.units })}
               />
-              <label>Select status: </label>
+              <label>Select status* </label>
               <TextField
+                name="status"
                 placeholder="Select status"
                 select
                 id="select"
@@ -245,8 +254,9 @@ const AddProperty = (props) => {
                   </MenuItem>
                 ))}
               </TextField>
-              <label>Completion date: </label>
+              <label>Completion date* </label>
               <TextField
+                name="date"
                 placeholder="Completion date"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -257,13 +267,26 @@ const AddProperty = (props) => {
                 value={date || new Date().toISOString().split("T")[0]}
                 {...(errors.date && { error: true, helperText: errors.date })}
               />
+               <label>Upload image* </label>
               <input
                 type="file"
                 name="image"
                 ref={ref}
                 multiple
                 accept="image/*"
+              
               />
+                {(errors.image) && (
+                <p style={{
+                  color:'#d32f2f',
+                  fontSize: '0.75rem',
+                  lineHeight: 1.66,
+                  // text-align: left;
+                // margin-top: 3px;
+                  marginRight: '14px',
+                    // margin-bottom: 0;
+                    marginLeft: '14px'
+                  }}>{ errors.image }</p>)}
               <div className="property-input__btn">
                 <Button
                   variant="contained"

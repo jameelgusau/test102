@@ -17,15 +17,31 @@
   display: flex;
   column-gap: 2rem;
   margin: 2rem;
-  @include responsive(phone) {
+  @include responsive(tab-port) {
     flex-direction: column;
     row-gap: 2rem;
   }
     &__card{
       background-color: #fff;
-      width: 100%;
+      width: 50%;
+      height: 600px;
+      min-width: 400px;
     //   max-height: 80vh;
       padding: 2rem;
+      @include responsive(tab-port) {
+      width: 100%;
+      min-width: 100;
+      }
+      // &--img {
+      //   display: grid;
+      //   width: 300px;
+        place-items: center;
+        & > img{
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        } 
+      // }
   }
 }
 
@@ -57,4 +73,44 @@
     &__double{
       grid-template-columns: 1fr 1fr;
     }
+}
+.pdfbg{
+  background-color: #EFEFEF;
+  padding: 3rem;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.pdfbutton{
+  padding: 1rem;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+.download{
+  height: 35px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: #cc5418;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid #cc5418;
+  box-shadow: 0 3px 6px 0 rgb(0 0 0 / 18%), 0 4px 8px 0 rgb(0 0 0 / 15%);
+  padding: 0.5rem 1rem 0.5rem 0.7rem;
+  &:hover{
+    background-color: rgba(204, 84, 24, 0.86);
+  }
+}
+
+.pdfcontainer{
+  overflow-y: auto;
+  height: 80vh;
+}
+
+.pdfPage{
+  margin-bottom: 3rem;
 }

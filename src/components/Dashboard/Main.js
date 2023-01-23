@@ -14,6 +14,7 @@ import Reservations from "./pages/reservation";
 import Store from "./pages/store";
 import Item from "./pages/items";
 import Category from "./pages/category";
+import MyPayments from "./pages/myPayments";
 
 function Main() {
   const routes = [
@@ -28,6 +29,10 @@ function Main() {
     {
       path: "myreservation",
       main: <MyReservation />,
+    },
+    {
+      path: "mypayments/*",
+      main: <MyPayments />,
     },
     {
       path: "prospects",

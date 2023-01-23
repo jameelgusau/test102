@@ -15,6 +15,7 @@ const Table = (props) => {
   const {
     columns,
     tableData,
+    tableHeading,
     pageAction,
     currentPage,
     loading,
@@ -57,6 +58,11 @@ const Table = (props) => {
 
   return (
     <div className={tabCon ? tabCon : "table-container"}>
+      {
+        tableHeading &&(
+          <h1 className="tableHeading">{tableHeading}</h1>
+        )
+      }
       {loading && (
         <div className="emptyData">
           <Loading />

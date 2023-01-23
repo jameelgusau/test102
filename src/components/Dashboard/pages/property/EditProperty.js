@@ -15,7 +15,7 @@ const EditProperty = (props) => {
   const [status, setStatus] = useState("");
   const [floors, setFloors] = useState("");
   const [units, setUnits] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -25,7 +25,6 @@ const EditProperty = (props) => {
   useEffect(() => {
     setName(property.name);
     setAddress(property.address);
-    // setPrice(property.price);
     setFloors(property.num_of_floors);
     setUnits(property.num_of_units);
     setDate(
@@ -34,7 +33,9 @@ const EditProperty = (props) => {
     );
     setStatus(property.status || "");
   }, [property]);
+  
   const submit = async (e) => {
+    console.log("Submit")
     e.preventDefault();
     setLoading(true);
     if (validate()) {
@@ -98,7 +99,7 @@ const EditProperty = (props) => {
         : "Number of floor(s) are required";
     temp.units =
       !isNaN(units) && units.length >= 1 ? "" : "Number of units are required";
-    temp.date = date.length >= 1 ? "" : "Date is required";
+    temp.date = date ? "" : "Date is required";
     temp.status = status.length >= 1 ? "" : "Status is required";
 
     setErrors({
@@ -137,6 +138,7 @@ const EditProperty = (props) => {
             <div className="property-input">
               <label>Property name: </label>
               <TextField
+                 name="property"
                 placeholder="Property name"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -150,6 +152,7 @@ const EditProperty = (props) => {
               />
               <label>Address: </label>
               <TextField
+                name="address"
                 placeholder="Address"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -166,6 +169,7 @@ const EditProperty = (props) => {
               />
               <label>Number of floors: </label>
               <TextField
+                name="floors"
                 placeholder="Number of floors"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -182,6 +186,7 @@ const EditProperty = (props) => {
               />
               <label>Number of Units: </label>
               <TextField
+                name="units"
                 placeholder="Number of Units"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -195,6 +200,7 @@ const EditProperty = (props) => {
               />
               <label>Select status: </label>
               <TextField
+                name="status"
                 placeholder="Select status"
                 select
                 id="select"
@@ -211,6 +217,7 @@ const EditProperty = (props) => {
                 }}
                 // ref={myRef}
                 //onBlur={props.handleBlur('name')}
+                {...(errors.status && { error: true, helperText: errors.status })}
               >
                 {stat &&
                   stat.map(({ name }) => (
@@ -221,6 +228,7 @@ const EditProperty = (props) => {
               </TextField>
               <label>Completion date: </label>           
               <TextField
+               name="date"
                 placeholder="Completion date"
                 className="signup__input--item-a"
                 variant="outlined"

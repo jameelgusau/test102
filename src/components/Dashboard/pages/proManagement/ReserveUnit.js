@@ -20,7 +20,6 @@ import { setAlert } from "../../../../redux/snackbar";
 
 const ReserveUnit = (props) => {
   const { unit, getUnits,
-    //  agents 
     } = props;
   const params = useParams();
   const myRef = useRef();
@@ -28,12 +27,12 @@ const ReserveUnit = (props) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
   const [prospectId, setProspectId] = useState("");
+  const [paymentType, setPaymentType] = useState("One-off");
   const [errMessage, setErrMessage] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const display = useSelector((state) => state.displays.openReserve);
   const user = useSelector((state) => state.userProfile.value);
   const { clients }= useSelector((state) => state.dropdownCalls);
-  console.log(clients)
   const resevedUnit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -44,11 +43,13 @@ const ReserveUnit = (props) => {
     const data = prospectId !== "" ? {
       propertyId: params.id,
       unitId: unit.id,
+      paymentType,
       paymentPlanId: "",
       prospectId
     }: {
       propertyId: params.id,
       unitId: unit.id,
+      paymentType,
       paymentPlanId: ""
     };
 
@@ -91,7 +92,16 @@ const ReserveUnit = (props) => {
   const openEditUnitDialog = () => {
     dispatch(displayEditUnit("block"));
   };
-
+  const payment =[
+    {
+      id: 1,
+      name: "One-off"
+    },
+    {
+      id: 2,
+      name: "Installment"
+    }
+  ]
   const closeDialog = () => {
     dispatch(displayReserve("none"));
     clearInput()
@@ -100,7 +110,6 @@ const ReserveUnit = (props) => {
     setProspectId("")
     setIsChecked(false)
   }
-
   const handleOnChecked = () => {
     setIsChecked(!isChecked);
   };
@@ -113,9 +122,9 @@ const ReserveUnit = (props) => {
           </span>
         </div>
         <div className="model-title">
-          <h2 className="num model-title__header">Request For Offer</h2>
+          <h2 className="num model-title__header">Reservation</h2>
         </div>
-        <div className="model-body">
+        <div className="model-body" style={{margin: '2rem 2rem 0'}}>
           <div className="edit-button">
             {user?.role === "Admin" && (
               <>
@@ -159,7 +168,7 @@ const ReserveUnit = (props) => {
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Dimention:</h4>
-                <h4 className="model-body__row--text">{unit.dimension} sq m</h4>
+                <h4 className="model-body__row--text">{unit.dimension}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Price:</h4>
@@ -175,9 +184,32 @@ const ReserveUnit = (props) => {
             </>
           )}
         </div>
-        <div className="model-button">
+        <div className="model-button"  style={{margin: '0 2rem'}}>
           {unit.status === "Available" && (
             <>
+            <label style={{ display: "block",}}>Select payment type:</label>
+              <TextField
+                placeholder="Select payment type"
+                select
+                id="select"
+                // ref={myRef}
+                style={{ marginBottom: "10px", width: "100%" }}
+                className="password__input--item-a"
+                variant="outlined"
+                value={paymentType}
+                defaultValue={"One-off"}
+                size="small"
+                onChange={(e) => {
+                  e.preventDefault();
+                  setPaymentType(e.target.value);
+                }}
+              >
+                {payment.map(({ name }) => (
+                  <MenuItem value={name} key={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
                 {user.role === "Admin" && (
                 <label style={{ padding: "10px 0",
                   fontSize: "14px"}}>
@@ -228,7 +260,7 @@ const ReserveUnit = (props) => {
                 {loading ? (
                   <CircularProgress style={{ color: "#ffffff" }} size={24} />
                 ) : (
-                  "Request for offer"
+                  "Reserve now"
                 )}
               </Button>
             </>

@@ -78,6 +78,7 @@ function PasswordReset() {
           <TextField
             placeholder="Password"
             variant="outlined"
+            name="password"
             className="password__input--item-a"
             type={showPassword ? "text" : "password"}
             autoComplete="new-password"
@@ -104,8 +105,9 @@ function PasswordReset() {
             }}
           />
           <TextField
-            placeholder="Comfirm Password"
+            placeholder="Confirm Password"
             variant="outlined"
+            name="confirm-password"
             className="password__input--item-a"
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"

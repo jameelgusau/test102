@@ -10,6 +10,7 @@ import {
   displayAddUser,
   displayDeleteUser,
   displayEditUser,
+  displayUploadSignature
 } from "../../../../redux/display";
 import { setUsers } from "../../../../redux/users";
 import { APIS } from "../../../../_services";
@@ -21,6 +22,7 @@ import AddUser from "./AddUser";
 import EditUser from "./EditUser";
 import DeleteUser from "./DeleteUser";
 import Table from "../../../Tables/Table";
+import UploadSignature from "./UploadSignature";
 
 const columns = [
   { columnName: "#", keyName: "sn" },
@@ -91,6 +93,15 @@ const Users = () => {
           >
             Edit
           </MenuItem>
+          {/* <MenuItem
+            onClick={() => {
+              setAccount(item);
+              setStudentItem(idx, null);
+              dispatch(displayUploadSignature("block"));
+            }}
+          >
+            Upload signature
+          </MenuItem> */}
         </Menu>
       </>
     ),
@@ -166,6 +177,9 @@ const Users = () => {
   const openDialog = () => {
     dispatch(displayAddUser("block"));
   };
+  const openSignatureDialog = () => {
+    dispatch(displayUploadSignature("block"));
+  };
 
   return (
     <div className="prospect">
@@ -195,6 +209,15 @@ const Users = () => {
             }}
           />
         </div>
+        <div style={{display: "flex", gap: "10px"}}>
+        <div className="add-btn" onClick={openSignatureDialog}>
+          {/* <IconContext.Provider value={{ className: "global-class-name" }}>
+            <div>
+              <IoAddOutline />
+            </div>
+          </IconContext.Provider> */}
+          <span>Authorise signature</span>
+        </div>
         <div className="add-btn" onClick={openDialog}>
           <IconContext.Provider value={{ className: "global-class-name" }}>
             <div>
@@ -203,12 +226,14 @@ const Users = () => {
           </IconContext.Provider>
           <span>Add User</span>
         </div>
+        </div>
       </div>
       <Table
         loading={loading}
         columns={columns}
         tableData={List}
         pagination
+        tableHeading="Users"
         totalRecord={totalRecord}
         pageAction={(newPage) =>
           setFilter((prev) => ({ ...prev, page: newPage }))
@@ -219,6 +244,7 @@ const Users = () => {
       <AddUser getUser={() => getUser(filter)} />
       <EditUser getUser={() => getUser(filter)} account={account} />
       <DeleteUser getUser={() => getUser(filter)} account={account} />
+      <UploadSignature getUser={() => getUser(filter)} account={account} />
     </div>
   );
 };

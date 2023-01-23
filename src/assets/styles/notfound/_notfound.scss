@@ -11,9 +11,18 @@
 .notfound {
   justify-self: center;
   margin-top: 20px;
-  background: #0b2d40;
+  background: #CC5418;
   color: #ffff;
   padding: 6px 20px;
   border-radius: 3px;
   text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid #CC5418;
+  cursor: pointer;
+  transition: 0.5s ease-in-out;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.18), 0 4px 8px 0 rgba(0, 0, 0, 0.15);
+  &:hover{
+    background: #ae643e;
+    transform: scale(1.1);
+  }
 }

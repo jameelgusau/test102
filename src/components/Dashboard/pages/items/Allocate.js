@@ -20,12 +20,13 @@ const Allocate = (props) => {
   const { adminUsers } = useSelector((state) => state.dropdownCalls);
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.displays.openAllocate);
+  const all = useSelector((state) => state)
 
   useEffect(() => {
     setItemId(account.id);
     setQuantity(account.quantity);
   }, [account]);
-
+console.log(all, "Allocated")
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -42,7 +43,7 @@ const Allocate = (props) => {
       const url = `${baseUrl}${path}`;
       const response = await requestJwt(method, url, data, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
-        await getItem(user.jwtToken);
+        await getItem();
         dispatch(
           setAlert({
             open: true,
@@ -52,7 +53,6 @@ const Allocate = (props) => {
           })
         );
         closeDialog();
-        clearInput();
       }
       if (response.meta && response.meta.status >= 400) {
         setLoading(false);
@@ -144,9 +144,9 @@ const Allocate = (props) => {
                   helperText: errors.quantityAllocated,
                 })}
               />
-                            <label>Select purchaser: </label>
+                            <label>Select receiver: </label>
               <TextField
-                placeholder="Select purchaser"
+                placeholder="Select receiver"
                 select
                 id="select"
                 defaultValue={""}

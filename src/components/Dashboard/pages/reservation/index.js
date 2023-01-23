@@ -33,6 +33,7 @@ const columns = [
   { columnName: "Email", keyName: "email" },
   { columnName: "Property", keyName: "property" },
   { columnName: "Unit", keyName: "unit" },
+  { columnName: "Status", keyName: "status" },
   { columnName: "Payment Type", keyName: "paymentType" },
   { columnName: "Actions", keyName: "actions" },
 ];
@@ -307,6 +308,7 @@ const Reservations = () => {
         columns={columns}
         tableData={List}
         pagination
+        tableHeading="Resevations"
         totalRecord={totalRecord}
         pageAction={(newPage) =>
           setFilter((prev) => ({ ...prev, page: newPage }))

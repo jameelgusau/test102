@@ -26,6 +26,18 @@
         animation-duration: 0.4s;
         transition: all .6s ease-in-out;
       } 
+      &__content1 {
+        position: fixed;
+        right: 0;
+        background-color: #fefefe;
+        width: 750px;
+        height: 100%;
+        -webkit-animation-name: slideIn;
+        -webkit-animation-duration: 0.4s;
+        animation-name: slideIn;
+        animation-duration: 0.4s;
+        transition: all .6s ease-in-out;
+      }
   }
 
 .model-title{
@@ -75,11 +87,22 @@
   .close{
     position: absolute;
     top: 10px;
-    left: 10px;
+    left: -15px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 6px 20px rgb(204 85 25 / 17%);
+    &:hover{
+      transform: scale(1.05);
+    }
     &__icon{
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
+        color: #CC5418;
     }
 }
 .edit-button{

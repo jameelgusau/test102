@@ -10,7 +10,7 @@ const AddImage = (props) => {
   const { getImage, floor } = props;
   let params = useParams();
   const myRef = useRef();
-  const [newImage, setNewImage] = useState([]);
+  const [newImage, setNewImage] = useState({});
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
@@ -21,9 +21,8 @@ const AddImage = (props) => {
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
-    setNewImage(e.target.files)
+    setNewImage(file)
     const base64 = await convertBase64(file);
-    //  setFile(base64)
     setImage(base64);
   };
 
@@ -31,7 +30,6 @@ const AddImage = (props) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
-
       fileReader.onload = () => {
         resolve(fileReader.result);
       };
@@ -40,6 +38,7 @@ const AddImage = (props) => {
       };
     });
   };
+
   const validate = () => {
     let temp = {};
     temp.image = image.length !== "" ? "" : "Image required";
@@ -54,19 +53,15 @@ const AddImage = (props) => {
     setLoading(true);
     if (validate()) {
       const formData = new FormData();
-      Object.keys(newImage).forEach(key =>{
-        formData.append(newImage.item(key).name, newImage.item(key))});
+      // Object.keys(newImage).forEach(key =>{
+        formData.append("file", newImage)
+      // });
         formData.append("propertyId", params.id);
         formData.append("floorNumber", floor);
       const {
         baseUrl,
         setFloorImage: { method, path },
       } = APIS;
-      // const data = {
-      //   image,
-      //   propertyId: params.id,
-      //   floorNumber: floor,
-      // };
       const url = `${baseUrl}${path}`;
       const response = await requestImg(method, url, formData, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
@@ -91,6 +86,7 @@ const AddImage = (props) => {
       }
       setLoading(false);
     }
+    setLoading(false);
   };
 
   const closeDialog = () => {

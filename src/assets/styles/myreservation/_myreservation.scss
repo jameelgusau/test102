@@ -30,17 +30,23 @@
 
 }
 
-.reservationCard{
+.reservationCard{    
+    padding: 20px;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+}
+.grid{
     display: grid;
     grid-template-columns: 1fr 1fr ;
     justify-content: center;
     row-gap: 10px;
     column-gap: 15px;
-    padding: 20px;
-    border-radius: 3px;
-    background-color: #fff;
-    box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
-
 }
 .end{
     justify-self:  flex-end;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import imgs from "../../assets/img/avatar.jpeg";
 import { useSelector, useDispatch } from "react-redux";
 import { setProfileImage } from "../../redux/profileImage";
@@ -17,19 +17,19 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation()
   const user = useSelector((state) => state.userProfile.value);
-  const proImage = useSelector((state) => state.profileImage.value);
+  // const proImage = useSelector((state) => state.profileImage.value);
    // eslint-disable-next-line 
   const [ loading, setLoading ] =  useState(false)
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  useEffect(() => {
-    if(!proImage){
-      getProfileImage(user?.jwtToken)
-    }
+  // useEffect(() => {
+  //   if(!proImage){
+  //     getProfileImage(user?.jwtToken)
+  //   }
 
-     // eslint-disable-next-line
-  },[])
+  //    // eslint-disable-next-line
+  // },[])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -107,7 +107,7 @@ const logout = async ()=>{
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            { proImage ? (<img src={`http://localhost:4000/images/${proImage.image}`} alt="Avatar" className="header__avatar" />):
+            { user?.link ? (<img src={user?.link} alt="Avatar" className="header__avatar" />):
               (<img src={imgs} alt="Avatar" className="header__avatar" />)
             }
           </div>

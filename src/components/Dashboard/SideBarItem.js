@@ -28,11 +28,14 @@ const SideBarItem = ({ sidebar }) => {
     }
 
   } else {
-    if((user?.role === "Prospect" || user?.role === "User") && (sidebar?.title === "Dashboard" || sidebar?.title === "Clients" ||sidebar?.title === "Reservations" || sidebar?.title === "Payments" ||  sidebar?.title === "Stores"|| sidebar.title === "Payments" || sidebar?.title === "Users" || sidebar?.title === "Notification" || sidebar?.title === "Settings")) {
+    if((user?.role === "Prospect" || user?.role === "User") && (sidebar?.title === "Dashboard" || sidebar?.title === "Clients" ||sidebar?.title === "Reservations" || sidebar?.title === "Payments" ||  sidebar?.title === "Stores"|| sidebar.title === "Payments" || sidebar?.title === "Users" || sidebar?.title === "Notification" || sidebar?.title === "Settings" || sidebar?.title === "Certificates")) {
       return
     }else if((user?.role === "Prospect" || (user?.stores === [] && user?.role !== "Admin"))&& (sidebar?.title === "Inventory" || sidebar?.title  === "Category" || sidebar?.title === "Item")){
       return
-    } else{
+    }if(!((user?.role === "Prospect")) && (sidebar?.title === "My Payments" || sidebar?.title === "My Reservations" || sidebar?.title === "My Certificates")){
+      return
+    }
+     else{
       return (
         <NavLink
           className="sidebar-item plain"

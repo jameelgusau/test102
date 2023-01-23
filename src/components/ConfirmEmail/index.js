@@ -15,8 +15,8 @@ function ConfirmEmail() {
   // const 
   let params = useParams();
   const [ loading, setLoading ] = useState(false);
-  const [err, setErr] = useState(false);
-  const [errMessage, setErrMessage] = useState("");
+  const [ err, setErr ] = useState(false);
+  const [ errMessage, setErrMessage ] = useState("");
 
     useEffect(() => {
       verifyEmail()

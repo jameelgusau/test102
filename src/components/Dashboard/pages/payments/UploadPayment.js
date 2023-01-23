@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TextField, Button, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { displayUploadPayment } from "../../../../redux/display";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS, requestImg } from "../../../../_services";
 import { setAlert } from "../../../../redux/snackbar";
 
 const UploadPayment = (props) => {
@@ -12,12 +12,14 @@ const UploadPayment = (props) => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
+  const [newImage, setNewImage] = useState({});
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.displays.openUploadPayment);
   const dispatch = useDispatch();
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
+    setNewImage(file)
     const base64 = await convertBase64(file);
     setImage(base64);
   };
@@ -26,7 +28,6 @@ const UploadPayment = (props) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
-
       fileReader.onload = () => {
         resolve(fileReader.result);
       };
@@ -39,6 +40,7 @@ const UploadPayment = (props) => {
   const validate = () => {
     let temp = {};
     temp.image = image.length != "" ? "" : "Image required";
+    temp.plan = image.plan !== "" ? "" : "Payment plan required";
     temp.amount = !isNaN(amount) && amount.length >= 1 ? "" : "Amount is required";
     setErrors({
       ...temp,
@@ -48,19 +50,18 @@ const UploadPayment = (props) => {
 
   const uploadFile = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (validate()) {
-      setLoading(true);
+      const formData = new FormData();
+      formData.append("file", newImage)
+      formData.append("reservedUnitId", reservedUnitId);
+      formData.append("amount", amount);
       const {
         baseUrl,
         addPayment: { method, path },
       } = APIS;
-      const data = {
-        image,
-        amount,
-        reservedUnitId
-      };
       const url = `${baseUrl}${path}`;
-      const response = await requestJwt(method, url, data, user.jwtToken);
+      const response = await requestImg(method, url, formData, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
         await getReservation(user.jwtToken);
         dispatch(
@@ -84,6 +85,17 @@ const UploadPayment = (props) => {
       setLoading(false);
     }
   };
+
+  const plans = [
+    {
+      id: 1,
+      name: "payment",
+    },
+    {
+      id: 2,
+      name: "part-payment",
+    },
+  ];
 
   const closeDialog = async () => {
     dispatch(displayUploadPayment("none"));
@@ -119,7 +131,32 @@ const UploadPayment = (props) => {
                   helperText: errors.amount,
                 })}
               />
-            <label>Unit name: </label>
+              <label>Select payment type*:</label>
+              <TextField
+                placeholder="Select payment type"
+                select
+                name="plan"
+                id="select"
+                variant="outlined"
+                value={plan}
+                // label="Select gender"
+                defaultValue={"payment"}
+                size="small"
+                onChange={(e) => {
+                  setPlan(e.target.value);
+                }}
+                {...(errors.gender && {
+                  error: true,
+                  helperText: errors.plan,
+                })}
+              >
+                {plans.map(({ name }) => (
+                  <MenuItem value={name} key={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <label>Upload bank payment receipt*:</label>
              <TextField
                 placeholder="Unit name"
                 className="signup__input--item-a"

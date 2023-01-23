@@ -16,6 +16,8 @@ import Table from "../../../Tables/Table";
 const columns = [
   { columnName: "#", keyName: "sn" },
   { columnName: "Name", keyName: "name" },
+  { columnName: "Unit", keyName: "unit" },
+  { columnName: "Property", keyName: "name" },
   { columnName: "Amount", keyName: "amount" },
   { columnName: "Date", keyName: "date" },
   { columnName: "Status", keyName: "status" },
@@ -126,6 +128,7 @@ const Payments = () => {
       columns={columns} 
       tableData={List}
       pagination
+      tableHeading="Payments"
       totalRecord={totalRecord}
       pageAction={(newPage) =>
         setFilter((prev) => ({ ...prev, page: newPage }))

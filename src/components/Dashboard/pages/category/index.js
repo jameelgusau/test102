@@ -52,7 +52,6 @@ const Category = () => {
           size="small"
           onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
         >
-          {" "}
           <IoEllipsisVerticalOutline />
         </IconButton>
         <Menu
@@ -210,6 +209,7 @@ const Category = () => {
         columns={columns} 
         tableData={List} 
         pagination
+        tableHeading="Categories"
         totalRecord={totalRecord}
         pageAction={(newPage) =>
           setFilter((prev) => ({ ...prev, page: newPage }))

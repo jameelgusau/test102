@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate, Link, useLocation } from "react-router-dom";
@@ -10,7 +10,6 @@ import { setAlert } from "../../redux/snackbar";
 import { APIS, request } from "../../_services";
 import logo2 from '../../assets/img/whitelogo.svg'
 import { userProfile } from '../../redux/userProfile'
-
 
 function Login() {
   let navigate = useNavigate();
@@ -27,6 +26,16 @@ function Login() {
   const handleClickShowPassword = () => {
     setshowPassword(!showPassword);
   };
+
+
+  useEffect(() => {
+    clearStore();
+    // eslint-disable-next-line
+  }, []);
+
+  const clearStore = () => {
+    dispatch(userProfile())
+  }
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -59,6 +68,7 @@ function Login() {
       const response = await request(method, url, data);
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
+
         navigate(from, {replace: true});
         dispatch( setAlert({ open: true,
           severity: "success",
@@ -99,7 +109,7 @@ function Login() {
             variant="outlined"
             className="login__input--item-a"
             type="email"
-            
+            name = "email"
             autoComplete="email"
             onChange={({ target }) => {
               setEmail(target.value);

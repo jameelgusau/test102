@@ -56,6 +56,10 @@ const Item = () => {
   const List = records.map((item, idx) => ({
     ...item,
     sn: idx + 1 + currentPage * 10,
+    unitCost:new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(item.unitCost),
     actions: (
       <>
         <IconButton
@@ -326,6 +330,7 @@ const Item = () => {
       columns={columns} 
       tableData={List} 
         pagination
+        tableHeading="Store Items" 
         totalRecord={totalRecord}
         pageAction={(newPage) =>
           setFilter((prev) => ({ ...prev, page: newPage }))
@@ -334,11 +339,11 @@ const Item = () => {
         currentPage={currentPage}
       />
       {/* </div> */}
-      <AddItem getItem={(e) => getItem(e)} />
-      <EditItem getItem={(e) => getItem(e)} account={account} />
-      <Restock getItem={(e) => getItem(e)} account={account} />
-      <Allocate getItem={(e) => getItem(e)} account={account} />
-      <DeleteItem getItem={(e) => getItem(e)} account={account} />
+      <AddItem getItem={(e) => getItemByPage(e)} />
+      <EditItem getItem={(e) => getItemByPage(e)} account={account} />
+      <Restock getItem={(e) => getItemByPage(e)} account={account} />
+      <Allocate getItem={() => getItemByPage()} account={account} />
+      <DeleteItem getItem={(e) => getItemByPage(e)} account={account} />
     </div>
   );
 };

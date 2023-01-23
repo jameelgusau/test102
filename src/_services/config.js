@@ -173,6 +173,12 @@ export const APIS = {
       return `/get-payments?page=${page || 0}${search ? `&search=${search}` : ''}`
     }
   },
+  getMyPayments: {
+    method: "GET",
+    path: ( {  search,page }) => {   
+      return `/get-mypayments?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
+  },
   getAgents: {
     method: "GET",
     path: "/agent",
@@ -315,5 +321,49 @@ export const APIS = {
     method: "GET",
     path: "/get-dropdown-users",
   },
-  
+  acceptPayment: {
+    method: "POST",
+    path: "/accept-payment",
+  },
+  rejectPayment: {
+    method: "POST",
+    path: "/reject-payment",
+  },
+  authorizedSignature: {
+    method: "POST",
+    path: "/authorised-signature",
+  },
+  addSignature: {
+    method: "POST",
+    path: "/upload-signature",
+  },
+  getSignature: {
+    method: "GET",
+    path: "/get-signature",
+  },
+  appendSignature: {
+    method: "POST",
+    path: "/append-signature",
+  },
+  finalAllocation: {
+    method: "POST",
+    path: "/final-allocation",
+  },
+  getCertificates: {
+    method: "GET",
+    path: ( {  search,page }) => {   
+      return `/get-certificates?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
+  },
+  getMyCertificates: {
+    method: "GET",
+    path: ( {  search,page }) => {   
+      return `/get-mycertificates?page=${page || 0}${search ? `&search=${search}` : ''}`
+    }
+  },
+  getCertificate: {
+    method: "GET",
+    path: ({ id }) => `/get-certificate/${id}`,
+  },
+
 };

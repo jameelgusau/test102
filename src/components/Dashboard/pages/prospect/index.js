@@ -324,6 +324,7 @@ const Prospects = () => {
        columns={columns} 
        tableData={List}
        pagination
+       tableHeading="Prospects and Clients"
        totalRecord={totalRecord}
        pageAction={newPage => setFilter(prev => ({ ...prev, page: newPage }))}
        totalPages={totalPages}

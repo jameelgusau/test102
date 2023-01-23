@@ -208,6 +208,7 @@ const Store = () => {
         columns={columns} 
         tableData={List}
         pagination
+        tableHeading="Stores"
         totalRecord={totalRecord}
         pageAction={(newPage) =>
           setFilter((prev) => ({ ...prev, page: newPage }))

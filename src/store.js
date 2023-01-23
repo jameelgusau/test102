@@ -12,7 +12,9 @@ import emailList from './redux/emailList'
 import allReserved from './redux/allReserved'
 import Alert from './redux/snackbar'
 import payment from './redux/payment'
+import mypayment from './redux/myPayment'
 import payments from './redux/payments'
+import mypayments from './redux/mypayments'
 import profileImage from './redux/profileImage'
 import Agents from './redux/Agents'
 import Agentslist from './redux/Agentslist'
@@ -24,6 +26,9 @@ import dashReserved from './redux/dashReserved'
 import outOfStock from './redux/outOfStock'
 import dashPayment from './redux/dashPayment'
 import dropdownCalls from './redux/dropdownCalls'
+import certificates from './redux/certificates'
+import certificate from './redux/certificate'
+import mycertificates from './redux/myCertificates'
 
 export const rootReducer = combineReducers({
       alert: Alert,
@@ -39,8 +44,10 @@ export const rootReducer = combineReducers({
       emailList,
       allReserved,
       payment,
+      mypayment,
       profileImage,
       payments,
+      mypayments,
       property,
       store,
       item,
@@ -49,5 +56,9 @@ export const rootReducer = combineReducers({
       dashReserved,
       dashPayment,
       outOfStock,
+      certificates,
+      certificate,
+      mycertificates,
+
 
 })

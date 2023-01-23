@@ -17,7 +17,7 @@ const AddUser = (props) => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("User");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  // const [address, setAddress] = useState("");
   const [ isChecked,  setIsChecked] = useState(false);
   const [storeArr, setStoresArr] = useState([]);
   const [err, setErr] = useState(false);
@@ -47,7 +47,7 @@ const AddUser = (props) => {
       const data = {
         name,
         phone,
-        address,
+        // address,
         email,
         role,
         storeArr
@@ -93,7 +93,7 @@ const AddUser = (props) => {
     setEmail("");
     setRole("");
     setPhone("");
-    setAddress("");
+    // setAddress("");
     setStoresArr([]);
   };
   const validate = () => {
@@ -112,10 +112,10 @@ const AddUser = (props) => {
         ? ""
         : "Phone is not valid";
     temp.role = role.length > 0 ? "" : "Role is required";
-    temp.address =
-      address.length > 2 && address.length < 250
-        ? ""
-        : "Minimum of 3 characters and less than 250 characters required";
+    // temp.address =
+    //   address.length > 2 && address.length < 250
+    //     ? ""
+    //     : "Minimum of 3 characters and less than 250 characters required";
     setErrors({
       ...temp,
     });
@@ -198,7 +198,7 @@ const AddUser = (props) => {
                 placeholder="Phone Number"
                 variant="outlined"
               />
-              <label>Address:</label>
+              {/* <label>Address:</label>
               <TextField
                 placeholder="Address"
                 className="signup__input--item-a"
@@ -214,7 +214,7 @@ const AddUser = (props) => {
                   error: true,
                   helperText: errors.address,
                 })}
-              />
+              /> */}
               <label>Select role:</label>
               <TextField
                 placeholder="Select role"
@@ -222,7 +222,7 @@ const AddUser = (props) => {
                 id="select"
                 variant="outlined"
                 value={role}
-                label="Select role"
+                // label="Select role"
                 defaultValue={"User"}
                 size="small"
                 onChange={(e) => {

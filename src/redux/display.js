@@ -36,6 +36,12 @@ const initialState = {
   openDeleteItem: "none",
   openAllocate: "none",
   openRestock: "none",
+  openUploadSignature: "none",
+  openUploadSign: "none",
+  openMyAcknowledgement: "none",
+  openMyPayment: "none",
+  openViewCertificates: "none",
+  openViewMyCertificates: "none",
 };
 
 
@@ -43,6 +49,19 @@ export const displays = createSlice({
   name: "displays",
   initialState,
   reducers: {
+    displayViewMyCertificates: (state, action) => {
+      state.openViewMyCertificates = action.payload;
+    },
+    displayMyPayment: (state, action) => {
+      state.openMyPayment = action.payload;
+    },
+    displayViewCertificates: (state, action) => {
+      state.openViewCertificates = action.payload;
+    },
+   
+    displayMyAcknowledgement: (state, action) => {
+      state.openMyAcknowledgement = action.payload;
+    },
     displayReserve: (state, action) => {
       state.openReserve = action.payload;
     },
@@ -140,6 +159,12 @@ export const displays = createSlice({
     displayRestock: (state, action) => {
       state.openRestock = action.payload;
     },
+    displayUploadSignature: (state, action) => {
+      state.openUploadSignature = action.payload;
+    },
+    displayUploadSign: (state, action) => {
+      state.openUploadSign = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, (state)=>{
@@ -150,6 +175,9 @@ export const displays = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  displayViewMyCertificates,
+  displayUploadSign,
+  displayUploadSignature,
   displayRestock,
   displayAllocate,
   displayEditItem,
@@ -181,7 +209,10 @@ export const {
   displayAddEmailList,
   displayReserveDetail,
   displayUploadPayment,
-  displaySettings
+  displaySettings,
+  displayMyAcknowledgement,
+  displayMyPayment,
+  displayViewCertificates
 } = displays.actions;
 
 export default displays.reducer;

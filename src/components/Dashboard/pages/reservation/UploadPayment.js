@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
-import { TextField, Button, CircularProgress } from "@mui/material";
+import { TextField, Button, CircularProgress, MenuItem } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { displayUploadPayment } from "../../../../redux/display";
-import { APIS, requestJwt } from "../../../../_services";
+import { APIS, requestImg } from "../../../../_services";
 import { setAlert } from "../../../../redux/snackbar";
 
 const UploadPayment = (props) => {
-  const { reservedUnitId , getReservation } = props;
+  const { reservedUnitId, getReservation } = props;
   const [errors, setErrors] = useState({});
   const myRef = useRef();
   const [amount, setAmount] = useState("");
+  const [ plan, setPlan] = useState("");
   const [loading, setLoading] = useState(false);
+  const [newImage, setNewImage] = useState({});
   const [image, setImage] = useState("");
   const user = useSelector((state) => state.userProfile.value);
   const display = useSelector((state) => state.displays.openUploadPayment);
@@ -18,6 +20,7 @@ const UploadPayment = (props) => {
 
   const handleChange = async (e) => {
     const file = e.target.files[0];
+    setNewImage(file)
     const base64 = await convertBase64(file);
     //  setFile(base64)
     setImage(base64);
@@ -40,7 +43,9 @@ const UploadPayment = (props) => {
   const validate = () => {
     let temp = {};
     temp.image = image.length !== "" ? "" : "Image required";
-    temp.amount = !isNaN(amount) && amount.length >= 1 ? "" : "Amount is required";
+    temp.plan = image.plan !== "" ? "" : "Payment plan required";
+    temp.amount =
+      !isNaN(amount) && amount.length >= 1 ? "" : "Amount is required";
     setErrors({
       ...temp,
     });
@@ -49,19 +54,20 @@ const UploadPayment = (props) => {
 
   const uploadFile = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (validate()) {
-      setLoading(true);
+      const formData = new FormData();
+      formData.append("file", newImage)
+      formData.append("amount", amount);
+      formData.append("plan", plan);
+      formData.append("reservedUnitId", reservedUnitId);
       const {
         baseUrl,
         addPayment: { method, path },
       } = APIS;
-      const data = {
-        image,
-        amount,
-        reservedUnitId
-      };
+
       const url = `${baseUrl}${path}`;
-      const response = await requestJwt(method, url, data, user.jwtToken);
+      const response = await requestImg(method, url, formData, user.jwtToken);
       if (response.meta && response.meta.status === 200) {
         await getReservation(user.jwtToken);
         dispatch(
@@ -73,23 +79,46 @@ const UploadPayment = (props) => {
           })
         );
         await closeDialog();
+        clearInput()
       }
       if (response.meta && response.meta.status >= 400) {
-        dispatch(setAlert({ open: true,
-          severity: "error",
-          color: "error",
-          message: response.meta.message
-      }))
+        dispatch(
+          setAlert({
+            open: true,
+            severity: "error",
+            color: "error",
+            message: response.meta.message,
+          })
+        );
         setLoading(false);
       }
       setLoading(false);
     }
+    setLoading(false);
   };
+
+  const plans = [
+    {
+      id: 1,
+      name: "full-payment",
+    },
+    {
+      id: 2,
+      name: "part-payment",
+    },
+  ];
 
   const closeDialog = async () => {
-    await dispatch(displayUploadPayment("none"));
+    dispatch(displayUploadPayment("none"));
+    clearInput()
   };
-
+  const clearInput = () => {
+    setLoading(false);
+    setImage("");
+    setPlan("");
+    setAmount("");
+    setImage("");
+  };
   return (
     <>
       <div className="modal" style={{ display: `${display}`, zIndex: 1000 }}>
@@ -102,11 +131,11 @@ const UploadPayment = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Upload Payment</h2>
           </div>
-          <form onSubmit={ uploadFile }>
+          <form onSubmit={uploadFile}>
             <div className="property-input">
-             <h3 className="align">Upload Payment</h3>
-             <label >Amount:</label>
-             <TextField
+              <h3 className="align">Upload Payment</h3>
+              <label>Amount*:</label>
+              <TextField
                 placeholder="Amount"
                 className="signup__input--item-a"
                 variant="outlined"
@@ -120,24 +149,45 @@ const UploadPayment = (props) => {
                   helperText: errors.amount,
                 })}
               />
-              <label >Unit number:</label>
-             <TextField
-                placeholder="Unit number"
+              <label>Select payment type*:</label>
+              <TextField
+                placeholder="Select payment type"
+                select
+                name="plan"
+                id="select"
+                variant="outlined"
+                value={plan}
+                // label="Select gender"
+                defaultValue={"payment"}
+                size="small"
+                onChange={(e) => {
+                  setPlan(e.target.value);
+                }}
+                {...(errors.gender && {
+                  error: true,
+                  helperText: errors.plan,
+                })}
+              >
+                {plans.map(({ name }) => (
+                  <MenuItem value={name} key={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <label>Upload bank payment receipt*:</label>
+              <TextField
+                placeholder="Upload bank payment receipt"
                 className="signup__input--item-a"
                 variant="outlined"
                 type="file"
                 name="image"
-                onChange= {(e) =>{
-                  handleChange(e)
+                onChange={(e) => {
+                  handleChange(e);
                 }}
                 // value={file}
                 {...(errors.file && { error: true, helperText: errors.file })}
               />
-            {
-              image &&(
-                <img src={image} height="200px" alt="" />
-              )
-            }
+              {image && <img src={image} height="200px" alt="" />}
               <div className="property-input__btn">
                 <Button
                   variant="contained"

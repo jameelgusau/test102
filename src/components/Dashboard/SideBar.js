@@ -11,6 +11,7 @@ import {
 } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
 // import sidebars from "../../data/sidebar.json"
+import { TbFileCertificate } from "react-icons/tb"
 import { RiReservedLine } from "react-icons/ri";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import logo2 from "../../assets/img/whitelogo.svg";
@@ -41,6 +42,16 @@ const Aside = () => {
           path: "myreservation"
         },
         {
+          title: "My Payments",
+          icon:  <BsCurrencyDollar />,
+          path: "mypayments"
+        },
+        {
+          title: "My Certificates",
+          icon:  <TbFileCertificate />,
+          path: "mycertificates"
+        },
+        {
           title: "Clients",
           icon:   <BsPeople />,
           path: "prospects"
@@ -54,6 +65,11 @@ const Aside = () => {
           title: "Payments",
           icon:  <BsCurrencyDollar />,
           path:  "payments"
+        },
+        {
+          title: "Certificates",
+          icon:  <TbFileCertificate />,
+          path:  "certificates"
         }
       ]
     },
