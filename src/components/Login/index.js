@@ -68,8 +68,14 @@ function Login() {
       const response = await request(method, url, data);
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
+        if( response.data?.role === "Admin"){
+          navigate(from, {replace: true});
+        }else if(response.data?.role === "Prospect" && from !== "/property"){
+          navigate("/property");
+        }else{
+          navigate(from, {replace: true});
+        }
 
-        navigate(from, {replace: true});
         dispatch( setAlert({ open: true,
           severity: "success",
           color: "primary",
