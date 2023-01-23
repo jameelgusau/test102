@@ -75,6 +75,7 @@ const MyPayments = () => {
         <IconButton
           size="small"
           onClick={({ currentTarget }) => setStudentItem(idx, currentTarget)}
+          disabled={ item?.status === 'Pending'? true : false }
         >
           <IoEllipsisVerticalOutline />
         </IconButton>
