@@ -147,7 +147,7 @@ const ViewCertificate = (props) => {
               <>
                 <div className="pdfbg">
                   <Document
-                    file={`${APIS.baseUrl}/api/pdf/allocations/${certficate.pdf}`}
+                    file={`${APIS.baseUrl}/pdf/allocations/${certficate.pdf}`}
                     // onLoadSuccess={onDocumentLoadSuccess}
                   >
                     {/* http://192.168.0.133:9090 */}
@@ -229,7 +229,7 @@ const ViewCertificate = (props) => {
             )}
           </div>
           <div className="pdfbutton">
-                <a className="download" href={`${APIS.baseUrl}/api/pdf/allocations/${certficate.pdf}`}>Download Letter</a>
+                <a className="download" href={`${APIS.baseUrl}/pdf/allocations/${certficate.pdf}`}>Download Letter</a>
             </div>
         </div>
       </div>

@@ -146,7 +146,7 @@ const ViewCertificate = (props) => {
               <>
                 <div className="pdfbg">
                   <Document
-                    file={`${APIS.baseUrl}/api/pdf/allocations/${certficate.pdf}`}
+                    file={`${APIS.baseUrl}/pdf/allocations/${certficate.pdf}`}
                     // onLoadSuccess={onDocumentLoadSuccess}
                   >
                     {/* <Page

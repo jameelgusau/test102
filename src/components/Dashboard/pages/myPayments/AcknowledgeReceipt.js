@@ -44,7 +44,7 @@ const AcknowledgeReceipt = (props) => {
     const {
       getPayment: { path },
     } = APIS;
-    const url = `/api${path({ id: props.id })}`;
+    const url = `/api${path({ id })}`;
     const controller = new AbortController();
     const getUs = async () => {
       try {
@@ -189,7 +189,7 @@ const AcknowledgeReceipt = (props) => {
                       !loadingAppend &&(
                         <div className="pdfbg">
                         <Document
-                          file={`${APIS.baseUrl}/api/pdf/payments/${mypayment.acknowledgeReceipt?.pdf}`}
+                          file={`${APIS.baseUrl}/pdf/payments/${mypayment.acknowledgeReceipt?.pdf}`}
                           // onLoadSuccess={onDocumentLoadSuccess}
                         >
                           <Page
@@ -207,7 +207,7 @@ const AcknowledgeReceipt = (props) => {
                       <>
                         {
                           mypayment?.status === "Completed" ? (
-                            <a className="download" href={`${APIS.baseUrl}/api/pdf/payments/${mypayment.acknowledgeReceipt?.pdf}`}>Download Letter</a>
+                            <a className="download" href={`${APIS.baseUrl}/pdf/payments/${mypayment.acknowledgeReceipt?.pdf}`}>Download Letter</a>
                           ):(
                             <>
                             <Button

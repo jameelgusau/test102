@@ -28,7 +28,7 @@ const PaymentDetail = (props) => {
   }, []);
 
   const getPayment = async (id) => {
-    setLoading(true);
+    // setLoading(true);
     // eslint-disable-next-line
     let isMounted = true;
     const {
@@ -47,7 +47,7 @@ const PaymentDetail = (props) => {
       } catch (err) {
         navigate("/login", { state: { from: location }, replace: true });
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     getUs();
@@ -177,7 +177,7 @@ const PaymentDetail = (props) => {
     <>
       <div className="paymentDetails">
         {payment.acknowledgeReceipt && payment.acknowledgeReceipt?.pdf ? (<Document
-          file={`${APIS.baseUrl}/api/pdf/payments/${payment.acknowledgeReceipt?.pdf}`}
+          file={`${APIS.baseUrl}/pdf/payments/${payment.acknowledgeReceipt?.pdf}`}
           // onLoadSuccess={onDocumentLoadSuccess}
         >
           <Page
@@ -288,7 +288,7 @@ const PaymentDetail = (props) => {
               </>
             )}
           </div>
-          {payment?.status === "pending" && (
+          {payment?.status === "Pending" && (
             <div className="payment-button payment-button__double">
               <Button
                 variant="contained"

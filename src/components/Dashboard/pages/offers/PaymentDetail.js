@@ -20,48 +20,49 @@ const PaymentDetail = () => {
   const payment = useSelector((state) => state.payment.value);
   useEffect(() => {
     getPayment(params.id);
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
   const getPayment = async (id) => {
-    setLoading(true)
-     // eslint-disable-next-line 
-    let isMounted  = true;
+    setLoading(true);
+    // eslint-disable-next-line
+    let isMounted = true;
     const {
       getPayment: { path },
-        } = APIS;
+    } = APIS;
     const url = `/api${path({ id })}`;
-    const controller =  new AbortController();
-    const getUs =  async () =>{
-      try{
+    const controller = new AbortController();
+    const getUs = async () => {
+      try {
         const response = await axiosPrivate.get(`${url}`, {
-          signal: controller.signal
+          signal: controller.signal,
         });
-        if(response?.data){
-        dispatch(setPayment(response?.data?.data))};
-      }catch(err){
-        navigate('/login', { state: {from: location}, replace: true})
-      }finally{
+        if (response?.data) {
+          dispatch(setPayment(response?.data?.data));
+        }
+      } catch (err) {
+        navigate("/login", { state: { from: location }, replace: true });
+      } finally {
         setLoading(false);
       }
-    }
-    getUs()
-    return ()=>{
-      isMounted = false
-      controller.abort()
-    }
+    };
+    getUs();
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   };
 
-const acceptPayment= async ()=> {
-  setLoading(true);
-  const {
-    acceptPayment: { method, path },
-    baseUrl,
-      } = APIS;
+  const acceptPayment = async () => {
+    setLoading(true);
+    const {
+      acceptPayment: { method, path },
+      baseUrl,
+    } = APIS;
 
-    const data ={
-      id: payment.id
-    }
+    const data = {
+      id: payment.id,
+    };
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, data, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
@@ -84,20 +85,20 @@ const acceptPayment= async ()=> {
           color: "error",
           message: response.meta.message,
         })
-      )
+      );
     }
     setLoading(false);
-}
-const rejectPayment= async ()=> {
-  setLoadingReject(true);
-  const {
-    rejectPayment: { method, path },
-    baseUrl,
-      } = APIS;
+  };
+  const rejectPayment = async () => {
+    setLoadingReject(true);
+    const {
+      rejectPayment: { method, path },
+      baseUrl,
+    } = APIS;
 
-    const data ={
-      id: payment.id
-    }
+    const data = {
+      id: payment.id,
+    };
     const url = `${baseUrl}${path}`;
     const response = await requestJwt(method, url, data, user.jwtToken);
     if (response.meta && response.meta.status === 200) {
@@ -120,17 +121,17 @@ const rejectPayment= async ()=> {
           color: "error",
           message: response.meta.message,
         })
-      )
+      );
     }
     setLoadingReject(false);
-}
+  };
 
   // setLoadingReject("")
   return (
     <div className="paymentDetails">
       <div className="paymentDetails__card">
         <div className="paymentDetails__card--img">
-          {payment.image && <img src={payment?.image}  alt="payment receipt"/>}
+          {payment.image && <img src={payment?.image} alt="payment receipt" />}
         </div>
       </div>
       <div className="paymentDetails__card">
@@ -255,7 +256,6 @@ const rejectPayment= async ()=> {
               "Accept Payment"
             )}
           </Button>
- 
         </div>
       </div>
     </div>
