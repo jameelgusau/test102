@@ -14,7 +14,7 @@ import { userProfile } from '../../redux/userProfile'
 function Login() {
   let navigate = useNavigate();
   const location = useLocation()
-  const from = location.state?.from?.pathname || "/ "
+  const from = location.state?.from?.pathname || "/"
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(false);
   const [errMessage, setErrMessage] = useState("");
@@ -34,7 +34,7 @@ function Login() {
   }, []);
 
   const clearStore = () => {
-    dispatch(userProfile())
+    dispatch(userProfile({}))
   }
 
   const handleMouseDownPassword = (event) => {
@@ -69,11 +69,12 @@ function Login() {
       if (response.meta && response.meta.status === 200) {
         dispatch(userProfile(response.data))
         if( response.data?.role === "Admin"){
-          navigate(from, {replace: true});
+          // navigate(from, {replace: true});
+          navigate("/");
         }else if(response.data?.role === "Prospect" && from !== "/property"){
-          navigate("/property");
-        }else{
-          navigate(from, {replace: true});
+          navigate("/property", {replace: true});
+        }else if(response.data?.role === "User" && from !== "/item"){
+          navigate('/item', {replace: true});
         }
 
         dispatch( setAlert({ open: true,

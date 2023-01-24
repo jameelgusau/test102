@@ -42,6 +42,7 @@ const initialState = {
   openMyPayment: "none",
   openViewCertificates: "none",
   openViewMyCertificates: "none",
+  openSideBar: false
 };
 
 
@@ -165,6 +166,9 @@ export const displays = createSlice({
     displayUploadSign: (state, action) => {
       state.openUploadSign = action.payload;
     },
+    displaySideBar: (state, action) => {
+      state.openSideBar = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, (state)=>{
@@ -172,7 +176,6 @@ export const displays = createSlice({
     })
   }
 });
-
 // Action creators are generated for each case reducer function
 export const {
   displayViewMyCertificates,
@@ -212,7 +215,8 @@ export const {
   displaySettings,
   displayMyAcknowledgement,
   displayMyPayment,
-  displayViewCertificates
+  displayViewCertificates,
+  displaySideBar
 } = displays.actions;
 
 export default displays.reducer;

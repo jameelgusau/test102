@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 // import { useSelector } from "react-redux";
 // import { NavLink } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
@@ -9,6 +9,8 @@ import {
   BsCalendar2Check,
   BsCurrencyDollar,
 } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
+import { displaySideBar } from "../../redux/display";
 import { IoSettingsOutline } from "react-icons/io5";
 // import sidebars from "../../data/sidebar.json"
 import { TbFileCertificate } from "react-icons/tb"
@@ -19,7 +21,9 @@ import SideBarItem from "./SideBarItem";
 
 const Aside = () => {
   // const user = useSelector((state) => state.userProfile.value);
-  const [showLinks, setShowLinks] = useState(false);
+  // const [showLinks, setShowLinks] = useState(false);
+  const openSideBar =  useSelector((state)=> state.displays.openSideBar)
+  const dispatch = useDispatch();
 
   const menu = [
     {
@@ -114,13 +118,17 @@ const Aside = () => {
 
   return (
     <>
-      <button className="menu-icon" onClick={() => setShowLinks(!showLinks)}>
+      <button className="menu-icon" 
+      // onClick={() => setShowLinks(!showLinks)}
+      onClick={() => dispatch(displaySideBar(!openSideBar))}
+      >
         <AiOutlineMenu />
       </button>
-      <aside className={`sidenav ${showLinks ? "active" : ""}`}>
+      <aside className={`sidenav ${openSideBar ? "active" : ""}`}>
         <button
           className="sidenav__close-icon"
-          onClick={() => setShowLinks(!showLinks)}
+          // onClick={() => setShowLinks(!showLinks)}
+          onClick={() => dispatch(displaySideBar(!openSideBar))}
         >
           <AiOutlineClose />
         </button>
@@ -132,7 +140,8 @@ const Aside = () => {
           {user?.role && user?.role === "Admin" && list2} */}
           <div className="sidebar">
             {
-              menu.map((sidebar, index)=> <SideBarItem key={index} sidebar={sidebar} />)
+              menu.map((sidebar, index)=> <SideBarItem  
+              key={index} sidebar={sidebar} />)
             }
           </div>
         </div>

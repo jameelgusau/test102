@@ -54,6 +54,7 @@ const AcknowledgeReceipt = (props) => {
         console.log(response?.data, "getPayment");
         if (response?.data) {
           dispatch(setMyPayment(response?.data?.data));
+          await getSignature()
         }
       } catch (err) {
         dispatch(
@@ -132,7 +133,7 @@ const AcknowledgeReceipt = (props) => {
       if (response.meta && response.meta.status === 200) {
         await getPayment()
         await getPayments()
-        
+        await getSignature()
         dispatch(
           setAlert({
             open: true,

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { BiChevronDown } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-const SideBarItem = ({ sidebar }) => {
+import { useSelector, useDispatch } from "react-redux";
+import { displaySideBar } from "../../redux/display";
+// displaySideBar
+// openSideBar
+const SideBarItem = ({ sidebar}) => {
   const [open, setOpen] = useState(false);
-  const [showLinks, setShowLinks] = useState(false);
+  // const [] = useState(false);
+    const openSideBar =  useSelector((state)=> state.displays.openSideBar)
     const user = useSelector((state) => state.userProfile.value);
+    const dispatch = useDispatch();
   if (sidebar.childrens) {
     if(!((user?.role === "Prospect" || (user?.stores === [] && user?.role !== "Admin"))&& (sidebar?.title === "Inventory" || sidebar?.title === "Settings" ))){
       return (
@@ -32,14 +36,16 @@ const SideBarItem = ({ sidebar }) => {
       return
     }else if((user?.role === "Prospect" || (user?.stores === [] && user?.role !== "Admin"))&& (sidebar?.title === "Inventory" || sidebar?.title  === "Category" || sidebar?.title === "Item")){
       return
-    }if(!((user?.role === "Prospect")) && (sidebar?.title === "My Payments" || sidebar?.title === "My Reservations" || sidebar?.title === "My Certificates")){
+    }else if (!((user?.role === "Prospect")) && (sidebar?.title === "My Payments" || sidebar?.title === "My Reservations" || sidebar?.title === "My Certificates")){
+      return
+    }else if (user?.role === "User" && (sidebar?.title === "Property" || sidebar?.title === "Properties")){
       return
     }
      else{
       return (
         <NavLink
           className="sidebar-item plain"
-          onClick={() => setShowLinks(!showLinks)}
+          onClick={() => dispatch(displaySideBar(!openSideBar))}
           to={sidebar.path}
           style={({ isActive }) => ({
             background: isActive ? "rgba(255, 255, 255, 0.2)" : "",
