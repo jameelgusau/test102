@@ -147,7 +147,7 @@ const EditUser = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Edit User</h2>
           </div>
-          <form onSubmit={submit}>
+          <form className="model-form" onSubmit={submit}>
             <div className="property-input">
               <label>User name:</label>
               <TextField

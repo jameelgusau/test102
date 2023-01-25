@@ -152,7 +152,7 @@ const AddUnit = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Add Unit</h2>
           </div>
-          <form onSubmit={submitAddUnits}>
+          <form onSubmit={submitAddUnits} className="model-form">
             <div className="property-input">
             <label >Unit name:</label>
               <TextField

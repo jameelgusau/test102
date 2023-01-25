@@ -93,7 +93,7 @@ const AddEmailList = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Add User</h2>
           </div>
-          <form onSubmit={submitAddUnits}>
+          <form onSubmit={submitAddUnits} className="model-form">
             <div className="property-input">
             <label>Select User: </label>
               <TextField

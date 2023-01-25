@@ -131,7 +131,7 @@ const UploadPayment = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Upload Payment</h2>
           </div>
-          <form onSubmit={uploadFile}>
+          <form className="model-form" onSubmit={uploadFile}>
             <div className="property-input">
               <h3 className="align">Upload Payment</h3>
               <label>Amount*:</label>

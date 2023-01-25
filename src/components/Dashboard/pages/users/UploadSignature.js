@@ -136,7 +136,7 @@ const UploadSignature = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Upload Authorised Signature</h2>
           </div>
-          <form onSubmit={ uploadFile }>
+          <form className="model-form" onSubmit={ uploadFile }>
             <div className="property-input">
              <h3 className="align">  </h3>
              <label>Name: </label>

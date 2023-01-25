@@ -113,7 +113,7 @@ const Restock = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Restock</h2>
           </div>
-          <form onSubmit={submit}>
+          <form onSubmit={submit} className="model-form">
             <div className="property-input">
               <label>Current Stock: </label>
               <TextField

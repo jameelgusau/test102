@@ -109,7 +109,7 @@ console.log(all, "Allocated")
           <div className="model-title">
             <h2 className="num model-title__header">Allocate Item</h2>
           </div>
-          <form onSubmit={submit}>
+          <form onSubmit={submit} className="model-form">
             <div className="property-input">
             <label>Current Stock: </label>
               <TextField

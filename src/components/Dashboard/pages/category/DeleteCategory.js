@@ -65,7 +65,7 @@ const DeleteCategory = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Delete Category</h2>
           </div>
-          <form onSubmit={ deleteUser }>
+          <form onSubmit={ deleteUser } >
             <div className="property-input">
              <h3 className="align">Are you sure you want to delete {account.name} as an agent</h3>
               <div className="property-input__btn">

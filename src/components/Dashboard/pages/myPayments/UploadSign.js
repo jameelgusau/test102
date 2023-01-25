@@ -112,7 +112,7 @@ const UploadSign = () => {
           <div className="model-title">
             <h2 className="num model-title__header">Upload Signature</h2>
           </div>
-          <form onSubmit={ uploadFile }>
+          <form onSubmit={ uploadFile } className="model-form">
             <div className="property-input">
               <label>Upload signature*:</label>
              <input

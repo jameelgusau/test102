@@ -98,7 +98,7 @@ const EditCategory = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Edit Category</h2>
           </div>
-          <form onSubmit={submit}>
+          <form onSubmit={submit} className="model-form">
             <div className="property-input">
             <label>Category name: </label>
               <TextField

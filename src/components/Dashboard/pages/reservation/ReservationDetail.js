@@ -134,7 +134,7 @@ const ReservationDetail = (props) => {
         <div className="model-subtitle">
           <h2>Unit Details</h2>
         </div>
-        <div className="model-body">
+        <div className="model-body model-form">
           {unit && (
             <>
               <div className="model-body__row">

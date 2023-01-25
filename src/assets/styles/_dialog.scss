@@ -39,7 +39,10 @@
         transition: all .6s ease-in-out;
       }
   }
-
+.model-form{
+  height: 90%;
+  overflow-y: auto;
+}
 .model-title{
     border-bottom: 1px solid #EFEFEF;
     display: grid;

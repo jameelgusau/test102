@@ -106,7 +106,7 @@ const AddImage = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Add Image</h2>
           </div>
-          <form onSubmit={uploadFile}>
+          <form onSubmit={uploadFile} className="model-form">
             <div className="property-input">
               <h3 className="align">upload Image</h3>
               <label>Unit name</label>

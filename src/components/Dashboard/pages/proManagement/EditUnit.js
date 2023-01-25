@@ -156,7 +156,7 @@ const EditUnit = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Edit Unit</h2>
           </div>
-          <form onSubmit={submitEditUnits}>
+          <form onSubmit={submitEditUnits} className="model-form">
             <div className="property-input">
               <label>Unit name:</label>
               <TextField

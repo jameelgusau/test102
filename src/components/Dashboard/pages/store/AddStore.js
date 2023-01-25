@@ -97,7 +97,7 @@ const AddStore = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Add Store</h2>
           </div>
-          <form onSubmit={submit}>
+          <form className="model-form" onSubmit={submit}>
             <div className="property-input">
               <label>Store name: </label>
               <TextField

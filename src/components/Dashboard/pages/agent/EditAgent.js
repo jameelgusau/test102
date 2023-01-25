@@ -129,7 +129,7 @@ const EditAgent = (props) => {
           <div className="model-title">
             <h2 className="num model-title__header">Edit User</h2>
           </div>
-          <form onSubmit={submit}>
+          <form onSubmit={submit} className="model-form">
             <div className="property-input">
               <TextField
                 placeholder="Name"
