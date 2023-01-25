@@ -415,7 +415,7 @@ const Home = () => {
             <div className="card__property--item">
               <div className="card__property--box">
                 <div className="card__property--box--icon">
-                  <BsHouse size={30} color="#fff" />
+                  <BsHouse size={25} color="#fff" />
                 </div>
                 <div className="card__property--box--text">
                   <h1 className="card__property--box--text--heading">{counts?.property|| 0}</h1>
@@ -426,7 +426,7 @@ const Home = () => {
               </div>
               <div className="card__property--box">
                 <div className="card__property--box--icon">
-                  <BsHouse size={30} color="#fff" />
+                  <BsHouse size={25} color="#fff" />
                 </div>
                 <div className="card__property--box--text">
                   <h1 className="card__property--box--text--heading">{counts?.unit || 0 }</h1>

@@ -99,13 +99,21 @@
         background-color: rgba(205,83,24, .8);
         width: 5rem;
         height: 5rem;
+        	// @include responsive(tab-land) {
+    //     font-size: 56.25%;  // 1rem = 9px ; 9px/16px = 52.25%
+    // }	
+    @include responsive(tab-land) {
+        font-size: 56.25%;  // 1rem = 9px ; 9px/16px = 52.25%
+        width: 4rem;
+        height: 4rem;
+    }
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 50%;
       }
       &--text{
-        margin-left: 2rem;
+        margin-left: .5rem;
         &--heading{
           font-size: 3.5rem;
           font-weight: 700;
@@ -194,6 +202,8 @@
     width: 335px;
   }
 }
+
+
 /* Force varying heights to simulate dynamic content */
 // .card:first-child {
 //   height: 400px;
