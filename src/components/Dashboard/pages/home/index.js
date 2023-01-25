@@ -340,17 +340,23 @@ const Home = () => {
         <div className="card">
           <h1 className="card__title">Properties</h1>
           <div className="card__property">
-            <ResponsiveContainer width={200} height={140}>
-              <PieChart width={200} height={140}>
+            <div className="card__property--pieChart">
+            <ResponsiveContainer 
+            width={150} height={150}
+            >
+              <PieChart
+               width={150} height={140}
+               >
                 <Pie
                   data={status}
-                  cx={100}
+                  // cx={100}
                   // cy={100}
                   innerRadius={55}
                   outerRadius={70}
                   // fill="#8884d8"
                   // paddingAngle={5}
                   dataKey="value"
+                  align="center"
                 >
                   {status.map((entry, index) => (
                     <Cell
@@ -360,6 +366,7 @@ const Home = () => {
                   ))}
                 </Pie>
                 <Tooltip />
+                {/* <Legend align="center"/> */}
               </PieChart>
             </ResponsiveContainer>
             <div className="card__keys">
@@ -403,6 +410,7 @@ const Home = () => {
                 </IconContext.Provider>
                 <p>Reserved</p>
               </div>
+            </div>
             </div>
             <div className="card__property--item">
               <div className="card__property--box">
