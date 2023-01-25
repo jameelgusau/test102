@@ -167,7 +167,7 @@ const ReserveUnit = (props) => {
                 <h4 className="model-body__row--text">{unit.status}</h4>
               </div>
               <div className="model-body__row">
-                <h4 className="model-body__row--text">Dimention:</h4>
+                <h4 className="model-body__row--text">Dimension:</h4>
                 <h4 className="model-body__row--text">{unit.dimension}</h4>
               </div>
               <div className="model-body__row">

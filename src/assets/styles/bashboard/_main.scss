@@ -1,8 +1,8 @@
 .menu-icon {
   position: fixed; /* Needs to stay visible for all mobile scrolling */
   display: flex;
-  top: 5px;
-  left: 10px;
+  top: .5rem;
+  left: 1rem;
   align-items: center;
   border: none;
   justify-content: center;
@@ -11,7 +11,7 @@
   border-radius: 50%;
   z-index: 1;
   cursor: pointer;
-  padding: 12px;
+  padding: 1.2rem;
 }
 
 .main {
@@ -22,39 +22,39 @@
 .main-header {
   display: flex;
   justify-content: space-between;
-  margin: 20px;
-  padding: 20px;
-  height: 150px;
+  margin: 2rem;
+  padding: 2rem;
+  height: 15rem;
   background-color: #fff;
   color: slategray;
 }
 
 .main-overview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-  grid-auto-rows: 94px;
-  grid-gap: 20px;
-  margin: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(26.5rem, 1fr));
+  grid-auto-rows: 9.4rem;
+  grid-gap: 2rem;
+  margin: 2rem;
 }
 
 .overviewcard {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 2rem;
   background-color: #fff;
 }
 
 .main-cards {
   column-count: 1;
-  column-gap: 20px;
-  margin: 20px;
+  column-gap: 2rem;
+  margin: 2rem;
 }
 
 .two-cards {
   column-count: 1;
-  column-gap: 20px;
-  margin: 20px;
+  column-gap: 2rem;
+  margin: 2rem;
 }
 
 
@@ -64,12 +64,12 @@
   // align-items: center;
   width: 100%;
   background-color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 2rem;
   -webkit-column-break-inside: avoid;
-  padding: 24px;
+  padding: 2.4rem;
   // box-sizing: border-box;
   border-radius: 5px;
-  box-shadow: 0 6px 20px rgb(204, 85, 25, 0.17);
+  box-shadow: 0 0.6rem 2rem rgb(204, 85, 25, 0.17);
   &__property{
     display: flex;
     justify-content: space-evenly;
@@ -93,12 +93,12 @@
       align-items: center;
       @include responsive(phone) {
           padding: 0;
-          margin-top: 10px;
+          margin-top: 1rem;
       } 
       &--icon{
         background-color: rgba(205,83,24, .8);
-        width: 50px;
-        height: 50px;
+        width: 5rem;
+        height: 5rem;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -112,7 +112,7 @@
         }
         &--subtitle{
           font-size: 1.6rem;
-          margin-top: 10px;
+          margin-top: 1rem;
           color: hsla(20, 79%, 45%, 0.754);
         }
 

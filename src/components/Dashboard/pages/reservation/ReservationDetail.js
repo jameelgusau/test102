@@ -14,7 +14,7 @@ const ReservationDetail = (props) => {
     floor,
     id,
     status,
-    dimention,
+    dimension,
     email,
     phone,
     paymentType,
@@ -151,7 +151,7 @@ const ReservationDetail = (props) => {
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Dimension:</h4>
-                <h4 className="model-body__row--text">{dimention}</h4>
+                <h4 className="model-body__row--text">{dimension}</h4>
               </div>
               <div className="model-body__row">
                 <h4 className="model-body__row--text">Price:</h4>

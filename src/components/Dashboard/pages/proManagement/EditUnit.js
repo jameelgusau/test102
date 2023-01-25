@@ -38,8 +38,8 @@ const EditUnit = (props) => {
       let temp = {};
       temp.name = name.length > 0  && name.length < 10? "" : "Minimum of 1 characters and less than 10 characters required";
       temp.dimension = dimension.length > 0 ? "" : "Dimension is required";
-      temp.discription = discription.length > 2 && discription.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
-      temp.price = !isNaN(price) && price.length >= 1 ? "" : "Price is required";
+      temp.discription = discription && discription.length > 2 && discription.length < 250 ? "" : "Minimum of 3 characters and less than 250 characters required";
+      temp.price = !isNaN(price) && `${price}`.length >= 1 ? "" : "Price is required";
       temp.status = status.length >= 1 ? "" : "Status is required";
       // temp.paymentType = paymentType.length >= 1 ? "" : "Payment type is required";
   
@@ -51,7 +51,18 @@ const EditUnit = (props) => {
 
     const submitEditUnits = async (e) =>{
       e.preventDefault();
-
+      console.log( {
+        name,
+        propertyId: params.id,
+        id: unit.id,
+        price: !isNaN(price)? price.toString():  price,
+        // paymentType,
+        floorNumber: floor,
+        discription,
+        dimension,
+        status,
+      })
+      console.log(errors)
       if (validate()) {
         setLoading(true)
         const {
@@ -62,8 +73,7 @@ const EditUnit = (props) => {
           name,
           propertyId: params.id,
           id: unit.id,
-          price,
-          // paymentType,
+          price: isNaN(price)? price : price.toString(),
           floorNumber: floor,
           discription,
           dimension,
@@ -92,9 +102,11 @@ const EditUnit = (props) => {
             color: "error",
             message: response.meta.message
         }))
-
+        setLoading(false);
         }
+        setLoading(false);
       }
+      setLoading(false);
   }
 
       // const payment =[
@@ -179,8 +191,11 @@ const EditUnit = (props) => {
                 onChange={({ target }) => {
                   setPrice(target.value);
                 }}
-                value={price || 0}
-                {...(errors.address && { error: true, helperText: errors.price })}
+                value={price || ""}
+                {...(errors.price && {
+                  error: true,
+                  helperText: errors.price,
+                })}
               />
                                         <label>Dimension:</label>
               <TextField
@@ -226,6 +241,7 @@ const EditUnit = (props) => {
                 }}
                 // ref={myRef}
                 //onBlur={props.handleBlur('name')}
+                {...(errors.status && { error: true, helperText: errors.status })}
               >
                 {stat.map(({ name}) => (
                   <MenuItem value={name} key={name}>
@@ -270,7 +286,7 @@ const EditUnit = (props) => {
                   {loading ? (
                     <CircularProgress style={{ color: "#ffffff" }} size={24} />
                   ) : (
-                    "Edit Unit"
+                    "SAVE"
                   )}
                 </Button>
               </div>
