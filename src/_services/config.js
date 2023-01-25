@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 export const APIS = {
-  // baseUrl: "https://api.hommesestate.com:9090/api",
-  baseUrl: "http://localhost:9090/api",
+  baseUrl: "https://api.hommesestate.com:9090/api",
+  // baseUrl: "http://localhost:9090/api",
   // https://api.hommesestate.com:9090/
   // baseUrl: "https://hommesestate.herokuapp.com/api",
 
